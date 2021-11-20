@@ -42,30 +42,8 @@
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-resteasy:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-vertx-http:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-security-runtime-spi:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.quarkus:quarkus-mutiny:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.reactive:mutiny:1.1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
-    <orderEntry type="library" name="Maven: io.quarkus:quarkus-smallrye-context-propagation:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation:1.2.2" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation-api:1.2.2" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation-storage:1.2.2" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.reactive:mutiny-smallrye-context-propagation:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-vertx-http-dev-console-runtime-spi:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus.security:quarkus-security:1.1.4.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.quarkus:quarkus-vertx:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-haproxy:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.quarkus:quarkus-jackson:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.5" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.12.5" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.common:smallrye-common-annotation:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-core:2.14.1" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-runtime:2.14.1" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye.reactive:vertx-mutiny-generator:2.14.1" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-codegen:4.1.5" level="project" />
-    <orderEntry type="library" name="Maven: io.smallrye:smallrye-fault-tolerance-vertx:5.2.1" level="project" />
     <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-web:2.14.1" level="project" />
     <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-web-common:2.14.1" level="project" />
     <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-auth-common:2.14.1" level="project" />
@@ -74,11 +52,6 @@
     <orderEntry type="library" name="Maven: io.vertx:vertx-web-common:4.1.5" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-auth-common:4.1.5" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-bridge-common:4.1.5" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-core:4.1.5" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver-dns:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-dns:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-resteasy-server-common:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-resteasy-common:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-core:4.7.3.Final" level="project" />
@@ -124,27 +97,64 @@
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-artemis-core:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: io.quarkus:quarkus-jsonp:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:jakarta.json:1.1.6" level="project" />
-    <orderEntry type="library" name="Maven: io.quarkus:quarkus-netty:2.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.68.Final" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:artemis-core-client:2.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.jgroups:jgroups:3.6.13.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-transport-native-epoll:linux-x86_64:4.1.68.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-transport-native-unix-common:4.1.68.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-transport-native-kqueue:osx-x86_64:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler-proxy:4.1.68.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-codec-socks:4.1.68.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.68.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:commons-logging-jboss-logging:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:artemis-jms-client:2.17.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:artemis-commons:2.17.0" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.9.4" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.activemq:artemis-selector:2.17.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel.quarkus:camel-quarkus-jdbc:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-agroal:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-datasource:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-datasource-common:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.narayana.jta:narayana-jta:5.12.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss:jboss-transaction-spi:7.6.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.spec.javax.resource:jboss-connector-api_1.7_spec:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.narayana.jts:narayana-jts-integration:5.12.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.agroal:agroal-api:1.12" level="project" />
+    <orderEntry type="library" name="Maven: io.agroal:agroal-narayana:1.12" level="project" />
+    <orderEntry type="library" name="Maven: io.agroal:agroal-pool:1.12" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-credentials:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-narayana-jta:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation-jta:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-reactive-converter-api:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-reactive-converter-mutiny:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.security.jacc:jakarta.security.jacc-api:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.servlet:jakarta.servlet-api:4.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-jdbc:3.12.0" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-vertx:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-netty:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-http2:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-haproxy:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-jackson:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.common:smallrye-common-annotation:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-mutiny:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:mutiny:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: io.quarkus:quarkus-smallrye-context-propagation:2.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation-api:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye:smallrye-context-propagation-storage:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:mutiny-smallrye-context-propagation:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-core:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:smallrye-mutiny-vertx-runtime:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye.reactive:vertx-mutiny-generator:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-codegen:4.1.5" level="project" />
+    <orderEntry type="library" name="Maven: io.smallrye:smallrye-fault-tolerance-vertx:5.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-junit5:2.4.2.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-core:2.4.2.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.quarkus:quarkus-bootstrap-app-model:2.4.2.Final" level="project" />
@@ -231,5 +241,16 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-lang3:3.12.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-mqtt:4.2.1" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-mqtt:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-core:4.1.5" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler-proxy:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver-dns:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec-dns:4.1.68.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" level="project" />
   </component>
 </module>
