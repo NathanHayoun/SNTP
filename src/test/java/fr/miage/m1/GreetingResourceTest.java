@@ -19,5 +19,6 @@ public class GreetingResourceTest {
              .body(is("Hello RESTEasy"));
     }
      */
+    //Coucou
 
 }
