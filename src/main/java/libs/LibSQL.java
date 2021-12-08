@@ -4,8 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +13,13 @@ import java.util.Map.Entry;
 /**
  * Library that allows easy access to the database
  */
-public class LibSQL {
+public class LibSQL<E> {
+    @PersistenceContext(name = "persistence")
     private static EntityManager entityManager;
     private final Logger logger = LoggerFactory.getLogger(LibSQL.class);
+    private E e;
 
     public LibSQL() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
-        entityManager = emf.createEntityManager();
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Close connection");
             entityManager.close();
@@ -39,8 +37,8 @@ public class LibSQL {
         try {
             entityManager.persist(object);
             transactionIsOk = true;
-        } catch (Exception e) {
-            logger.warn("Error during insert object", e);
+        } catch (Exception exception) {
+            logger.warn("Error during insert object", exception);
         } finally {
             if (transactionIsOk) {
                 entityManager.getTransaction().commit();
@@ -54,23 +52,23 @@ public class LibSQL {
      * Find object by primary key
      * Don't forget to cast your result !
      */
-    public Object findObject(Class classToFind, Object key) {
-        return entityManager.find(classToFind, key);
+    public E findObject(Object key) {
+        return (E) entityManager.find(e.getClass(), key);
     }
 
     /**
      * Delete object in parameter
      *
-     * @param object to delete
+     * @param line to delete
      */
-    public void deleteObject(Object object) {
+    public void deleteObject(E line) {
         boolean transactionIsOk = false;
         entityManager.getTransaction().begin();
         try {
-            entityManager.remove(object);
+            entityManager.remove(line);
             transactionIsOk = true;
-        } catch (Exception e) {
-            logger.warn("Error during insert object", e);
+        } catch (Exception exception) {
+            logger.warn("Error during insert object", exception);
         } finally {
             if (transactionIsOk) {
                 entityManager.getTransaction().commit();
@@ -80,12 +78,13 @@ public class LibSQL {
         }
     }
 
-    public void executeQuery(String query, Class classForQuery) {
-        entityManager.createQuery(query, classForQuery).executeUpdate();
+    public void executeQuery(String query) {
+        entityManager.createQuery(query, e.getClass()).executeUpdate();
     }
 
     public void executeQueryWithNamedParams(String query, Map<String, Object> params) {
         Query queryToPush = entityManager.createQuery(query);
+
         for (Entry<String, Object> param : params.entrySet()) {
             queryToPush.setParameter(param.getKey(), param.getValue());
         }
@@ -94,26 +93,28 @@ public class LibSQL {
 
     public void executeQueryWithNoNamedParams(String query, List<Object> params) {
         Query queryToPush = entityManager.createQuery(query);
+
         for (int i = 0; i < params.size(); i++) {
             queryToPush.setParameter(i, params.get(i));
         }
         queryToPush.executeUpdate();
     }
 
-    public List executeSelect(String query, Class className) {
-        return entityManager.createQuery(query, className).getResultList();
+    public List<E> executeSelect(String query) {
+        return (List<E>) entityManager.createQuery(query, e.getClass()).getResultList();
     }
 
-    public List executeSelectWithNamedParams(String query, List<Object> params) {
-        Query queryToPush = entityManager.createQuery(query);
-        for (int i = 0; i < params.size(); i++) {
-            queryToPush.setParameter(i, params.get(i));
+    public List<E> executeSelectWithNamedParams(String query, Map<String, Object> params) {
+        Query queryToPush = entityManager.createQuery(query, e.getClass());
+
+        for (Entry<String, Object> param : params.entrySet()) {
+            queryToPush.setParameter(param.getKey(), param.getValue());
         }
         return queryToPush.getResultList();
     }
 
-    public List executeSelectWithNoNamedParams(String query, List<Object> params) {
-        Query queryToPush = entityManager.createQuery(query);
+    public List<E> executeSelectWithNoNamedParams(String query, List<Object> params) {
+        Query queryToPush = entityManager.createQuery(query, e.getClass());
         for (int i = 0; i < params.size(); i++) {
             queryToPush.setParameter(i, params.get(i));
         }
