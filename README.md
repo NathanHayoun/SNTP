@@ -1,7 +1,8 @@
 # Projet SNTP
 
-![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)  
+![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)
 ![Build with maven ](https://github.com/NathanHayoun/SNTP/actions/workflows/maven.yml/badge.svg)
+[![Lint Code Base](https://github.com/NathanHayoun/SNTP/actions/workflows/super-linter.yml/badge.svg)](https://github.com/NathanHayoun/SNTP/actions/workflows/super-linter.yml)
 
 ## 1. Système à modéliser
 
@@ -80,25 +81,36 @@ ___
 ___
 *1. Les trains doivent transmettre leur position en méthode Point-To-Point
 ![Diagramme de séquence train point-to-point](diagrammes/trainPubSub.png)
+
 *2. L'infocentre doit transmettre ses informations via une API *
 ![Diagramme de séquence info centre api ](diagrammes/apiInfoCentre.png)
+
 *3. L'infocentre doit pouvoir, si les conditions le permettent, générer des retards pour un train*
 ![Diagramme de séquence générer retard](diagrammes/retardTrain.png)
+
 *4. Lors d’un retard sur un train à réservation, les passagers concernés seront avertis par email*
 ![Diagramme de séquence avertissement email retard / annulation ](diagrammes/mailRetardTrain.png)
+
 *5. L'infocentre doit pouvoir, si les conditions le permettent, rajouter une station à un train*
 ![Diagramme de séquence rajouter station à un train](diagrammes/ajouterStation.png)
+
 *6. L'infocentre doit pouvoir, si les conditions le permettent, supprimer une station à un train*
 ![Diagramme de séquence supprimer une station à un train ](diagrammes/supprimerStation.png)
+
 *7. L'infocentre doit pouvoir, si les conditions le permettent, supprimer un train*
 ![Diagramme de séquence supprimer un train](diagrammes/supprimerTrain.png)
+
 *8. Lorsqu’un train à réservation est supprimé, les passagers concernés seront avertis par email*
 **CF schéma 4**
+
 *9. & 10. L'infogare doit pouvoir afficher les informations qui concernent les départs, les arrivées et les retards*
 ![Diagramme de séquence afficher information départ/arrivées/retards](diagrammes/afficherInformation.png)
+
 *12. 13. & 14. Les voyageurs doivent pouvoir acheter un billet de train*
 ![Diagramme de séquence achat billet de train](diagrammes/achatBillet.png)
+
 *15. 16. 17. Un voyageur doit pouvoir échanger son billet au kiosque*
 ![Diagramme de séquence échanger billet de train](diagrammes/echangerBillet.png)
+
 *18. Le kiosque doit être connecté à la base de données nationale des kiosques*
 ![Diagramme de séquence connection du kiosque à la base de données national](diagrammes/kiosqueBdd.png)
