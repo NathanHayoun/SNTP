@@ -1,57 +1,104 @@
-![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)
+# Projet SNTP
+
+![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)  
 ![Build with maven ](https://github.com/NathanHayoun/SNTP/actions/workflows/maven.yml/badge.svg)
 
-# SNTP Project
+## 1. Système à modéliser
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Système de gestion de réservation de billet de train , gestion de la circulation des train.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+### Description du Système
 
-## Running the application in dev mode
+___
+On souhaite modéliser les échanges internes et externes entre les trains, l'infocentre ainsi que l'ensemble des
+voyageurs sans distinction.
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
-```
+L’infocentre est le composant central du système d’information voyageur de la SNCF. Son rôle est d’accéder aux données
+concernant les trains, puis de faire remonter différentes informations, à savoir l'heure de départ, l'heure d'arrivée,
+le trajet, les éventuels retards...via le déploiement d’une API.
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+La position des trains pourrait être envoyée en point to point toutes les X secondes
 
-## Packaging and running the application
+Les retards et perturbations peuvent être involontaires et causés par des facteurs externes, ou parfois voulus par
+l’infocentre. L’infocentre décidera de perturber volontairement le trafique ferroviaire en s’appuyant sur des règles
+métiers bien précises.
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+Les clients peuvent recevoir les informations remontées par l’infocentre via différents canaux : Infogare, système
+d’information voyageur embarqué, applications mobiles, mails etc…
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+Les Infogares sont des écrans d’affichage d’informations concernant les départs, arrivées et perturbations des trains.
+Ils affichent également des informations ayant un impact majeur sur le réseau aux voyageurs.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+L’infocentre gèrera tout ce qui concerne les horaires de trains et éventuels retards cependant il ne s’occupera pas des
+informations purement locales à chaque gare telles que l’accueil à l’embarquement, le numéro de voie du train ou la
+localisation des voitures sur la voie. C’est le système d’informations de chaque gare qui s’en occupera.
 
-## Creating a native executable
+### Règles métier
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
+___
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
+- Un TER pourra attendre un TGV, mais pas l’inverse
+- Seul les TGV sont des trains à réservation
+- On ne retardera le train que si le nombre de passagers ayant réservés en rupture de correspondance est > 50
+- Un train desservira exceptionnellement une gare si elle est sur son trajet et que le train précédent a un retard de
+  plus de 2h.
+- En cas de retard de plus de 30min, un TGV ne desservira pas une gare si aucun passager n’a un billet de départ/arrivée
+  de cette gare.
 
-You can then execute your native executable with: `./target/sntp-1.0.0-SNAPSHOT-runner`
+### Exigence du système
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
+___
 
-## Provided Code
+1. Les trains doivent transmettre leur position en méthode Publish-Subscribe
+2. L'infocentre doit transmettre ses informations via une API
+3. L'infocentre doit pouvoir, si les conditions le permettent, générer des retards pour un train
+4. Lors d’un retard sur un train à réservation, les passagers concernés seront avertis par email
+5. L'infocentre doit pouvoir, si les conditions le permettent, rajouter une station à un train
+6. L'infocentre doit pouvoir, si les conditions le permettent, supprimer une station à un train
+7. L'infocentre doit pouvoir, si les conditions le permettent, supprimer un train
+8. Lorsqu’un train à réservation est supprimé, les passagers concernés seront avertis par email
+9. L'infogare doit pouvoir afficher les informations qui concernent les départs, les arrivées et les retards
+10. L'infogare doit personnaliser les informations en fonction de chaque gare
+11. Les données remontées de l'infocentre doivent toujours être sous le même format
+12. Les voyageurs doivent pouvoir acheter un billet de train
+13. L’achat doit se faire au kiosque
+14. Lors de l’achat du billet on doit pouvoir afficher les retards au voyageur
+15. Un voyageur doit pouvoir échanger son billet au kiosque
+16. Lors de l’échange il peut y avoir un changement de tarif
+17. Si lors de l’échange le tarif est inférieur au tarif initial alors aucun remboursement ne sera fait
+18. Le kiosque doit être connecté à la base de données nationale des kiosques
 
-### RESTEasy JAX-RS
+## 2. Schémas et Diagrammes de séquences
 
-Easily start your RESTful Web Services
+### Schéma du système
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+___
+![Schéma du système](diagrammes/systeme.png)
+
+### Diagramme de séquence
+
+___
+*1. Les trains doivent transmettre leur position en méthode Point-To-Point
+![Diagramme de séquence train point-to-point](diagrammes/trainPubSub.png)
+*2. L'infocentre doit transmettre ses informations via une API *
+![Diagramme de séquence info centre api ](diagrammes/apiInfoCentre.png)
+*3. L'infocentre doit pouvoir, si les conditions le permettent, générer des retards pour un train*
+![Diagramme de séquence générer retard](diagrammes/retardTrain.png)
+*4. Lors d’un retard sur un train à réservation, les passagers concernés seront avertis par email*
+![Diagramme de séquence avertissement email retard / annulation ](diagrammes/mailRetardTrain.png)
+*5. L'infocentre doit pouvoir, si les conditions le permettent, rajouter une station à un train*
+![Diagramme de séquence rajouter station à un train](diagrammes/ajouterStation.png)
+*6. L'infocentre doit pouvoir, si les conditions le permettent, supprimer une station à un train*
+![Diagramme de séquence supprimer une station à un train ](diagrammes/supprimerStation.png)
+*7. L'infocentre doit pouvoir, si les conditions le permettent, supprimer un train*
+![Diagramme de séquence supprimer un train](diagrammes/supprimerTrain.png)
+*8. Lorsqu’un train à réservation est supprimé, les passagers concernés seront avertis par email*
+**CF schéma 4**
+*9. & 10. L'infogare doit pouvoir afficher les informations qui concernent les départs, les arrivées et les retards*
+![Diagramme de séquence afficher information départ/arrivées/retards](diagrammes/afficherInformation.png)
+*12. 13. & 14. Les voyageurs doivent pouvoir acheter un billet de train*
+![Diagramme de séquence achat billet de train](diagrammes/achatBillet.png)
+*15. 16. 17. Un voyageur doit pouvoir échanger son billet au kiosque*
+![Diagramme de séquence échanger billet de train](diagrammes/echangerBillet.png)
+*18. Le kiosque doit être connecté à la base de données nationale des kiosques*
+![Diagramme de séquence connection du kiosque à la base de données national](diagrammes/kiosqueBdd.png)
