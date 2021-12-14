@@ -1,4 +1,7 @@
-# sntp Project
+![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)
+![Build with maven ](https://github.com/NathanHayoun/SNTP/actions/workflows/maven.yml/badge.svg)
+
+# SNTP Project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
