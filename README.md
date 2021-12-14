@@ -79,7 +79,7 @@ ___
 ### Diagramme de séquence
 
 ___
-*1. Les trains doivent transmettre leur position en méthode Point-To-Point
+*1. Les trains doivent transmettre leur position en méthode Point-To-Point*
 ![Diagramme de séquence train point-to-point](diagrammes/trainPubSub.png)
 
 *2. L'infocentre doit transmettre ses informations via une API *
