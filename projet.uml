@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>projet</OriginalElement>
+  <nodes>
+    <node x="463.0" y="548.0">projet.Station</node>
+    <node x="174.0" y="272.0">projet.Passage</node>
+    <node x="925.5" y="581.0">projet.Gare</node>
+    <node x="501.0" y="250.0">projet.PlanificationDesTrain</node>
+    <node x="957.0" y="290.0">projet.PlanificationArret</node>
+    <node x="1397.0" y="810.0">projet.Itineraire</node>
+    <node x="1347.5" y="570.0">projet.LigneDeTrain</node>
+    <node x="505.5" y="-19.0">projet.Train</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="projet.Station" target="projet.PlanificationDesTrain" relationship="TO_ONE">
+      <point x="5.0" y="-72.0" />
+      <point x="5.0" y="50.0" />
+    </edge>
+    <edge source="projet.PlanificationArret" target="projet.Gare" relationship="TO_ONE">
+      <point x="-5.0" y="50.0" />
+      <point x="-5.0" y="-39.0" />
+    </edge>
+    <edge source="projet.Itineraire" target="projet.Station" relationship="DEPENDENCY">
+      <point x="-83.0" y="-5.0" />
+      <point x="605.0" y="855.0" />
+      <point x="5.0" y="72.0" />
+    </edge>
+    <edge source="projet.Train" target="projet.Itineraire" relationship="DEPENDENCY">
+      <point x="94.5" y="0.0" />
+      <point x="1640.0" y="20.0" />
+      <point x="1640.0" y="860.0" />
+      <point x="83.0" y="0.0" />
+    </edge>
+    <edge source="projet.Gare" target="projet.LigneDeTrain" relationship="TO_MANY">
+      <point x="114.5" y="5.0" />
+      <point x="-132.5" y="5.0" />
+    </edge>
+    <edge source="projet.LigneDeTrain" target="projet.Itineraire" relationship="DEPENDENCY">
+      <point x="-5.0" y="50.0" />
+      <point x="-5.0" y="-50.0" />
+    </edge>
+    <edge source="projet.Itineraire" target="projet.Station" relationship="TO_MANY">
+      <point x="0.0" y="5.0" />
+      <point x="595.0" y="865.0" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="projet.PlanificationDesTrain" target="projet.Train" relationship="TO_ONE">
+      <point x="5.0" y="-50.0" />
+      <point x="5.0" y="39.0" />
+    </edge>
+    <edge source="projet.PlanificationArret" target="projet.Gare" relationship="DEPENDENCY">
+      <point x="5.0" y="0.0" />
+      <point x="5.0" y="-39.0" />
+    </edge>
+    <edge source="projet.PlanificationDesTrain" target="projet.Train" relationship="DEPENDENCY">
+      <point x="-5.0" y="-50.0" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="projet.Passage" target="projet.PlanificationDesTrain" relationship="GENERALIZATION">
+      <point x="106.0" y="0.0" />
+      <point x="-99.0" y="0.0" />
+    </edge>
+    <edge source="projet.Station" target="projet.Passage" relationship="TO_ONE">
+      <point x="-137.0" y="-5.0" />
+      <point x="285.0" y="615.0" />
+      <point x="5.0" y="28.0" />
+    </edge>
+    <edge source="projet.Station" target="projet.Passage" relationship="DEPENDENCY">
+      <point x="0.0" y="5.0" />
+      <point x="275.0" y="625.0" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="projet.Itineraire" target="projet.Gare" relationship="TO_ONE">
+      <point x="0.0" y="-15.0" />
+      <point x="1035.0" y="845.0" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="projet.LigneDeTrain" target="projet.Itineraire" relationship="TO_ONE">
+      <point x="5.0" y="0.0" />
+      <point x="5.0" y="-50.0" />
+    </edge>
+    <edge source="projet.Gare" target="projet.LigneDeTrain" relationship="DEPENDENCY">
+      <point x="114.5" y="-5.0" />
+      <point x="0.0" y="-5.0" />
+    </edge>
+    <edge source="projet.Station" target="projet.Gare" relationship="DEPENDENCY">
+      <point x="137.0" y="-5.0" />
+      <point x="0.0" y="-5.0" />
+    </edge>
+    <edge source="projet.Station" target="projet.Gare" relationship="TO_ONE">
+      <point x="137.0" y="5.0" />
+      <point x="-114.5" y="5.0" />
+    </edge>
+    <edge source="projet.Train" target="projet.LigneDeTrain" relationship="DEPENDENCY">
+      <point x="94.5" y="35.0" />
+      <point x="1465.0" y="55.0" />
+      <point x="-15.0" y="-50.0" />
+    </edge>
+    <edge source="projet.LigneDeTrain" target="projet.Train" relationship="DEPENDENCY">
+      <point x="15.0" y="-50.0" />
+      <point x="1495.0" y="25.0" />
+      <point x="94.5" y="5.0" />
+    </edge>
+    <edge source="projet.Station" target="projet.PlanificationDesTrain" relationship="DEPENDENCY">
+      <point x="-5.0" y="-72.0" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="projet.Itineraire" target="projet.Gare" relationship="DEPENDENCY">
+      <point x="-83.0" y="-25.0" />
+      <point x="1045.0" y="835.0" />
+      <point x="5.0" y="39.0" />
+    </edge>
+    <edge source="projet.LigneDeTrain" target="projet.Train" relationship="TO_MANY">
+      <point x="5.0" y="-50.0" />
+      <point x="1485.0" y="35.0" />
+      <point x="94.5" y="15.0" />
+    </edge>
+    <edge source="projet.Train" target="projet.LigneDeTrain" relationship="TO_ONE">
+      <point x="94.5" y="25.0" />
+      <point x="1475.0" y="45.0" />
+      <point x="-5.0" y="-50.0" />
+    </edge>
+    <edge source="projet.Passage" target="projet.Train" relationship="DEPENDENCY">
+      <point x="0.0" y="-28.0" />
+      <point x="280.0" y="20.0" />
+      <point x="-94.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Orthogonal Groups" zoom="0.5104761904761905" showDependencies="true" x="812.9999999999999" y="496.00000000000006" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
