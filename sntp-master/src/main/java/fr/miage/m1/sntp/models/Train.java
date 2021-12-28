@@ -14,8 +14,9 @@ public class Train {
     @Column(name = "numeroDeTrain", nullable = false)
     private Integer numeroDeTrain;
 
-    @Column(name = "typeDeTrain")
-    private Integer typeDeTrain;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typeDeTrain", columnDefinition = "enum (Types#CHAR)")
+    private TypeTrain typeDeTrain;
 
     @ManyToOne
     @JoinColumn(name = "ligne_de_train_id_ligne_de_train")
@@ -29,11 +30,11 @@ public class Train {
         this.ligneDeTrainIdLigneDeTrain = ligneDeTrainIdLigneDeTrain;
     }
 
-    public Integer getTypeDeTrain() {
+    public TypeTrain getTypeDeTrain() {
         return typeDeTrain;
     }
 
-    public void setTypeDeTrain(Integer typeDeTrain) {
+    public void setTypeDeTrain(TypeTrain typeDeTrain) {
         this.typeDeTrain = typeDeTrain;
     }
 
@@ -59,16 +60,5 @@ public class Train {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Train{" +
-                "id=" + id +
-                ", nbPlace=" + nbPlace +
-                ", numeroDeTrain=" + numeroDeTrain +
-                ", typeDeTrain=" + typeDeTrain +
-                ", ligneDeTrainIdLigneDeTrain=" + ligneDeTrainIdLigneDeTrain +
-                '}';
     }
 }
