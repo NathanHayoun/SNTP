@@ -1,99 +1,74 @@
-/*
- * Copyright (c) 2021. Nathan Hayoun
- */
-
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Train {
-    private int numeroDeTrain;
+    @Id
+    @Column(name = "train_id", nullable = false)
+    private Long id;
+
+    @Column(name = "nbPlace", nullable = false)
+    private Integer nbPlace;
+
+    @Column(name = "numeroDeTrain", nullable = false)
+    private Integer numeroDeTrain;
+
+    @Column(name = "typeDeTrain")
+    private Integer typeDeTrain;
+
     @ManyToOne
     @JoinColumn(name = "ligne_de_train_id_ligne_de_train")
-    private LigneDeTrain ligneDeTrain;
-    private int nbPlace;
-    @Enumerated(EnumType.ORDINAL)
-    private TypeDeTrain typeDeTrain;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "train_id", nullable = false)
-    private Long trainId;
+    private LigneDeTrain ligneDeTrainIdLigneDeTrain;
 
-    Train(int numeroDeTrain, LigneDeTrain ligneDeTrain, int nbPlace, TypeDeTrain typeDeTrain) {
-        this.numeroDeTrain = numeroDeTrain;
-        this.ligneDeTrain = ligneDeTrain;
-        this.nbPlace = nbPlace;
+    public LigneDeTrain getLigneDeTrainIdLigneDeTrain() {
+        return ligneDeTrainIdLigneDeTrain;
+    }
+
+    public void setLigneDeTrainIdLigneDeTrain(LigneDeTrain ligneDeTrainIdLigneDeTrain) {
+        this.ligneDeTrainIdLigneDeTrain = ligneDeTrainIdLigneDeTrain;
+    }
+
+    public Integer getTypeDeTrain() {
+        return typeDeTrain;
+    }
+
+    public void setTypeDeTrain(Integer typeDeTrain) {
         this.typeDeTrain = typeDeTrain;
     }
 
-    public Train() {
-
-    }
-
-    public Long getTrainId() {
-        return trainId;
-    }
-
-    public void setTrainId(Long trainId) {
-        this.trainId = trainId;
-    }
-
-    public int numeroDeTrain() {
+    public Integer getNumeroDeTrain() {
         return numeroDeTrain;
     }
 
-    public LigneDeTrain ligneDeTrain() {
-        return ligneDeTrain;
+    public void setNumeroDeTrain(Integer numeroDeTrain) {
+        this.numeroDeTrain = numeroDeTrain;
     }
 
-    public int nbPlace() {
+    public Integer getNbPlace() {
         return nbPlace;
     }
 
-    public TypeDeTrain typeDeTrain() {
-        return typeDeTrain;
+    public void setNbPlace(Integer nbPlace) {
+        this.nbPlace = nbPlace;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Train) obj;
-        return this.numeroDeTrain == that.numeroDeTrain &&
-                Objects.equals(this.ligneDeTrain, that.ligneDeTrain) &&
-                this.nbPlace == that.nbPlace &&
-                Objects.equals(this.typeDeTrain, that.typeDeTrain);
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(numeroDeTrain, ligneDeTrain, nbPlace, typeDeTrain);
-    }
-
-    public int getNbPlace() {
-        return nbPlace;
-    }
-
-    public TypeDeTrain getTypeDeTrain() {
-        return typeDeTrain;
-    }
-
-    public int getNumeroDeTrain() {
-        return numeroDeTrain;
-    }
-
-    public LigneDeTrain getLigneDeTrain() {
-        return ligneDeTrain;
-    }
-
-    public Itineraire getItineraire() {
-        return this.ligneDeTrain.getItineraire();
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Numero de train " + numeroDeTrain + " ligneDeTrain " + ligneDeTrain.toString() + " itineraire " + getItineraire();
+        return "Train{" +
+                "id=" + id +
+                ", nbPlace=" + nbPlace +
+                ", numeroDeTrain=" + numeroDeTrain +
+                ", typeDeTrain=" + typeDeTrain +
+                ", ligneDeTrainIdLigneDeTrain=" + ligneDeTrainIdLigneDeTrain +
+                '}';
     }
 }

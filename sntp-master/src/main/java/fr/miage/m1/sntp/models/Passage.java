@@ -1,46 +1,53 @@
-/*
- * Copyright (c) 2021. Nathan Hayoun
- */
-
 package fr.miage.m1.sntp.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
+import javax.persistence.Id;
+import java.time.Instant;
 
 @Entity
-public class Passage extends PlanificationDesTrain {
-    private LocalDateTime dateDePassage;
-    private int numeroDeQuai;
+public class Passage {
+    @Id
+    @Column(name = "id_planification_des_train", nullable = false)
+    private Long id;
 
-    public Passage(Train train, LocalDateTime heureArrivee, LocalDateTime heureDepart, LocalDateTime dateDePassage) {
-        super(train, heureArrivee, heureDepart);
-        this.dateDePassage = dateDePassage;
-    }
+    @Column(name = "dateDePassage")
+    private Instant dateDePassage;
 
-    public Passage() {
+    @Column(name = "numeroDeQuai", nullable = false)
+    private Integer numeroDeQuai;
 
-    }
-
-    public LocalDateTime getDateDePassage() {
-        return dateDePassage;
-    }
-
-    public void setDateDePassage(LocalDateTime dateDePassage) {
-        this.dateDePassage = dateDePassage;
-    }
-
-    public int getNumeroDeQuai() {
+    public Integer getNumeroDeQuai() {
         return numeroDeQuai;
     }
 
-    public void setNumeroDeQuai(int numeroDeQuai) {
+    public void setNumeroDeQuai(Integer numeroDeQuai) {
         this.numeroDeQuai = numeroDeQuai;
     }
+
+    public Instant getDateDePassage() {
+        return dateDePassage;
+    }
+
+    public void setDateDePassage(Instant dateDePassage) {
+        this.dateDePassage = dateDePassage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     @Override
     public String toString() {
         return "Passage{" +
-                "dateDePassage=" + dateDePassage +
+                "id=" + id +
+                ", dateDePassage=" + dateDePassage +
+                ", numeroDeQuai=" + numeroDeQuai +
                 '}';
     }
 }
