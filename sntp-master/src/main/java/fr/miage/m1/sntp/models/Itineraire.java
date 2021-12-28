@@ -1,78 +1,51 @@
-
-/*
- * Copyright (c) 2021. Nathan Hayoun
- */
-
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Itineraire {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_itineraire", nullable = false)
-    private Long idItineraire;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "depart_id_gare")
-    private Gare depart;
+    private Gare departIdGare;
+
     @ManyToOne
     @JoinColumn(name = "terminus_id_gare")
-    private Gare terminus;
-    @OneToMany
-    private Set<Station> stations;
+    private Gare terminusIdGare;
 
-    public Itineraire(Set<Station> stations) {
-        generateGareDepartEtTerminus(stations);
+    public Gare getTerminusIdGare() {
+        return terminusIdGare;
     }
 
-    public Itineraire() {
-
+    public void setTerminusIdGare(Gare terminusIdGare) {
+        this.terminusIdGare = terminusIdGare;
     }
 
-    public Long getIdItineraire() {
-        return idItineraire;
+    public Gare getDepartIdGare() {
+        return departIdGare;
     }
 
-    public void setIdItineraire(Long idItineraire) {
-        this.idItineraire = idItineraire;
+    public void setDepartIdGare(Gare departIdGare) {
+        this.departIdGare = departIdGare;
     }
 
-    private void generateGareDepartEtTerminus(Set<Station> stations) {
-        //NOP
+    public Long getId() {
+        return id;
     }
 
-    public Gare getDepart() {
-        return depart;
-    }
-
-    public void setDepart(Gare depart) {
-        this.depart = depart;
-    }
-
-    public Gare getTerminus() {
-        return terminus;
-    }
-
-    public void setTerminus(Gare terminus) {
-        this.terminus = terminus;
-    }
-
-    public Set<Station> getStations() {
-        return stations;
-    }
-
-    public void setStations(Set<Station> stations) {
-        this.stations = stations;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Itineraire{" +
-                "depart=" + depart +
-                ", terminus=" + terminus + " " + stations.toString() + " " +
+                "id=" + id +
+                ", departIdGare=" + departIdGare +
+                ", terminusIdGare=" + terminusIdGare +
                 '}';
     }
 }

@@ -1,104 +1,87 @@
-/*
- * Copyright (c) 2021. Nathan Hayoun
- */
-
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 public class Station {
-    @OneToMany
-    private final Set<PlanificationDesTrain> planificationDesTrain = new LinkedHashSet<>();
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "station_id", nullable = false)
-    private Long stationId;
+    private Long id;
+
+    @Column(name = "doitMarquerArret", nullable = false)
+    private Boolean doitMarquerArret = false;
+
+    @Column(name = "nbQuais", nullable = false)
+    private Integer nbQuais;
+
+    @Column(name = "position", nullable = false)
+    private Integer position;
+
     @ManyToOne
     @JoinColumn(name = "gare_id_gare")
-    private Gare gare;
-    private int position;
+    private Gare gareIdGare;
+
     @ManyToOne
     @JoinColumn(name = "passage_id_planification_des_train")
-    private Passage passage;
-    private boolean doitMarquerArret;
-    private int nbQuais;
+    private Passage passageIdPlanificationDesTrain;
 
-    public Station(Gare gare, int position, boolean doitMarquerArret) {
-        this.gare = gare;
-        this.position = position;
-        this.doitMarquerArret = doitMarquerArret;
+    public Passage getPassageIdPlanificationDesTrain() {
+        return passageIdPlanificationDesTrain;
     }
 
-    public Station() {
-
+    public void setPassageIdPlanificationDesTrain(Passage passageIdPlanificationDesTrain) {
+        this.passageIdPlanificationDesTrain = passageIdPlanificationDesTrain;
     }
 
-    public Long getStationId() {
-        return stationId;
+    public Gare getGareIdGare() {
+        return gareIdGare;
     }
 
-    public void setStationId(Long stationId) {
-        this.stationId = stationId;
+    public void setGareIdGare(Gare gareIdGare) {
+        this.gareIdGare = gareIdGare;
     }
 
-    public Passage getPassage() {
-        return passage;
-    }
-
-    public void setPassage(Passage passage) {
-        this.passage = passage;
-    }
-
-    public boolean isDoitMarquerArret() {
-        return doitMarquerArret;
-    }
-
-    public void setDoitMarquerArret(boolean doitMarquerArret) {
-        this.doitMarquerArret = doitMarquerArret;
-    }
-
-    public Gare getGare() {
-        return gare;
-    }
-
-    public void setGare(Gare gare) {
-        this.gare = gare;
-    }
-
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(Integer position) {
         this.position = position;
     }
 
-    public Set<PlanificationDesTrain> getPlanificationDesTrain() {
-        return planificationDesTrain;
-    }
-
-    public void setPlanificationDesTrain(PlanificationDesTrain planificationDesTrain) {
-        this.planificationDesTrain.add(planificationDesTrain);
-    }
-
-    public int getNbQuais() {
+    public Integer getNbQuais() {
         return nbQuais;
     }
 
-    public void setNbQuais(int nbQuais) {
+    public void setNbQuais(Integer nbQuais) {
         this.nbQuais = nbQuais;
+    }
+
+    public Boolean getDoitMarquerArret() {
+        return doitMarquerArret;
+    }
+
+    public void setDoitMarquerArret(Boolean doitMarquerArret) {
+        this.doitMarquerArret = doitMarquerArret;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Station{" +
-                "gare=" + gare +
+                "id=" + id +
+                ", doitMarquerArret=" + doitMarquerArret +
+                ", nbQuais=" + nbQuais +
                 ", position=" + position +
-                ", passage=" + passage +
-                ", doitMarquerArret=" + doitMarquerArret + " " +
+                ", gareIdGare=" + gareIdGare +
+                ", passageIdPlanificationDesTrain=" + passageIdPlanificationDesTrain +
                 '}';
     }
 }
