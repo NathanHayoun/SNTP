@@ -1,7 +1,7 @@
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalTime;
 
 @Entity
 public class PlanificationDesTrain {
@@ -10,10 +10,10 @@ public class PlanificationDesTrain {
     private Long id;
 
     @Column(name = "heureArrivee")
-    private Instant heureArrivee;
+    private LocalTime heureArrivee;
 
     @Column(name = "heureDepart")
-    private Instant heureDepart;
+    private LocalTime heureDepart;
 
     @ManyToOne
     @JoinColumn(name = "train_concerne_id")
@@ -27,19 +27,19 @@ public class PlanificationDesTrain {
         this.trainConcerne = trainConcerne;
     }
 
-    public Instant getHeureDepart() {
+    public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(Instant heureDepart) {
+    public void setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
     }
 
-    public Instant getHeureArrivee() {
+    public LocalTime getHeureArrivee() {
         return heureArrivee;
     }
 
-    public void setHeureArrivee(Instant heureArrivee) {
+    public void setHeureArrivee(LocalTime heureArrivee) {
         this.heureArrivee = heureArrivee;
     }
 
@@ -49,15 +49,5 @@ public class PlanificationDesTrain {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "PlanificationDesTrain{" +
-                "id=" + id +
-                ", heureArrivee=" + heureArrivee +
-                ", heureDepart=" + heureDepart +
-                ", trainConcerne=" + trainConcerne +
-                '}';
     }
 }

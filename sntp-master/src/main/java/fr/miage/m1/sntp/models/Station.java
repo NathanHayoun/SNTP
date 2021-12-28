@@ -21,18 +21,6 @@ public class Station {
     @JoinColumn(name = "gare_id_gare")
     private Gare gareIdGare;
 
-    @ManyToOne
-    @JoinColumn(name = "passage_id_planification_des_train")
-    private Passage passageIdPlanificationDesTrain;
-
-    public Passage getPassageIdPlanificationDesTrain() {
-        return passageIdPlanificationDesTrain;
-    }
-
-    public void setPassageIdPlanificationDesTrain(Passage passageIdPlanificationDesTrain) {
-        this.passageIdPlanificationDesTrain = passageIdPlanificationDesTrain;
-    }
-
     public Gare getGareIdGare() {
         return gareIdGare;
     }
@@ -71,17 +59,5 @@ public class Station {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "Station{" +
-                "id=" + id +
-                ", doitMarquerArret=" + doitMarquerArret +
-                ", nbQuais=" + nbQuais +
-                ", position=" + position +
-                ", gareIdGare=" + gareIdGare +
-                ", passageIdPlanificationDesTrain=" + passageIdPlanificationDesTrain +
-                '}';
     }
 }
