@@ -68,25 +68,41 @@ public class Train {
         this.id = id;
     }
 
-//    public String getStationDepart() {
-//        for (Arrets iti : itineraire) {
-//            if (iti.getPosition() == 1) {
-//                return iti.getStation().getNomGare();
-//            }
+    public Itineraire getItineraireConcerner() {
+        return itineraireConcerner;
+    }
+
+    public void setItineraireConcerner(Itineraire itineraireConcerner) {
+        this.itineraireConcerner = itineraireConcerner;
+    }
+
+    public String getStationDepart() {
+        for (Arret iti : itineraireConcerner.getArrets()) {
+            if (iti.getPosition() == 1) {
+                return iti.getGareConcerner().getNomGare();
+            }
+        }
+        return "Error";
+    }
+
+    public String getTerminus() {
+        int maxPosition = 0;
+        String nomGareToReturn = "Error";
+        for (var iti : itineraireConcerner.getArrets()) {
+            if (iti.getPosition() > maxPosition) {
+                maxPosition = iti.getPosition();
+                nomGareToReturn = iti.getGareConcerner().getNomGare();
+            }
+        }
+        return nomGareToReturn;
+    }
+
+//    public Set<Passage> getAllPassages() {
+//        Set<Passage> allPassages = new HashSet<>();
+//        for (Arret arret : this.itineraireConcerner.getArrets()) {
+//            allPassages.addAll(arret.getPassages());
 //        }
-//        return "Error";
-//    }
-//
-//    public String getTerminus() {
-//        int maxPosition = 0;
-//        String nomGareToReturn = "Error";
-//        for (var iti : itineraire) {
-//            if (iti.getPosition() > maxPosition) {
-//                maxPosition = iti.getPosition();
-//                nomGareToReturn = iti.getStation().getNomGare();
-//            }
-//        }
-//        return nomGareToReturn;
+//        return allPassages;
 //    }
 
 

@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class Itineraire {
 
     @OneToOne(mappedBy = "itineraireConcerner")
     @JoinColumn(name = "id_train")
+    @JsonbTransient
     private Train train;
 
     @OneToMany(mappedBy = "itineraireConcerner", fetch = FetchType.EAGER)

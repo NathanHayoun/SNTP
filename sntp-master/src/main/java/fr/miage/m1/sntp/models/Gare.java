@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class Gare {
     private String nomGare;
 
     @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER)
+    @JsonbTransient
     private Set<Arret> trainsQuiPasseDansLaGare;
 
     public String getNomGare() {
@@ -40,4 +42,5 @@ public class Gare {
     public void setTrainsQuiPasseDansLaGare(Set<Arret> trainsQuiPasseDansLaGare) {
         this.trainsQuiPasseDansLaGare = trainsQuiPasseDansLaGare;
     }
+
 }
