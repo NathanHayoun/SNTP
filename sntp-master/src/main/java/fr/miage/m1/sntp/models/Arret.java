@@ -126,7 +126,7 @@ public class Arret {
      * @return heureArrivee
      */
     public LocalTime getHeureDepart() {
-        return heureArrivee;
+        return heureDepart;
     }
 
     /**
