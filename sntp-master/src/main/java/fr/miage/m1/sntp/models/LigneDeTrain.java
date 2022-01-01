@@ -3,25 +3,15 @@ package fr.miage.m1.sntp.models;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "LigneDeTrain")
 public class LigneDeTrain {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ligne_de_train", nullable = false)
     private Long id;
 
-    @Column(name = "nomLigne")
+    @Column(name = "nom_ligne")
     private String nomLigne;
-
-    @ManyToOne
-    @JoinColumn(name = "itineraire_id_itineraire")
-    private Itineraire itineraireIdItineraire;
-
-    public Itineraire getItineraireIdItineraire() {
-        return itineraireIdItineraire;
-    }
-
-    public void setItineraireIdItineraire(Itineraire itineraireIdItineraire) {
-        this.itineraireIdItineraire = itineraireIdItineraire;
-    }
 
     public String getNomLigne() {
         return nomLigne;
@@ -37,14 +27,5 @@ public class LigneDeTrain {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "LigneDeTrain{" +
-                "id=" + id +
-                ", nomLigne='" + nomLigne + '\'' +
-                ", itineraireIdItineraire=" + itineraireIdItineraire +
-                '}';
     }
 }
