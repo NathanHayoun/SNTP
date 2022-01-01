@@ -1,36 +1,22 @@
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "Itineraire")
 public class Itineraire {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_itineraire", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "depart_id_gare")
-    private Gare departIdGare;
+    @OneToOne(mappedBy = "itineraireConcerner")
+    @JoinColumn(name = "id_train")
+    private Train train;
 
-    @ManyToOne
-    @JoinColumn(name = "terminus_id_gare")
-    private Gare terminusIdGare;
-
-    public Gare getTerminusIdGare() {
-        return terminusIdGare;
-    }
-
-    public void setTerminusIdGare(Gare terminusIdGare) {
-        this.terminusIdGare = terminusIdGare;
-    }
-
-    public Gare getDepartIdGare() {
-        return departIdGare;
-    }
-
-    public void setDepartIdGare(Gare departIdGare) {
-        this.departIdGare = departIdGare;
-    }
+    @OneToMany(mappedBy = "itineraireConcerner", fetch = FetchType.EAGER)
+    private Set<Arret> arrets;
 
     public Long getId() {
         return id;
@@ -40,12 +26,20 @@ public class Itineraire {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Itineraire{" +
-                "id=" + id +
-                ", departIdGare=" + departIdGare +
-                ", terminusIdGare=" + terminusIdGare +
-                '}';
+    public Train getTrain() {
+        return train;
+    }
+
+    public void setTrain(Train train) {
+        this.train = train;
+    }
+
+    public Set<Arret> getArrets() {
+        return arrets;
+    }
+
+    public void setArrets(Set<Arret> arrets) {
+        this.arrets = arrets;
     }
 }
+

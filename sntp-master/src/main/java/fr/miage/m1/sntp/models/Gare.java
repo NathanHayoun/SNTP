@@ -1,17 +1,21 @@
 package fr.miage.m1.sntp.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "Gare")
 public class Gare {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_gare", nullable = false)
     private Long id;
 
-    @Column(name = "nomGare")
+    @Column(name = "nom_gare")
     private String nomGare;
+
+    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER)
+    private Set<Arret> trainsQuiPasseDansLaGare;
 
     public String getNomGare() {
         return nomGare;
@@ -29,11 +33,11 @@ public class Gare {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Gare{" +
-                "id=" + id +
-                ", nomGare='" + nomGare + '\'' +
-                '}';
+    public Set<Arret> getTrainsQuiPasseDansLaGare() {
+        return trainsQuiPasseDansLaGare;
+    }
+
+    public void setTrainsQuiPasseDansLaGare(Set<Arret> trainsQuiPasseDansLaGare) {
+        this.trainsQuiPasseDansLaGare = trainsQuiPasseDansLaGare;
     }
 }

@@ -1,40 +1,26 @@
 package fr.miage.m1.sntp.models;
 
-import javax.persistence.*;
-import java.time.Instant;
-import java.time.LocalTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
-public class Passage {
-    @Id
-    @Column(name = "id_Passage", nullable = false)
-    private Long id;
+@Table(name = "Passage")
+public class Passage extends Arret {
 
-    @Column(name = "id_planification_des_train", nullable = false)
-    private Long idPlanificationDesTrain;
+    @Column(name = "date_de_passage", nullable = false)
+    private LocalDate dateDePassage;
 
-    @Column(name = "dateDePassage")
-    private Instant dateDePassage;
-
-    @Column(name = "heureArrivee")
-    private LocalTime heureArrivee;
-
-    @Column(name = "heureDepart")
-    private LocalTime heureDepart;
-
-    @Column(name = "numeroDeQuai", nullable = false)
+    @Column(name = "numero_de_quai")
     private Integer numeroDeQuai;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "station_id", nullable = false)
-    private Station station;
-
-    public Station getStation() {
-        return station;
+    public LocalDate getDateDePassage() {
+        return dateDePassage;
     }
 
-    public void setStation(Station station) {
-        this.station = station;
+    public void setDateDePassage(LocalDate dateDePassage) {
+        this.dateDePassage = dateDePassage;
     }
 
     public Integer getNumeroDeQuai() {
@@ -43,45 +29,5 @@ public class Passage {
 
     public void setNumeroDeQuai(Integer numeroDeQuai) {
         this.numeroDeQuai = numeroDeQuai;
-    }
-
-    public LocalTime getHeureDepart() {
-        return heureDepart;
-    }
-
-    public void setHeureDepart(LocalTime heureDepart) {
-        this.heureDepart = heureDepart;
-    }
-
-    public LocalTime getHeureArrivee() {
-        return heureArrivee;
-    }
-
-    public void setHeureArrivee(LocalTime heureArrivee) {
-        this.heureArrivee = heureArrivee;
-    }
-
-    public Instant getDateDePassage() {
-        return dateDePassage;
-    }
-
-    public void setDateDePassage(Instant dateDePassage) {
-        this.dateDePassage = dateDePassage;
-    }
-
-    public Long getIdPlanificationDesTrain() {
-        return idPlanificationDesTrain;
-    }
-
-    public void setIdPlanificationDesTrain(Long idPlanificationDesTrain) {
-        this.idPlanificationDesTrain = idPlanificationDesTrain;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
