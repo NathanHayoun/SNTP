@@ -31,8 +31,8 @@ Les Infogares sont des écrans d’affichage d’informations concernant les dé
 Ils affichent également des informations ayant un impact majeur sur le réseau aux voyageurs.
 
 L’infocentre gèrera tout ce qui concerne les horaires de trains et éventuels retards cependant il ne s’occupera pas des
-informations purement locales à chaque gare telles que l’accueil à l’embarquement, le numéro de voie du train ou la
-localisation des voitures sur la voie. C’est le système d’informations de chaque gare qui s’en occupera.
+informations purement locales à chaque arret telles que l’accueil à l’embarquement, le numéro de voie du train ou la
+localisation des voitures sur la voie. C’est le système d’informations de chaque arret qui s’en occupera.
 
 ### Règles métier
 
@@ -41,10 +41,10 @@ ___
 - Un TER pourra attendre un TGV, mais pas l’inverse
 - Seul les TGV sont des trains à réservation
 - On ne retardera le train que si le nombre de passagers ayant réservés en rupture de correspondance est > 50
-- Un train desservira exceptionnellement une gare si elle est sur son trajet et que le train précédent a un retard de
+- Un train desservira exceptionnellement une arret si elle est sur son trajet et que le train précédent a un retard de
   plus de 2h.
-- En cas de retard de plus de 30min, un TGV ne desservira pas une gare si aucun passager n’a un billet de départ/arrivée
-  de cette gare.
+- En cas de retard de plus de 30min, un TGV ne desservira pas une arret si aucun passager n’a un billet de
+  départ/arrivée de cette arret.
 
 ### Exigence du système
 
@@ -59,7 +59,7 @@ ___
 7. L'infocentre doit pouvoir, si les conditions le permettent, supprimer un train
 8. Lorsqu’un train à réservation est supprimé, les passagers concernés seront avertis par email
 9. L'infogare doit pouvoir afficher les informations qui concernent les départs, les arrivées et les retards
-10. L'infogare doit personnaliser les informations en fonction de chaque gare
+10. L'infogare doit personnaliser les informations en fonction de chaque arret
 11. Les données remontées de l'infocentre doivent toujours être sous le même format
 12. Les voyageurs doivent pouvoir acheter un billet de train
 13. L’achat doit se faire au kiosque
