@@ -1,51 +1,76 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.Set;
 
+/**
+ * @author Nathan
+ */
 @Entity
+@Table(name = "Itineraire")
 public class Itineraire {
+    /**
+     * Primary key
+     */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_itineraire", nullable = false)
     private Long id;
+    /**
+     * Train
+     */
+    @OneToOne(mappedBy = "itineraireConcerner")
+    @JoinColumn(name = "id_train")
+    @JsonbTransient
+    private Train train;
 
-    @ManyToOne
-    @JoinColumn(name = "depart_id_gare")
-    private Gare departIdGare;
+    /**
+     * arrets
+     */
+    @OneToMany(mappedBy = "itineraireConcerner", fetch = FetchType.EAGER)
+    private Set<Arret> arrets;
 
-    @ManyToOne
-    @JoinColumn(name = "terminus_id_gare")
-    private Gare terminusIdGare;
-
-    public Gare getTerminusIdGare() {
-        return terminusIdGare;
-    }
-
-    public void setTerminusIdGare(Gare terminusIdGare) {
-        this.terminusIdGare = terminusIdGare;
-    }
-
-    public Gare getDepartIdGare() {
-        return departIdGare;
-    }
-
-    public void setDepartIdGare(Gare departIdGare) {
-        this.departIdGare = departIdGare;
-    }
-
+    /**
+     * @return primary key
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Itineraire{" +
-                "id=" + id +
-                ", departIdGare=" + departIdGare +
-                ", terminusIdGare=" + terminusIdGare +
-                '}';
+    /**
+     * @return train
+     */
+    public Train getTrain() {
+        return train;
+    }
+
+    /**
+     * @param train
+     */
+    public void setTrain(Train train) {
+        this.train = train;
+    }
+
+    /**
+     * @return arrets
+     */
+    public Set<Arret> getArrets() {
+        return arrets;
+    }
+
+    /**
+     * @param arrets
+     */
+    public void setArrets(Set<Arret> arrets) {
+        this.arrets = arrets;
     }
 }
+

@@ -1,87 +1,155 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * @author Nathan
+ */
 @Entity
+@Table(name = "Passage")
 public class Passage {
+    /**
+     * Primary key
+     */
     @Id
-    @Column(name = "id_Passage", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_passage", nullable = false)
+    private Long idPassage;
 
-    @Column(name = "id_planification_des_train", nullable = false)
-    private Long idPlanificationDesTrain;
-
-    @Column(name = "dateDePassage")
-    private Instant dateDePassage;
-
-    @Column(name = "heureArrivee")
-    private LocalTime heureArrivee;
-
-    @Column(name = "heureDepart")
-    private LocalTime heureDepart;
-
-    @Column(name = "numeroDeQuai", nullable = false)
+    /**
+     * Foreign key
+     */
+    @JsonbTransient
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumns({
+            @JoinColumn(name = "id_gare", insertable = false, updatable = false),
+            @JoinColumn(name = "id_itineraire", insertable = false, updatable = false)
+    })
+    private Arret arret;
+    /**
+     * heureArriveeReel
+     */
+    @Column(name = "heure_arrivee_reel")
+    private LocalTime heureArriveeReel;
+    /**
+     * heureDepartReel
+     */
+    @Column(name = "heure_depart_reel")
+    private LocalTime heureDepartReel;
+    /**
+     * dateDePassage
+     */
+    @Column(name = "date_de_passage", nullable = false)
+    private LocalDate dateDePassage;
+    /**
+     * numeroDeQuai
+     */
+    @Column(name = "numero_de_quai")
     private Integer numeroDeQuai;
+    /**
+     * marquerArret
+     */
+    @Column(name = "marquer_arret")
+    private Boolean marquerArret;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "station_id", nullable = false)
-    private Station station;
-
-    public Station getStation() {
-        return station;
+    /**
+     * @return idPassage
+     */
+    public Long getIdPassage() {
+        return idPassage;
     }
 
-    public void setStation(Station station) {
-        this.station = station;
+    /**
+     * @param idPassage
+     */
+    public void setIdPassage(Long idPassage) {
+        this.idPassage = idPassage;
     }
 
+    /**
+     * @return arret
+     */
+    public Arret getArret() {
+        return arret;
+    }
+
+    /**
+     * @param arret
+     */
+    public void setArret(Arret arret) {
+        this.arret = arret;
+    }
+
+    /**
+     * @return heureArriveeReel
+     */
+    public LocalTime getHeureArriveeReel() {
+        return heureArriveeReel;
+    }
+
+    /**
+     * @param heureArriveeReel
+     */
+    public void setHeureArriveeReel(LocalTime heureArriveeReel) {
+        this.heureArriveeReel = heureArriveeReel;
+    }
+
+    /**
+     * @return heureDepartReel
+     */
+    public LocalTime getHeureDepartReel() {
+        return heureDepartReel;
+    }
+
+    /**
+     * @param heureDepartReel
+     */
+    public void setHeureDepartReel(LocalTime heureDepartReel) {
+        this.heureDepartReel = heureDepartReel;
+    }
+
+    /**
+     * @return dateDePassage
+     */
+    public LocalDate getDateDePassage() {
+        return dateDePassage;
+    }
+
+    /**
+     * @param dateDePassage
+     */
+    public void setDateDePassage(LocalDate dateDePassage) {
+        this.dateDePassage = dateDePassage;
+    }
+
+    /**
+     * @return numeroDeQuai
+     */
     public Integer getNumeroDeQuai() {
         return numeroDeQuai;
     }
 
+    /**
+     * @param numeroDeQuai
+     */
     public void setNumeroDeQuai(Integer numeroDeQuai) {
         this.numeroDeQuai = numeroDeQuai;
     }
 
-    public LocalTime getHeureDepart() {
-        return heureDepart;
+    /**
+     * @return marquerArret
+     */
+    public Boolean getMarquerArret() {
+        return marquerArret;
     }
 
-    public void setHeureDepart(LocalTime heureDepart) {
-        this.heureDepart = heureDepart;
-    }
-
-    public LocalTime getHeureArrivee() {
-        return heureArrivee;
-    }
-
-    public void setHeureArrivee(LocalTime heureArrivee) {
-        this.heureArrivee = heureArrivee;
-    }
-
-    public Instant getDateDePassage() {
-        return dateDePassage;
-    }
-
-    public void setDateDePassage(Instant dateDePassage) {
-        this.dateDePassage = dateDePassage;
-    }
-
-    public Long getIdPlanificationDesTrain() {
-        return idPlanificationDesTrain;
-    }
-
-    public void setIdPlanificationDesTrain(Long idPlanificationDesTrain) {
-        this.idPlanificationDesTrain = idPlanificationDesTrain;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @param marquerArret
+     */
+    public void setMarquerArret(Boolean marquerArret) {
+        this.marquerArret = marquerArret;
     }
 }
