@@ -1,13 +1,15 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "Station")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Arret")
 public class Arret {
     @EmbeddedId
+    @JsonbTransient
     private ArretId id;
 
     @Column(name = "doit_marquer_arret", nullable = false)
@@ -30,7 +32,11 @@ public class Arret {
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("idItineraire")
     @JoinColumn(name = "id_itineraire")
+    @JsonbTransient
     private Itineraire itineraireConcerner;
+
+    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER)
+    private Set<Passage> passages;
 
     public ArretId getId() {
         return id;
@@ -86,5 +92,13 @@ public class Arret {
 
     public void setItineraireConcerner(Itineraire itineraireConcerner) {
         this.itineraireConcerner = itineraireConcerner;
+    }
+
+    public Set<Passage> getPassages() {
+        return passages;
+    }
+
+    public void setPassages(Set<Passage> passages) {
+        this.passages = passages;
     }
 }

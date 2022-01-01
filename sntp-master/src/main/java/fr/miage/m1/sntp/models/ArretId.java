@@ -2,6 +2,7 @@ package fr.miage.m1.sntp.models;
 
 import org.hibernate.Hibernate;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -11,8 +12,10 @@ import java.util.Objects;
 public class ArretId implements Serializable {
     private static final long serialVersionUID = 8206435527755057412L;
     @Column(name = "id_gare", nullable = false)
+    @JsonbTransient
     private Long idGare;
     @Column(name = "id_itineraire", nullable = false)
+    @JsonbTransient
     private Long idItineraire;
 
     public Long getIdItineraire() {
