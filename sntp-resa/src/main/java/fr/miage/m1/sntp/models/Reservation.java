@@ -7,6 +7,7 @@ import java.time.LocalTime;
 @Entity
 public class Reservation {
     @Id
+
     @Column(name = "id_reservation", nullable = false)
     private Long id;
 
