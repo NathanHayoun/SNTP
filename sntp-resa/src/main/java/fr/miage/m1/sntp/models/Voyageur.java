@@ -1,11 +1,13 @@
 package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Voyageur {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_voyageur", nullable = false)
     private Long id;
 
@@ -17,6 +19,9 @@ public class Voyageur {
 
     @Column(name = "prenom")
     private String prenom;
+
+    @OneToMany(mappedBy="voyageurConcernee",fetch = FetchType.EAGER)
+    private Set<Reservation> reservations;
 
     public String getPrenom() {
         return prenom;
@@ -48,5 +53,13 @@ public class Voyageur {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
