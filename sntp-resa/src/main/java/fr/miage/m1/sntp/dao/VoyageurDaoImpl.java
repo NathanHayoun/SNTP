@@ -13,7 +13,6 @@ public class VoyageurDaoImpl implements VoyageurDao{
     @Override
     public List<Voyageur> findAll() {
         return LibSQL.findAll(entityManager,Voyageur.class);
-
     }
 
     @Override
@@ -35,5 +34,4 @@ public class VoyageurDaoImpl implements VoyageurDao{
     public void delete(Voyageur voyageur) {
         LibSQL.deleteObject(entityManager,voyageur);
     }
-
 }
