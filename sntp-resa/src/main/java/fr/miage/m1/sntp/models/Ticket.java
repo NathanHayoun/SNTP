@@ -1,40 +1,47 @@
 package fr.miage.m1.sntp.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 public class Ticket {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ticket", nullable = false)
     private Long id;
 
-    @Column(name = "DTYPE", nullable = false, length = 31)
-    private String dtype;
+    @Column(name = "numero_train", nullable = false)
+    private Integer numeroTrain;
 
-    @Column(name = "dateDepart")
+    @Column(name = "is_reservable", nullable = false)
+    private Boolean isReservable;
+
+    @Column(name = "date_depart")
     private LocalDate dateDepart;
 
-    @Column(name = "gareArrivee")
+    @Column(name = "gare_arrivee")
     private String gareArrivee;
 
-    @Column(name = "gareDepart")
+    @Column(name = "gare_depart")
     private String gareDepart;
 
-    @Column(name = "heureArrivee")
+    @Column(name = "heure_arrivee")
     private LocalTime heureArrivee;
 
-    @Column(name = "heureDepart")
+    @Column(name = "heure_depart")
     private LocalTime heureDepart;
 
-    @Column(name = "numeroEtape", nullable = false)
+    @Column(name = "numero_etape", nullable = false)
     private Integer numeroEtape;
 
     @Column(name = "place")
     private Integer place;
+
+    @ManyToOne
+    @MapsId("idReservation")
+    @JoinColumn(name = "id_reservation")
+    private Reservation reservationConcernee;
 
     public Integer getPlace() {
         return place;
@@ -92,12 +99,12 @@ public class Ticket {
         this.dateDepart = dateDepart;
     }
 
-    public String getDtype() {
-        return dtype;
+    public boolean getIsReservable() {
+        return isReservable;
     }
 
-    public void setDtype(String dtype) {
-        this.dtype = dtype;
+    public void setIsReservable(Boolean isReservable) {
+        this.isReservable = isReservable;
     }
 
     public Long getId() {
@@ -106,5 +113,29 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getNumeroTrain() {
+        return numeroTrain;
+    }
+
+    public void setNumeroTrain(Integer numeroTrain) {
+        this.numeroTrain = numeroTrain;
+    }
+
+    public Boolean getReservable() {
+        return isReservable;
+    }
+
+    public void setReservable(Boolean reservable) {
+        isReservable = reservable;
+    }
+
+    public Reservation getReservationConcernee() {
+        return reservationConcernee;
+    }
+
+    public void setReservationConcernee(Reservation reservationConcernee) {
+        this.reservationConcernee = reservationConcernee;
     }
 }
