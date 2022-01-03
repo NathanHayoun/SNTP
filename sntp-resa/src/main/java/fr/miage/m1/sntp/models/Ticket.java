@@ -39,8 +39,9 @@ public class Ticket {
     private Integer place;
 
     @ManyToOne
-    @JoinColumn(name = "id_client")
-    private Voyageur client;
+    @MapsId("idReservation")
+    @JoinColumn(name = "id_reservation")
+    private Reservation reservationConcernee;
 
     public Integer getPlace() {
         return place;
@@ -112,5 +113,29 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getNumeroTrain() {
+        return numeroTrain;
+    }
+
+    public void setNumeroTrain(Integer numeroTrain) {
+        this.numeroTrain = numeroTrain;
+    }
+
+    public Boolean getReservable() {
+        return isReservable;
+    }
+
+    public void setReservable(Boolean reservable) {
+        isReservable = reservable;
+    }
+
+    public Reservation getReservationConcernee() {
+        return reservationConcernee;
+    }
+
+    public void setReservationConcernee(Reservation reservationConcernee) {
+        this.reservationConcernee = reservationConcernee;
     }
 }
