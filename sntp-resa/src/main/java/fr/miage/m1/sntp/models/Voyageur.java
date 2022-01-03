@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Voyageur {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_voyageur", nullable = false)
     private Long id;
 
