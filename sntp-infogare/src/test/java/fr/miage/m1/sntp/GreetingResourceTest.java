@@ -1,4 +1,4 @@
-package org.acme;
+package fr.miage.m1.sntp;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
