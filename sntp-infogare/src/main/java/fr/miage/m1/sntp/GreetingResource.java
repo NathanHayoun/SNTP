@@ -1,4 +1,4 @@
-package org.acme;
+package fr.miage.m1.sntp;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
