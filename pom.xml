@@ -12,6 +12,7 @@
         <module>sntp-master</module>
         <module>sntp-resa</module>
         <module>sntp-commons</module>
+        <module>sntp-infogare</module>
     </modules>
 
 </project>
