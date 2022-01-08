@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <name>project-m1-sntp</name>
     <modules>
-        <module>sntp-master</module>
+        <module>sntp-infocentre</module>
         <module>sntp-resa</module>
         <module>sntp-commons</module>
         <module>sntp-infogare</module>
