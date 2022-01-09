@@ -43,7 +43,7 @@ public class Arret {
     @Column(name = "heureDepart")
     private LocalTime heureDepart;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapsId("idGare")
     @JoinColumn(name = "id_gare")
     /**
@@ -51,7 +51,7 @@ public class Arret {
      */
     private Gare gareConcerner;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapsId("idItineraire")
     @JoinColumn(name = "id_itineraire")
     @JsonbTransient
@@ -63,7 +63,7 @@ public class Arret {
     /**
      * Daily passage
      */
-    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Passage> passages;
 
     /**
@@ -176,5 +176,18 @@ public class Arret {
      */
     public void setPassages(Set<Passage> passages) {
         this.passages = passages;
+    }
+
+    @Override
+    public String toString() {
+        return "Arret{" +
+                "id=" + id +
+                ", doitMarquerArret=" + doitMarquerArret +
+                ", position=" + position +
+                ", heureArrivee=" + heureArrivee +
+                ", heureDepart=" + heureDepart +
+                ", gareConcerner=" + gareConcerner +
+                ", itineraireConcerner=" + itineraireConcerner +
+                '}';
     }
 }
