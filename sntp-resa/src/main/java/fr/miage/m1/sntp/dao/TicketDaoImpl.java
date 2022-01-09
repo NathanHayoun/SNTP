@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.dao;
 
+import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.utils.LibSQL;
 
@@ -16,7 +17,7 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public Ticket findById(int id) {
+    public Ticket findById(int id) throws TicketException {
         return LibSQL.findObject(entityManager,Ticket.class,id);
     }
 

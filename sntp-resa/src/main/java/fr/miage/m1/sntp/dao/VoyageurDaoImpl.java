@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.dao;
 
+import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.utils.LibSQL;
 
@@ -16,7 +17,7 @@ public class VoyageurDaoImpl implements VoyageurDao{
     }
 
     @Override
-    public Voyageur findById(int id) {
+    public Voyageur findById(int id) throws VoyageurException {
         return LibSQL.findObject(entityManager,Voyageur.class,id);
     }
 
