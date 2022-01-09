@@ -25,7 +25,7 @@ public class Gare {
     /**
      * Train passing in the station
      */
-    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonbTransient
     private Set<Arret> trainsQuiPasseDansLaGare;
 

@@ -9,4 +9,6 @@ public interface TrainDAO {
     Train findTrain(long idTrain) throws TrainException;
 
     List<Train> getAllTrains();
+
+    void update(Train train);
 }

@@ -20,7 +20,7 @@ public class Itineraire {
     /**
      * Train
      */
-    @OneToOne(mappedBy = "itineraireConcerner")
+    @OneToOne(mappedBy = "itineraireConcerner", cascade = CascadeType.ALL)
     @JoinColumn(name = "id_train")
     @JsonbTransient
     private Train train;
@@ -28,7 +28,7 @@ public class Itineraire {
     /**
      * arrets
      */
-    @OneToMany(mappedBy = "itineraireConcerner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "itineraireConcerner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Arret> arrets;
 
     /**
