@@ -1,7 +1,6 @@
 package fr.miage.m1.sntp.ressource;
 
 import fr.miage.m1.sntp.dao.VoyageurDao;
-import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Voyageur;
 
