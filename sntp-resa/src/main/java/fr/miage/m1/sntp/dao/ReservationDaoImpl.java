@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.dao;
 
+import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.utils.LibSQL;
 
@@ -17,7 +18,7 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public Reservation findById(int id) {
+    public Reservation findById(int id) throws ReservationException {
         return LibSQL.findObject(entityManager, Reservation.class, id);
     }
 

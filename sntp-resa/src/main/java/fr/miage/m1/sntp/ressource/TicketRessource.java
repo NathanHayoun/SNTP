@@ -1,6 +1,7 @@
 package fr.miage.m1.sntp.ressource;
 
 import fr.miage.m1.sntp.dao.TicketDao;
+import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
 
@@ -26,7 +27,11 @@ public class TicketRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/{id}")
-    public Ticket getTicket(@PathParam("id") int id) throws TicketException{
-        return ticketDao.findById(id);
+    public Ticket getTicket(@PathParam("id") int id) throws TicketException {
+        try {
+            return ticketDao.findById(id);
+        } catch (TicketException ticketException) {
+            return null;
+        }
     }
 }

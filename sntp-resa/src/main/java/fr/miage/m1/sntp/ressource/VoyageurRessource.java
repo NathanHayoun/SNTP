@@ -1,6 +1,7 @@
 package fr.miage.m1.sntp.ressource;
 
 import fr.miage.m1.sntp.dao.VoyageurDao;
+import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Voyageur;
 
@@ -27,7 +28,11 @@ public class VoyageurRessource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/voyageur/{id}")
     public Voyageur getVoyageur(@PathParam("id") int id) throws VoyageurException {
-        return voyageurDao.findById(id);
+        try {
+            return voyageurDao.findById(id);
+        } catch (VoyageurException voyageurException){
+            return null;
+        }
     }
 
 }
