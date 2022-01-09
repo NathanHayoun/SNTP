@@ -25,8 +25,8 @@ public class Passage {
     @JsonbTransient
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumns({
-            @JoinColumn(name = "id_gare", insertable = false, updatable = false),
-            @JoinColumn(name = "id_itineraire", insertable = false, updatable = false)
+            @JoinColumn(name = "id_gare", insertable = true, updatable = false),
+            @JoinColumn(name = "id_itineraire", insertable = true, updatable = false)
     })
     private Arret arret;
     /**
@@ -151,5 +151,18 @@ public class Passage {
      */
     public void setMarquerArret(Boolean marquerArret) {
         this.marquerArret = marquerArret;
+    }
+
+    @Override
+    public String toString() {
+        return "Passage{" +
+                "idPassage=" + idPassage +
+                ", arret=" + arret +
+                ", heureArriveeReel=" + heureArriveeReel +
+                ", heureDepartReel=" + heureDepartReel +
+                ", dateDePassage=" + dateDePassage +
+                ", numeroDeQuai=" + numeroDeQuai +
+                ", marquerArret=" + marquerArret +
+                '}';
     }
 }
