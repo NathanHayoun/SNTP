@@ -26,6 +26,11 @@ public class VoyageurDaoImpl implements VoyageurDao{
     }
 
     @Override
+    public Voyageur findByEmail(String email) throws VoyageurException {
+        return LibSQL.findObject(entityManager,Voyageur.class,email);
+    }
+
+    @Override
     @Transactional
     public void save(Voyageur voyageur) {
         LibSQL.insertObject(entityManager,voyageur);
