@@ -30,4 +30,10 @@ public class PassageDAOImpl implements PassageDAO {
     public List<Passage> getAllPassages() {
         return LibSQL.findAll(em, Passage.class);
     }
+
+    @Override
+    @Transactional
+    public void insertPassage(Passage passage) {
+        LibSQL.insertObject(em, passage);
+    }
 }

@@ -9,4 +9,6 @@ public interface PassageDAO {
     Passage findPassage(long idPassage) throws PassageException;
 
     List<Passage> getAllPassages();
+
+    void insertPassage(Passage passage);
 }

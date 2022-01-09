@@ -58,7 +58,7 @@ public class ArretId implements Serializable {
     public void setIdGare(Long idGare) {
         this.idGare = idGare;
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(idGare, idItineraire);
@@ -71,5 +71,13 @@ public class ArretId implements Serializable {
         ArretId entity = (ArretId) o;
         return Objects.equals(this.idGare, entity.idGare) &&
                 Objects.equals(this.idItineraire, entity.idItineraire);
+    }
+
+    @Override
+    public String toString() {
+        return "ArretId{" +
+                "idGare=" + idGare +
+                ", idItineraire=" + idItineraire +
+                '}';
     }
 }
