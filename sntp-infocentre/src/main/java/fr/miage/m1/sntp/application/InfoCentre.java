@@ -123,16 +123,7 @@ public class InfoCentre {
             }
         }
         LocalDate date = LocalDate.now();
-        Passage passage = new Passage();
-        passage.setArret(arret);
-        passage.setDateDePassage(date);
-        passage.setMarquerArret(false);
-        LocalTime heureArrivee = arret.getHeureArrivee();
-        passage.setHeureArriveeReel(heureArrivee);
-        LocalTime heureDepart = arret.getHeureDepart();
-        passage.setHeureDepartReel(heureDepart);
-        passage.setArret(arret);
-        passageDAO.insertPassage(passage);
+        generatePassage(date, arret, false);
 
         return "coucou";
     }
@@ -167,16 +158,7 @@ public class InfoCentre {
             }
         }
         LocalDate date = LocalDate.now();
-        Passage passage = new Passage();
-        passage.setArret(arret);
-        passage.setDateDePassage(date);
-        passage.setMarquerArret(true);
-        LocalTime heureArrivee = arret.getHeureArrivee();
-        passage.setHeureArriveeReel(heureArrivee);
-        LocalTime heureDepart = arret.getHeureDepart();
-        passage.setHeureDepartReel(heureDepart);
-        passage.setArret(arret);
-        passageDAO.insertPassage(passage);
+        generatePassage(date, arret, true);
 
         return "coucou";
     }
@@ -203,19 +185,23 @@ public class InfoCentre {
         Set<Arret> setArret = train.getItineraireConcerner().getArrets();
 
         for (Arret arret : setArret) {
-            Passage passage = new Passage();
-            passage.setArret(arret);
-            passage.setDateDePassage(date);
-            passage.setMarquerArret(false);
-            LocalTime heureArrivee = arret.getHeureArrivee();
-            passage.setHeureArriveeReel(heureArrivee);
-            LocalTime heureDepart = arret.getHeureDepart();
-            passage.setHeureDepartReel(heureDepart);
-            passage.setArret(arret);
-            passageDAO.insertPassage(passage);
+            generatePassage(date, arret, false);
         }
 
         return "coucou";
+    }
+
+    private void generatePassage(LocalDate date, Arret arret, Boolean marquerArret) {
+        Passage passage = new Passage();
+        passage.setArret(arret);
+        passage.setDateDePassage(date);
+        passage.setMarquerArret(marquerArret);
+        LocalTime heureArrivee = arret.getHeureArrivee();
+        passage.setHeureArriveeReel(heureArrivee);
+        LocalTime heureDepart = arret.getHeureDepart();
+        passage.setHeureDepartReel(heureDepart);
+        passage.setArret(arret);
+        passageDAO.insertPassage(passage);
     }
 
     private Boolean verificationPourAjouterStation(Train train) {

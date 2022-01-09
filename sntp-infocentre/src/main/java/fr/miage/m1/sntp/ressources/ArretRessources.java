@@ -33,4 +33,15 @@ public class ArretRessources {
             return null;
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/arret/train/{numero}")
+    public List<Arret> getArretByNumTrain(@PathParam("numero") int numeroDeTrain) throws ArretException {
+        try {
+            return arretDAO.getAllArretByNumeroDeTrain(numeroDeTrain);
+        } catch (ArretException arretException) {
+            return null;
+        }
+    }
 }
