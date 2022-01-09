@@ -9,12 +9,13 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Library that allows eAasy access to the database
+ * Library that allows easy access to the database
  */
 public class LibSQL {
     private static final Logger logger = LoggerFactory.getLogger(LibSQL.class);
@@ -24,24 +25,9 @@ public class LibSQL {
      *
      * @param object to insert
      */
+    @Transactional
     public static void insertObject(EntityManager entityManager, Object object) {
-        entityManager.getTransaction().begin();
-        boolean transactionIsOk = false;
-
-        try {
-            entityManager.persist(object);
-            transactionIsOk = true;
-        } catch (Exception exception) {
-            logger.warn("Error during insert object " + object, exception);
-        } finally {
-            if (transactionIsOk) {
-                entityManager.getTransaction().commit();
-                logger.info("Transaction ok for object " + object);
-            } else {
-                entityManager.getTransaction().rollback();
-                logger.warn("Transaction rollback for object " + object);
-            }
-        }
+        entityManager.persist(object);
     }
 
     /**
@@ -152,5 +138,10 @@ public class LibSQL {
             logger.warn("No result found for " + className.getName());
         }
         return results;
+    }
+
+    @Transactional
+    public static <E> void update(EntityManager entityManager, E objectToSave) {
+        entityManager.merge(objectToSave);
     }
 }
