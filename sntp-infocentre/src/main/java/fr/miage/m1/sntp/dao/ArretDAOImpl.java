@@ -8,10 +8,15 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class ArretDAOImpl implements ArretDAO {
+    public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
+    public static final String DATE_DE_PASSAGE = "dateDePassage";
+    public static final String QUERY_SELECT_ARRET_BY_TRAIN_NUMBER = "Select ar FROM Arret ar JOIN ar.itineraireConcerner it JOIN it.train tr WHERE tr.numeroDeTrain = :" + NUMERO_DE_TRAIN + " and ar.doitMarquerArret = 1";
     @PersistenceContext
     EntityManager em;
 
@@ -29,5 +34,13 @@ public class ArretDAOImpl implements ArretDAO {
     @Override
     public List<Arret> getAllArret() {
         return LibSQL.findAll(em, Arret.class);
+    }
+
+    @Override
+    public List<Arret> getAllArretByNumeroDeTrain(int numeroDeTrain) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(NUMERO_DE_TRAIN, numeroDeTrain);
+
+        return LibSQL.executeSelectWithNamedParams(em, Arret.class, QUERY_SELECT_ARRET_BY_TRAIN_NUMBER, params);
     }
 }
