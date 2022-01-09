@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Library that allows eAasy access to the database
+ * Library that allows easy access to the database
  */
 public class LibSQL {
     private static final Logger logger = LoggerFactory.getLogger(LibSQL.class);
