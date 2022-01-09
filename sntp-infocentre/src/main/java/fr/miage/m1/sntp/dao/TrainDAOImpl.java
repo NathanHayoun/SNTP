@@ -15,6 +15,7 @@ public class TrainDAOImpl implements TrainDAO {
     @PersistenceContext
     EntityManager em;
 
+
     @Override
     @Transactional
     public Train findTrain(long idTrain) throws TrainException {
@@ -29,5 +30,11 @@ public class TrainDAOImpl implements TrainDAO {
     @Override
     public List<Train> getAllTrains() {
         return LibSQL.findAll(em, Train.class);
+    }
+
+    @Override
+    @Transactional
+    public void update(Train train) {
+        LibSQL.update(em, train);
     }
 }

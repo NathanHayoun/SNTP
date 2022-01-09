@@ -34,7 +34,7 @@ public class Train {
     /**
      * Foreign Key
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ligne_de_train_id_ligne_de_train")
     private LigneDeTrain ligneDeTrainIdLigneDeTrain;
     /**
