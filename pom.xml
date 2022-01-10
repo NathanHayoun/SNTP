@@ -9,10 +9,11 @@
     <packaging>pom</packaging>
     <name>project-m1-sntp</name>
     <modules>
+        <module>sntp-commons</module>
         <module>sntp-infocentre</module>
         <module>sntp-resa</module>
-        <module>sntp-commons</module>
         <module>sntp-infogare</module>
+        <module>sntp-train</module>
     </modules>
 
 </project>
