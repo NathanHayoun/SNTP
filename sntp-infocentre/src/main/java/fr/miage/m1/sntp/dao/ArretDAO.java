@@ -11,4 +11,8 @@ public interface ArretDAO {
     List<Arret> getAllArret();
 
     List<Arret> getAllArretByNumeroDeTrain(int numeroDeTrain) throws ArretException;
+
+    List<Arret> getArretsDepartByGare(long idGare) throws ArretException;
+
+    List<Arret> getArretsArriveeByGare(long idGare) throws ArretException;
 }
