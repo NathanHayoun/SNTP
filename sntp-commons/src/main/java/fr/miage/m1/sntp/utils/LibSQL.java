@@ -115,6 +115,7 @@ public class LibSQL {
 
     public static <E> List<E> executeSelectWithNoNamedParams(EntityManager entityManager, Class className, String query, List<Object> params) {
         Query queryToPush = entityManager.createQuery(query, className);
+
         for (int i = 0; i < params.size(); i++) {
             queryToPush.setParameter(i, params.get(i));
         }
