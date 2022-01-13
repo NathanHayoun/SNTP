@@ -1,11 +1,10 @@
-package fr.miage.m1.sntp.Driver;
+package fr.miage.m1.sntp.driver;
 
-import fr.miage.m1.sntp.driver.helper.DriverHelper;
+import fr.miage.m1.sntp.application.Train;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Emule un driver présent sur chaque train pour envoyé les coordoness du train en temps réel
@@ -13,27 +12,44 @@ import java.util.Map;
 @XmlRootElement
 @ApplicationScoped
 public class Driver {
-
+    @XmlAttribute
+    private final String numeroDeTrain;
+    @XmlAttribute
     private Double latitude;
+    @XmlAttribute
     private Double longitude;
 
     public Driver() {
         //Genere une position aléatoire pour émuler un vrai driver
-        double minLat = -90.00;
-        double maxLat = 90.00;
-        this.latitude = minLat + (Math.random() * ((maxLat - minLat) + 1));
-        double minLon = 0.00;
-        double maxLon = 180.00;
-        this.longitude = minLon + (Math.random() * ((maxLon - minLon) + 1));
+        this.latitude = 48.85829371711738;
+        this.longitude = 2.294535456331897;
+        this.numeroDeTrain = String.valueOf(Train.numeroDeTrain);
     }
 
-    public Map<String, Double> getPositition() {
-        Map<String, Double> position = new HashMap<>();
-        latitude = latitude + 5;
-        position.put(DriverHelper.LATITUDE_KEY, latitude);
-        longitude = longitude + 5;
-        position.put(DriverHelper.LONGITUDE_KEY, longitude);
+    public void updateValue() {
+        this.latitude += 0.2;
+        this.longitude += 0.2;
+    }
 
-        return position;
+    public Double getLatitude() {
+        return latitude + 2;
+    }
+
+
+    public Double getLongitude() {
+        return longitude + 2;
+    }
+
+    public String getNumeroDeTrain() {
+        return numeroDeTrain;
+    }
+
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "numeroDeTrain=" + numeroDeTrain +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

@@ -113,24 +113,8 @@ public class LibSQL {
         return results;
     }
 
-    public static <E> List<E> executeSelectNativeWithNamedParams(EntityManager entityManager, String query, Map<String, Object> params) {
-        Query queryToPush = entityManager.createNativeQuery(query);
-
-        for (Entry<String, Object> param : params.entrySet()) {
-            queryToPush.setParameter(param.getKey(), param.getValue());
-        }
-        List<E> results = queryToPush.getResultList();
-
-        if (results == null) {
-            logger.warn("No result found for " + query);
-        }
-        return results;
-    }
-
-
     public static <E> List<E> executeSelectWithNoNamedParams(EntityManager entityManager, Class className, String query, List<Object> params) {
         Query queryToPush = entityManager.createQuery(query, className);
-        logger.info(String.valueOf(params.size()));
 
         for (int i = 0; i < params.size(); i++) {
             queryToPush.setParameter(i, params.get(i));

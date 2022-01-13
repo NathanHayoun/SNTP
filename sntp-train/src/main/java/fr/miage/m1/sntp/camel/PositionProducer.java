@@ -1,6 +1,6 @@
 package fr.miage.m1.sntp.camel;
 
-import fr.miage.m1.sntp.Driver.Driver;
+import fr.miage.m1.sntp.driver.Driver;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class PositionProducer implements Runnable {
             JAXBContext context = JAXBContext.newInstance(driver.getClass());
             StringWriter writer = new StringWriter();
             context.createMarshaller().marshal(driver, writer);
-
+            logger.info(writer.toString());
             return writer.toString();
         } catch (JAXBException e) {
             logger.warn("Error when converting XML ", e);
@@ -42,6 +42,11 @@ public class PositionProducer implements Runnable {
     }
 
     void onStart(@Observes StartupEvent ev) {
+        try {
+            connectionFactory.createConnection();
+        } catch (Exception e) {
+            logger.warn("EX", e);
+        }
         //on planifie l'exécution de la méthode run() de cette classe:
         // - 10s (initialDelay=10
         // - toute les 5s (period = 5L, unit = secondes)
@@ -58,11 +63,9 @@ public class PositionProducer implements Runnable {
 
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
             //on crée un producteur et on y envoie un message dans une nouvelle queue "prices"
-            //le message est une chaine de caractères, contenant un entier tiré aléatoirement entre 1 et 100.
+            driver.updateValue();
             Message message = context.createTextMessage(toXML(driver));
             context.createProducer().send(context.createQueue("queue/train/position"), message);
-            logger.info("message send");
-
         }
     }
 }

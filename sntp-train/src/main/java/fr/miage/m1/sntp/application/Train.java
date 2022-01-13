@@ -20,7 +20,7 @@ public class Train implements QuarkusApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(Train.class);
 
-    private static int numeroDeTrain;
+    public static int numeroDeTrain;
 
     @Inject
     @RestClient
