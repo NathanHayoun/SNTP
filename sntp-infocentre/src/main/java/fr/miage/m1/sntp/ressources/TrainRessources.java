@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.ressources;
 
+import fr.miage.m1.sntp.application.InfoCentre;
 import fr.miage.m1.sntp.dao.TrainDAO;
 import fr.miage.m1.sntp.exceptions.TrainException;
 import fr.miage.m1.sntp.models.Train;
@@ -27,6 +28,8 @@ public class TrainRessources {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/train/{id}")
     public Train getTrain(@PathParam("id") long id) throws TrainException {
+        InfoCentre ic = new InfoCentre();
+        ic.verificationPourRetard(trainDAO.findTrain(id));
         try {
             return trainDAO.findTrain(id);
         } catch (TrainException trainException) {
