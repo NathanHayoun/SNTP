@@ -3,6 +3,8 @@ package fr.miage.m1.sntp.ressources;
 import fr.miage.m1.sntp.dao.ArretDAO;
 import fr.miage.m1.sntp.exceptions.ArretException;
 import fr.miage.m1.sntp.models.Arret;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Path("/arrets")
 public class ArretRessources {
+    private static final Logger logger = LoggerFactory.getLogger(ArretRessources.class);
     @Inject
     ArretDAO arretDAO;
 
@@ -39,6 +42,7 @@ public class ArretRessources {
     @Path("/arret/train/{numero}")
     public List<Arret> getArretByNumTrain(@PathParam("numero") int numeroDeTrain) throws ArretException {
         try {
+            logger.info("numero de train " + numeroDeTrain);
             return arretDAO.getAllArretByNumeroDeTrain(numeroDeTrain);
         } catch (ArretException arretException) {
             return null;

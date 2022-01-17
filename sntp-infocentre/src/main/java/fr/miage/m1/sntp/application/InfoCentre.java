@@ -8,6 +8,7 @@ import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Passage;
 import fr.miage.m1.sntp.models.Train;
 import fr.miage.m1.sntp.models.TypeTrain;
+import fr.miage.m1.sntp.ressources.MailResource;
 import fr.miage.m1.sntp.services.ReservationService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
@@ -20,9 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Path("genererRetard")
 public class InfoCentre {
@@ -218,12 +217,19 @@ public class InfoCentre {
         return true;
     }
 
-    private Boolean verificationPourRetard(Train train) {
+    public Boolean verificationPourRetard(Train train) {
+        logger.info("dans verif train");
         if (train.getTypeDeTrain() == TypeTrain.TER) {
             return false;
         }
         if (train.getTypeDeTrain() == TypeTrain.TGV) {
-            //genererMail
+            logger.info("dans c tgv");
+            List<String> mails = new ArrayList<>();
+            mails.add("nathanpapy@hotmail.fr");
+            mails.add("nathan-perso@live.fr");
+            MailResource mr = new MailResource();
+            mr.sendMailWithBcc(mails, "Retard du Train N°" + train.getNumeroDeTrain().toString(), "Votre train N°" + train.getNumeroDeTrain() + " est en retard de " + 30 + " minutes. Nous vous prions de bien vouloir nous excuser pour la gène occasionée");
+            logger.info("normalment mail send");
         }
         NombreDTO nombreDePassage = rs.getNbPassagerByTrainAndHasCorrespondance(train.getNumeroDeTrain());
 
