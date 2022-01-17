@@ -1,14 +1,12 @@
-package fr.miage.m1.sntp.ressources;
+package fr.miage.m1.sntp.utils;
 
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import java.util.List;
 
-@Path("/mail")
 public class MailResource {
 
     @Inject

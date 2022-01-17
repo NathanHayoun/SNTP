@@ -8,43 +8,43 @@ import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Passage;
 import fr.miage.m1.sntp.models.Train;
 import fr.miage.m1.sntp.models.TypeTrain;
-import fr.miage.m1.sntp.ressources.MailResource;
 import fr.miage.m1.sntp.services.ReservationService;
+import fr.miage.m1.sntp.utils.LibMail;
+import io.quarkus.mailer.Mailer;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-@Path("genererRetard")
+@ApplicationScoped
+
 public class InfoCentre {
     public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 30;
+    private static final String SUJET_MAIL_RETARD_TRAIN = "Retard du train n° %s";
+    private static final String MESSAGE_RETARD_TRAIN = "Le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser";
     Logger logger = LoggerFactory.getLogger(InfoCentre.class);
+    //DAO
     @Inject
     TrainDAO trainDAO;
     @Inject
     PassageDAO passageDAO;
 
+    //Services
     @Inject
     @RestClient
     ReservationService rs;
 
-    @GET
-    @Path("test")
-    @Produces(MediaType.TEXT_PLAIN)
-//    public String genererRetard(Long idTrain, Integer nombreDeMinute, Long idGare) {
-    public String genererRetard() {
-        Long idTrain = 1L;
-        int nombreDeMinute = 2;
-        Long idGare = 2L;
+    //Lib
+    @Inject
+    Mailer mailer;
+
+    public String genererRetard(Long idTrain, Integer nombreDeMinute, Long idGare) {
         Train train;
 
         try {
@@ -57,7 +57,7 @@ public class InfoCentre {
         }
         LocalDate date = LocalDate.now();
 
-        if (Boolean.FALSE.equals(verificationPourRetard(train))) {
+        if (Boolean.FALSE.equals(verificationPourRetard(train, nombreDeMinute))) {
             return "null";
         }
 
@@ -217,19 +217,18 @@ public class InfoCentre {
         return true;
     }
 
-    public Boolean verificationPourRetard(Train train) {
+    public Boolean verificationPourRetard(Train train, int nombreDeMinute) {
         logger.info("dans verif train");
         if (train.getTypeDeTrain() == TypeTrain.TER) {
             return false;
         }
         if (train.getTypeDeTrain() == TypeTrain.TGV) {
-            logger.info("dans c tgv");
             List<String> mails = new ArrayList<>();
             mails.add("nathanpapy@hotmail.fr");
-            mails.add("nathan-perso@live.fr");
-            MailResource mr = new MailResource();
-            mr.sendMailWithBcc(mails, "Retard du Train N°" + train.getNumeroDeTrain().toString(), "Votre train N°" + train.getNumeroDeTrain() + " est en retard de " + 30 + " minutes. Nous vous prions de bien vouloir nous excuser pour la gène occasionée");
-            logger.info("normalment mail send");
+            mails.add("nathan.hayoun@outlook.fr");
+            String sujet = String.format(SUJET_MAIL_RETARD_TRAIN, train.getNumeroDeTrain());
+            String message = String.format(MESSAGE_RETARD_TRAIN, train.getNumeroDeTrain(), train.getTerminus(), nombreDeMinute);
+            LibMail.sendMailWithBcc(mailer, mails, sujet, message);
         }
         NombreDTO nombreDePassage = rs.getNbPassagerByTrainAndHasCorrespondance(train.getNumeroDeTrain());
 

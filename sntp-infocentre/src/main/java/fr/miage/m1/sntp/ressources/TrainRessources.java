@@ -18,6 +18,9 @@ public class TrainRessources {
     @Inject
     TrainDAO trainDAO;
 
+    @Inject
+    InfoCentre ic;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Train> getTrains() {
@@ -28,8 +31,7 @@ public class TrainRessources {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/train/{id}")
     public Train getTrain(@PathParam("id") long id) throws TrainException {
-        InfoCentre ic = new InfoCentre();
-        ic.verificationPourRetard(trainDAO.findTrain(id));
+        ic.genererRetard(id, 35, 1L);
         try {
             return trainDAO.findTrain(id);
         } catch (TrainException trainException) {
