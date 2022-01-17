@@ -2,6 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.utils.LibSQL;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -17,6 +18,7 @@ public class TicketDaoImpl implements TicketDao {
     private static final String NUMERO_DE_TRAIN = "numeroDeTrain";
     private static final String COUNT_NB_TICKET_PAR_TRAIN_AND_NOW = "select count(*) from Ticket where date_depart = CURRENT_DATE and numero_train = :" + NUMERO_DE_TRAIN;
     private static final String COUNT_NB_TICKET_PAR_TRAIN_AND_NOW_AND_HAS_CORRESPONDANCE = "select count(*) from Ticket where date_depart = CURRENT_DATE and numero_train = :" + NUMERO_DE_TRAIN + " and numeroEtape NOT IN (SELECT max(numeroEtape) FROM Ticket WHERE date_depart = CURRENT_DATE and numero_train = :" + NUMERO_DE_TRAIN + " )";
+    private static final String GET_EMAIL_BY_RESERVATION_AND_TRAIN_TODAY = "select v from Ticket t JOIN t.reservationConcernee r JOIN r.voyageurConcernee v where t.dateDepart = CURRENT_DATE and t.numeroTrain = :" + NUMERO_DE_TRAIN;
     @PersistenceContext
     EntityManager entityManager;
 
@@ -64,7 +66,11 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public List<String> getEmailsByTrainAndDate(int numeroDeTrain) {
-        return null;
+    public List<Voyageur> getEmailsByTrainAndDate(int numeroDeTrain) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(NUMERO_DE_TRAIN, numeroDeTrain);
+
+        return LibSQL.executeSelectWithNamedParams(entityManager, Voyageur.class, GET_EMAIL_BY_RESERVATION_AND_TRAIN_TODAY, params);
+
     }
 }

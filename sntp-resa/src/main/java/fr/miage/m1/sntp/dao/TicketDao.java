@@ -2,6 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface TicketDao {
 
     Long countNbTicketByNumeroTrainAndNowAndHasEtape(int numeroDeTrain);
 
-    List<String> getEmailsByTrainAndDate(int numeroDeTrain);
+    List<Voyageur> getEmailsByTrainAndDate(int numeroDeTrain);
 }
