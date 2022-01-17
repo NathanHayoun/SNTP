@@ -4,6 +4,8 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Nathan
@@ -152,6 +154,19 @@ public class Passage {
     public void setMarquerArret(Boolean marquerArret) {
         this.marquerArret = marquerArret;
     }
+
+    public Map<String, Object> getTrain() {
+        Map<String, Object> infoTrain = new HashMap<>();
+        Train train = arret.getItineraireConcerner().getTrain();
+        infoTrain.put("numeroDeTrain", train.getNumeroDeTrain());
+        infoTrain.put("typeDeTrain", train.getTypeDeTrain());
+        infoTrain.put("lingeDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+        infoTrain.put("depart", train.getStationDepart());
+        infoTrain.put("terminus", train.getTerminus());
+        
+        return infoTrain;
+    }
+
 
     @Override
     public String toString() {

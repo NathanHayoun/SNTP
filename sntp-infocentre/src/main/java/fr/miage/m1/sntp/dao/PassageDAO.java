@@ -11,4 +11,6 @@ public interface PassageDAO {
     List<Passage> getAllPassages();
 
     void insertPassage(Passage passage);
+
+    List<Passage> findprochainsTrajetsDuJourByGareDepart(long idGare) throws PassageException;
 }

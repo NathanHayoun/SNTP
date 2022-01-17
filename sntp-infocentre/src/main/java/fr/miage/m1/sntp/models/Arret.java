@@ -3,6 +3,8 @@ package fr.miage.m1.sntp.models;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -176,6 +178,18 @@ public class Arret {
      */
     public void setPassages(Set<Passage> passages) {
         this.passages = passages;
+    }
+
+    public Map<String, Object> getTrain() {
+        Map<String, Object> infoTrain = new HashMap<>();
+        Train train = this.getItineraireConcerner().getTrain();
+        infoTrain.put("numeroDeTrain", train.getNumeroDeTrain());
+        infoTrain.put("typeDeTrain", train.getTypeDeTrain());
+        infoTrain.put("lingeDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+        infoTrain.put("depart", train.getStationDepart());
+        infoTrain.put("terminus", train.getTerminus());
+
+        return infoTrain;
     }
 
     @Override
