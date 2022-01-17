@@ -17,29 +17,20 @@ public class Train implements QuarkusApplication {
     public static final String MESSAGE_INITIAL_ARRET = "Vous partirez de la gare %s a %s";
     public static final String MESSAGE_TERMINUS_ARRET = "Vous terminerez votre parcours a la gare %s et vous devez y être pour %s";
     public static final String MESSAGE_STATION_ARRET = "En postion %s vous devez arrivée a la station %s a %s et partir a %s";
-
+    public static final int numeroDeTrain = Integer.parseInt(System.getProperty("numeroDeTrain"));
     private static final Logger logger = LoggerFactory.getLogger(Train.class);
-
-    public static int numeroDeTrain;
-
     @Inject
     @RestClient
     ArretService arretService;
 
     static void onStart(@Observes StartupEvent ev) {
         logger.info("The application is starting getting idTrain...");
-
-        try {
-            numeroDeTrain = Integer.parseInt(System.getProperty("numeroDeTrain"));
-            logger.info("Train with numero de train " + numeroDeTrain + "sucessfull initialise ");
-        } catch (Exception e) {
-            logger.error("Error during initialise numeroDeTrain ", e);
-            Quarkus.asyncExit();
-        }
+        logger.info("Train with numero de train " + numeroDeTrain + "sucessfull initialise ");
     }
 
     @Override
     public int run(String... args) throws Exception {
+        logger.warn("JAPPEL ARRET AVEC NUMERO " + numeroDeTrain);
         List<ArretDTO> arrets = arretService.getArrets(numeroDeTrain);
         logger.info("Bienvenue Conducteur !");
         logger.info("Voici votre chemin du jour");
