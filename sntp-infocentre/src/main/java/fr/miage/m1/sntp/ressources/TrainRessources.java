@@ -31,7 +31,7 @@ public class TrainRessources {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/train/{id}")
     public Train getTrain(@PathParam("id") long id) throws TrainException {
-        ic.genererRetard(id, 35, 1L);
+        //ic.genererRetard(id, 35, 1L);
         try {
             return trainDAO.findTrain(id);
         } catch (TrainException trainException) {

@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.application;
 
 import fr.miage.m1.sntp.dao.PassageDAO;
 import fr.miage.m1.sntp.dao.TrainDAO;
-import fr.miage.m1.sntp.dto.NombreDTO;
+import fr.miage.m1.sntp.dto.VoyageurDTO;
 import fr.miage.m1.sntp.exceptions.TrainException;
 import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Passage;
@@ -27,7 +27,7 @@ public class InfoCentre {
     public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 30;
     private static final String SUJET_MAIL_RETARD_TRAIN = "Retard du train n° %s";
-    private static final String MESSAGE_RETARD_TRAIN = "Le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser";
+    private static final String MESSAGE_RETARD_TRAIN = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
     Logger logger = LoggerFactory.getLogger(InfoCentre.class);
     //DAO
     @Inject
@@ -218,28 +218,30 @@ public class InfoCentre {
     }
 
     public Boolean verificationPourRetard(Train train, int nombreDeMinute) {
-        logger.info("dans verif train");
         if (train.getTypeDeTrain() == TypeTrain.TER) {
             return false;
         }
         if (train.getTypeDeTrain() == TypeTrain.TGV) {
             List<String> mails = new ArrayList<>();
-            mails.add("nathanpapy@hotmail.fr");
-            mails.add("nathan.hayoun@outlook.fr");
+            List<VoyageurDTO> voyageurs = rs.getEmailsByTrainAndNow(train.getNumeroDeTrain());
+            for (VoyageurDTO voyageur : voyageurs) {
+                mails.add(voyageur.getEmail());
+            }
+
             String sujet = String.format(SUJET_MAIL_RETARD_TRAIN, train.getNumeroDeTrain());
             String message = String.format(MESSAGE_RETARD_TRAIN, train.getNumeroDeTrain(), train.getTerminus(), nombreDeMinute);
             LibMail.sendMailWithBcc(mailer, mails, sujet, message);
         }
-        NombreDTO nombreDePassage = rs.getNbPassagerByTrainAndHasCorrespondance(train.getNumeroDeTrain());
-
-        return nombreDePassage.getNomreDeReservation() > MINIMUM_PASSAGER_POUR_GENERER_RETARD;
+        Integer nombreDePassage = rs.getNbPassagerByTrainAndHasCorrespondance(train.getNumeroDeTrain());
+        logger.info("NB PASSSSSSAAAAAAAAAAGE" + nombreDePassage);
+        return nombreDePassage > MINIMUM_PASSAGER_POUR_GENERER_RETARD;
     }
 
     private Boolean verificationPourSuppressionStation(Train train, Integer nombreDeMinute) {
         if (nombreDeMinute < MINUTE_MINIMUM_POUR_SUPPRIMER_STATION) {
             return false;
         }
-        return rs.getNbPassagerByTrain(train.getNumeroDeTrain()).getNomreDeReservation() == 0;
+        return rs.getNbPassagerByTrain(train.getNumeroDeTrain()) == 0;
     }
 
     private Boolean verificationPourSuppressionTrain(Train train) {
