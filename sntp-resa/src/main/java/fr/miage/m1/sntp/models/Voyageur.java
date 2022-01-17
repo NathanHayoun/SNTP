@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -20,7 +21,8 @@ public class Voyageur {
     @Column(name = "prenom")
     private String prenom;
 
-    @OneToMany(mappedBy="voyageurConcernee",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER)
+    @JsonbTransient
     private Set<Reservation> reservations;
 
     public String getPrenom() {

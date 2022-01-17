@@ -2,40 +2,49 @@ package fr.miage.m1.sntp.application;
 
 import fr.miage.m1.sntp.dao.PassageDAO;
 import fr.miage.m1.sntp.dao.TrainDAO;
+import fr.miage.m1.sntp.dto.VoyageurDTO;
 import fr.miage.m1.sntp.exceptions.TrainException;
 import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Passage;
 import fr.miage.m1.sntp.models.Train;
+import fr.miage.m1.sntp.models.TypeTrain;
+import fr.miage.m1.sntp.services.ReservationService;
+import fr.miage.m1.sntp.utils.LibMail;
+import io.quarkus.mailer.Mailer;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-@Path("genererRetard")
+@ApplicationScoped
+
 public class InfoCentre {
+    public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
+    public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 30;
+    private static final String SUJET_MAIL_RETARD_TRAIN = "Retard du train n° %s";
+    private static final String MESSAGE_RETARD_TRAIN = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
     Logger logger = LoggerFactory.getLogger(InfoCentre.class);
+    //DAO
     @Inject
     TrainDAO trainDAO;
     @Inject
     PassageDAO passageDAO;
 
-    @GET
-    @Path("test")
-    @Produces(MediaType.TEXT_PLAIN)
-//    public String genererRetard(Long idTrain, Integer nombreDeMinute, Long idGare) {
-    public String genererRetard() {
-        Long idTrain = 1L;
-        int nombreDeMinute = 2;
-        Long idGare = 2L;
+    //Services
+    @Inject
+    @RestClient
+    ReservationService rs;
+
+    //Lib
+    @Inject
+    Mailer mailer;
+
+    public String genererRetard(Long idTrain, Integer nombreDeMinute, Long idGare) {
         Train train;
 
         try {
@@ -48,7 +57,7 @@ public class InfoCentre {
         }
         LocalDate date = LocalDate.now();
 
-        if (Boolean.FALSE.equals(verificationPourRetard(train))) {
+        if (Boolean.FALSE.equals(verificationPourRetard(train, nombreDeMinute))) {
             return "null";
         }
 
@@ -107,7 +116,7 @@ public class InfoCentre {
             return "null";
         }
 
-        if (Boolean.FALSE.equals(verificationPourSuppressionStation(train))) {
+        if (Boolean.FALSE.equals(verificationPourSuppressionStation(train, 2))) {
             return "null";
         }
 
@@ -208,12 +217,31 @@ public class InfoCentre {
         return true;
     }
 
-    private Boolean verificationPourRetard(Train train) {
-        return true;
+    public Boolean verificationPourRetard(Train train, int nombreDeMinute) {
+        if (train.getTypeDeTrain() == TypeTrain.TER) {
+            return false;
+        }
+        if (train.getTypeDeTrain() == TypeTrain.TGV) {
+            List<String> mails = new ArrayList<>();
+            List<VoyageurDTO> voyageurs = rs.getEmailsByTrainAndNow(train.getNumeroDeTrain());
+            for (VoyageurDTO voyageur : voyageurs) {
+                mails.add(voyageur.getEmail());
+            }
+
+            String sujet = String.format(SUJET_MAIL_RETARD_TRAIN, train.getNumeroDeTrain());
+            String message = String.format(MESSAGE_RETARD_TRAIN, train.getNumeroDeTrain(), train.getTerminus(), nombreDeMinute);
+            LibMail.sendMailWithBcc(mailer, mails, sujet, message);
+        }
+        Integer nombreDePassage = rs.getNbPassagerByTrainAndHasCorrespondance(train.getNumeroDeTrain());
+        logger.info("NB PASSSSSSAAAAAAAAAAGE" + nombreDePassage);
+        return nombreDePassage > MINIMUM_PASSAGER_POUR_GENERER_RETARD;
     }
 
-    private Boolean verificationPourSuppressionStation(Train train) {
-        return true;
+    private Boolean verificationPourSuppressionStation(Train train, Integer nombreDeMinute) {
+        if (nombreDeMinute < MINUTE_MINIMUM_POUR_SUPPRIMER_STATION) {
+            return false;
+        }
+        return rs.getNbPassagerByTrain(train.getNumeroDeTrain()) == 0;
     }
 
     private Boolean verificationPourSuppressionTrain(Train train) {

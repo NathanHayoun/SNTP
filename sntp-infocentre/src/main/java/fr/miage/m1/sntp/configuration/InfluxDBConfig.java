@@ -1,6 +1,7 @@
 package fr.miage.m1.sntp.configuration;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 
@@ -9,17 +10,28 @@ import javax.inject.Named;
 import java.net.UnknownHostException;
 
 @ApplicationScoped
-@Named("myNamedBean")
+@Named("influxDBBean")
 @RegisterForReflection
 public class InfluxDBConfig {
+    private static final String RETENTION_POLICY = "default";
+    @ConfigProperty(name = "influx.url")
+    String influxUrl;
+
+    @ConfigProperty(name = "influx.username")
+    String influxUsername;
+
+    @ConfigProperty(name = "influx.password")
+    String influxPassword;
+
+    @ConfigProperty(name = "influx.db")
+    String influxDatabase;
+
+    public String getDatabaseName() {
+        return this.influxDatabase;
+    }
+
     @ApplicationScoped
     public InfluxDB influxDbBean() throws UnknownHostException {
-        //    @ConfigProperty(name = "influx.url")
-        String influxUrl = "http://sntpinfluxdb.nathan-hayoun.fr:80";
-        //    @ConfigProperty(name = "influx.username")
-        String influxUsername = "sntp";
-        //    @ConfigProperty(name = "influx.password")
-        String influxPassword = "sntpPassword1234";
-        return InfluxDBFactory.connect(influxUrl, influxUsername, influxPassword).setRetentionPolicy("default");
+        return InfluxDBFactory.connect(influxUrl, influxUsername, influxPassword).setRetentionPolicy(RETENTION_POLICY);
     }
 }
