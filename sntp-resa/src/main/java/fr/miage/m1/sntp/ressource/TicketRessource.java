@@ -33,4 +33,18 @@ public class TicketRessource {
             return null;
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ticket/train/now/{numeroDeTrain}")
+    public Long getNombreDeTicketByTrainAndDate(@PathParam("numeroDeTrain") int numeroDeTrain) {
+        return ticketDao.countNbTicketByNumeroTrainAndNow(numeroDeTrain);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ticket/train/now/has/correspondance/{numeroDeTrain}")
+    public Long getNombreDeTicketByTrainAndDateAndHasCorrespondance(@PathParam("numeroDeTrain") int numeroDeTrain) {
+        return ticketDao.countNbTicketByNumeroTrainAndNowAndHasEtape(numeroDeTrain);
+    }
 }
