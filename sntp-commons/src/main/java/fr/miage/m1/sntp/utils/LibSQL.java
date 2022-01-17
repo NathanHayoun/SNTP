@@ -20,6 +20,10 @@ import java.util.Map.Entry;
 public class LibSQL {
     private static final Logger logger = LoggerFactory.getLogger(LibSQL.class);
 
+    private LibSQL() {
+
+    }
+
     /**
      * Insert object in Database
      *
