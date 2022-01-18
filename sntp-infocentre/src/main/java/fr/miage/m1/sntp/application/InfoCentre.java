@@ -31,6 +31,7 @@ public class InfoCentre {
     private static final String SUJET_MAIL_RETARD_TRAIN = "Retard du train n° %s";
     private static final String MESSAGE_RETARD_TRAIN = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
     private static final String TRAIN_NOT_FOUD = "Train with id %s not found";
+    private static final String GARE_NOT_FOUD = "Gare with id %s not found";
     private static final String TRAIN_DELETE_SUBJECT = "Train n° %s supprimé ";
     private static final String TRAIN_DELETE_MESSAGE = "Madame, Monsieur, \n nous sommes dans le regret de vous annoncer que le train n° %s à destination de %s est malheuresement supprimé. \n Contactez le service client pour un remboursement. \n Nous vous prions de bien vouloir nous excuser. \n Cordialement, \n Le service SNTP ";
     private static final Logger logger = LoggerFactory.getLogger(InfoCentre.class);
@@ -161,7 +162,8 @@ public class InfoCentre {
             }
         }
         if (arret == null) {
-            logger.warn("Gare not found");
+            String messageError = String.format(GARE_NOT_FOUD, idGare);
+            logger.warn(messageError);
 
             return false;
         }
