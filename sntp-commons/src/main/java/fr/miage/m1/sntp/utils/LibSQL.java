@@ -20,6 +20,10 @@ import java.util.Map.Entry;
 public class LibSQL {
     private static final Logger logger = LoggerFactory.getLogger(LibSQL.class);
 
+    private LibSQL() {
+
+    }
+
     /**
      * Insert object in Database
      *
@@ -115,6 +119,7 @@ public class LibSQL {
 
     public static <E> List<E> executeSelectWithNoNamedParams(EntityManager entityManager, Class className, String query, List<Object> params) {
         Query queryToPush = entityManager.createQuery(query, className);
+
         for (int i = 0; i < params.size(); i++) {
             queryToPush.setParameter(i, params.get(i));
         }
