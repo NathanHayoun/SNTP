@@ -5,12 +5,14 @@ import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface TicketDao {
     List<Ticket> findAll();
 
-    Ticket findById(Long id) throws TicketException;
+    @Transactional
+    Ticket findById(long id) throws TicketException;
 
     void save(Ticket ticket);
 

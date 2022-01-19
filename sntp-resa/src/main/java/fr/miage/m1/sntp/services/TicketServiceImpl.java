@@ -1,6 +1,5 @@
 package fr.miage.m1.sntp.services;
 
-import com.google.common.hash.Hashing;
 import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.dao.VoyageurDao;
@@ -41,10 +40,6 @@ public class TicketServiceImpl implements TicketService {
         return ticket;
     }
 
-    public String getKeyForTicket(Ticket ticket) {
-        return Hashing.sha256().hashString(ticket.getId() + "" + "CodeSecret!", StandardCharsets.UTF_8).toString();
-    }
-
     @Transactional
     public Reservation emitTicket(ETicket eticket, Reservation reservation) throws VoyageurException, TicketException, ReservationException {
         Voyageur voyageur = null;
@@ -56,25 +51,8 @@ public class TicketServiceImpl implements TicketService {
         }
 
         Reservation res = ticketDao.emitTicketForCustomer(eticket.getId_ticket(), voyageur, reservation);
-        //        ticket.setTicketKey(this.getKeyForTicket(ticket));
-        //        if (eticket.getType().equals(TicketType.SEATING)) {
-        //            ticket.setSeatReference(seatPlacementService.bookSeat(ticket.getIdVenue().getId()));
-        //        }
+
         return res;
     }
 
-/*    @Override
-    public Ticket getTicket(Long id) {
-        return em.find(Ticket.class, id);
-    }
-
-    @Override
-    public Ticket updateTicket(Ticket ticket) {
-        return em.merge(ticket);
-    }
-
-    @Override
-    public void deleteTicket(Long id) {
-        em.remove(getTicket(id));
-    }*/
 }

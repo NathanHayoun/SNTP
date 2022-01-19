@@ -28,10 +28,10 @@ public class TicketDaoImpl implements TicketDao {
         return LibSQL.findAll(entityManager, Ticket.class);
     }
 
+
     @Override
     @Transactional
-
-    public Ticket findById(int id) throws TicketException {
+    public Ticket findById(long id) throws TicketException {
         return LibSQL.findObject(entityManager, Ticket.class, id);
     }
 
@@ -87,19 +87,5 @@ public class TicketDaoImpl implements TicketDao {
         r.setTickets(listeTickets);
         return r;
     }
-  
-  @Override
-    public Long countNbTicketByNumeroTrainAndNow(int numeroDeTrain) {
-        return null;
-    }
 
-    @Override
-    public Long countNbTicketByNumeroTrainAndNowAndHasEtape(int numeroDeTrain) {
-        return null;
-    }
-
-    @Override
-    public List<Voyageur> getEmailsByTrainAndDate(int numeroDeTrain) {
-        return null;
-    }
 }
