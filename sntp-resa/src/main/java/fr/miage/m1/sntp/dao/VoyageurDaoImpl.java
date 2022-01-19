@@ -6,9 +6,12 @@ import fr.miage.m1.sntp.utils.LibSQL;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class VoyageurDaoImpl implements VoyageurDao{
@@ -27,7 +30,13 @@ public class VoyageurDaoImpl implements VoyageurDao{
 
     @Override
     public Voyageur findByEmail(String email) throws VoyageurException {
-        return LibSQL.findObject(entityManager,Voyageur.class,email);
+        try {
+            Map<String, Object> params=new HashMap<>();
+            params.put("email", email);
+            return (Voyageur) LibSQL.executeSelectWithNamedParams(entityManager,Voyageur.class,"from Voyageur where email = :email",params).get(0);
+        } catch (NoResultException e) {
+            throw new VoyageurException();
+        }
     }
 
     @Override
@@ -47,4 +56,13 @@ public class VoyageurDaoImpl implements VoyageurDao{
     public void delete(Voyageur voyageur) {
         LibSQL.deleteObject(entityManager,voyageur);
     }
+
+    @Override
+    @Transactional
+    public Voyageur createNewVoyageur(String nom, String prenom, String email) {
+        Voyageur v = new Voyageur(nom, prenom, email);
+        entityManager.persist(v);
+        return v;
+    }
+
 }

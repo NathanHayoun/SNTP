@@ -12,5 +12,6 @@ public interface VoyageurDao {
     void save(Voyageur voyageur);
     void delete(Voyageur voyageur);
     void update(Voyageur voyageur);
+    Voyageur createNewVoyageur(String nom, String prenom, String email);
 }
 

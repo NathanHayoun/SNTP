@@ -1,7 +1,9 @@
 package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.TicketException;
+import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.utils.LibSQL;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,7 +23,7 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     @Transactional
-    public Ticket findById(int id) throws TicketException {
+    public Ticket findById(Long id) throws TicketException {
         return LibSQL.findObject(entityManager,Ticket.class,id);
     }
 
@@ -41,5 +43,17 @@ public class TicketDaoImpl implements TicketDao {
     @Transactional
     public void delete(Ticket ticket) {
         LibSQL.deleteObject(entityManager,ticket);
+    }
+
+    @Override
+    @Transactional
+    public Reservation emitTicketForCustomer(Long ticketId, Voyageur voyageur, Reservation reservation) throws TicketException {
+        Ticket t = LibSQL.findObject(entityManager, Ticket.class, ticketId);
+        Reservation r = LibSQL.findObject(entityManager, Reservation.class, reservation.getId());
+        r.setVoyageur(voyageur);
+        var listeTickets = r.getTickets();
+        listeTickets.add(t);
+        r.setTickets(listeTickets);
+        return r;
     }
 }

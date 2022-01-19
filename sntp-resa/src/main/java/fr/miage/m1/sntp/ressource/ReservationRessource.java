@@ -30,7 +30,7 @@ public class ReservationRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/reservation/{id}")
-    public Reservation getReservation(@PathParam("id") int id) throws ReservationException {
+    public Reservation getReservation(@PathParam("id") Long id) throws ReservationException {
         try {
             return reservationDao.findById(id);
         } catch (ReservationException reservationException){

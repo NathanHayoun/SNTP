@@ -1,9 +1,14 @@
 package fr.miage.m1.sntp.services;
 
 import com.google.common.hash.Hashing;
+import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.dao.VoyageurDao;
 import fr.miage.m1.sntp.dto.ETicket;
+import fr.miage.m1.sntp.exceptions.ReservationException;
+import fr.miage.m1.sntp.exceptions.TicketException;
+import fr.miage.m1.sntp.exceptions.VoyageurException;
+import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
 
@@ -19,6 +24,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Inject
     TicketDao ticketDao;
+
+    @Inject
+    ReservationDao reservationDao;
 
     @Inject
     PlacementService placementService;
@@ -37,33 +45,22 @@ public class TicketServiceImpl implements TicketService {
         return Hashing.sha256().hashString(ticket.getId() + "" + "CodeSecret!", StandardCharsets.UTF_8).toString();
     }
 
-    @Override
     @Transactional
-    public String emitTicket(ETicket eticket) {
+    public Reservation emitTicket(ETicket eticket, Reservation reservation) throws VoyageurException, TicketException, ReservationException {
         Voyageur voyageur = null;
 
-        voyageur = voyageurDao.findByEmail(eticket.getEmail());
-
-/*
-        Customer customer = null;
         try {
-            customer = customerDAO.findMatchingCustomer(eticket.getEmail());
-        } catch (CustomerNotFoundException e) {
-            customer = customerDAO.createNewCustomer(eticket.getFname(), eticket.getLname(), eticket.getEmail());
+            voyageur = voyageurDao.findByEmail(eticket.getEmail());
+        } catch (VoyageurException e) {
+            voyageur = voyageurDao.createNewVoyageur(eticket.getNom(), eticket.getPrenom(), eticket.getEmail());
         }
 
-        Ticket ticket = ticketDAO.findTicket(eticket.getTransitionalTicketId());
-        if (ticket.getValidUntil().isBefore(Instant.now())) {
-            throw new ExpiredTransitionalTicketException(eticket.getTransitionalTicketId());
-        }
-        ticket = ticketDAO.emitTicketForCustomer(eticket.getTransitionalTicketId(), customer);
-        ticket.setTicketKey(this.getKeyForTicket(ticket));
-        if (eticket.getType().equals(TicketType.SEATING)) {
-            ticket.setSeatReference(seatPlacementService.bookSeat(ticket.getIdVenue().getId()));
-        }
-        return ticket.getTicketKey();*/
-
-
+        Reservation res = ticketDao.emitTicketForCustomer(eticket.getId_ticket(), voyageur, reservation);
+        //        ticket.setTicketKey(this.getKeyForTicket(ticket));
+        //        if (eticket.getType().equals(TicketType.SEATING)) {
+        //            ticket.setSeatReference(seatPlacementService.bookSeat(ticket.getIdVenue().getId()));
+        //        }
+        return res;
     }
 
 /*    @Override

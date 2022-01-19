@@ -26,7 +26,7 @@ public class TicketRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/{id}")
-    public Ticket getTicket(@PathParam("id") int id) throws TicketException {
+    public Ticket getTicket(@PathParam("id") Long id) throws TicketException {
         try {
             return ticketDao.findById(id);
         } catch (TicketException ticketException) {
