@@ -33,4 +33,37 @@ public class ArretRessources {
             return null;
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/arret/train/{numero}")
+    public List<Arret> getArretByNumTrain(@PathParam("numero") int numeroDeTrain) throws ArretException {
+        try {
+            return arretDAO.getAllArretByNumeroDeTrain(numeroDeTrain);
+        } catch (ArretException arretException) {
+            return null;
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/arret/depart/{idGare}")
+    public List<Arret> getArretsDepartByGare(@PathParam("idGare") int idGare) throws ArretException {
+        try {
+            return arretDAO.getArretsDepartByGare(idGare);
+        } catch (ArretException arretException) {
+            return null;
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/arret/arrivee/{idGare}")
+    public List<Arret> getArretsArriveeByGare(@PathParam("idGare") int idGare) throws ArretException {
+        try {
+            return arretDAO.getArretsArriveeByGare(idGare);
+        } catch (ArretException arretException) {
+            return null;
+        }
+    }
 }

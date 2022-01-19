@@ -3,6 +3,7 @@ package fr.miage.m1.sntp.ressource;
 import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -32,5 +33,26 @@ public class TicketRessource {
         } catch (TicketException ticketException) {
             return null;
         }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ticket/train/now/{numeroDeTrain}")
+    public Long getNombreDeTicketByTrainAndDate(@PathParam("numeroDeTrain") int numeroDeTrain) {
+        return ticketDao.countNbTicketByNumeroTrainAndNow(numeroDeTrain);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ticket/train/now/has/correspondance/{numeroDeTrain}")
+    public Long getNombreDeTicketByTrainAndDateAndHasCorrespondance(@PathParam("numeroDeTrain") int numeroDeTrain) {
+        return ticketDao.countNbTicketByNumeroTrainAndNowAndHasEtape(numeroDeTrain);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ticket/train/email/{numeroDeTrain}")
+    public List<Voyageur> getEmailFromUserByTrainAndToDay(@PathParam("numeroDeTrain") int numeroDeTrain) {
+        return ticketDao.getEmailsByTrainAndDate(numeroDeTrain);
     }
 }
