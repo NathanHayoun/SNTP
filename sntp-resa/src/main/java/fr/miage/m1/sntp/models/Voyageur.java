@@ -25,6 +25,8 @@ public class Voyageur {
     @JsonbTransient
     private Set<Reservation> reservations;
 
+    public Voyageur(){}
+
     public Voyageur(String nom, String prenom, String email) {
         this.nom = nom;
         this.prenom = prenom;

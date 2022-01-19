@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Entity
 public class Reservation {
+    public Reservation(){}
     public Reservation(LocalDate dateDeReservation, Voyageur voyageurConcernee, Set<Ticket> tickets) {
         this.dateDeReservation = dateDeReservation;
         this.voyageurConcernee = voyageurConcernee;

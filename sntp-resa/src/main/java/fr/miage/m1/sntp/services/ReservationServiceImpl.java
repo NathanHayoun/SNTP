@@ -16,14 +16,4 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
-    /*@Override
-    public Reservation annuler(Reservation reservation) {
-        em.remove(reservation);
-        return reservation;
-    }
-
-    @Override
-    public Reservation getReservation(int id) {
-        return em.find(Reservation.class, id);
-    }*/
 }

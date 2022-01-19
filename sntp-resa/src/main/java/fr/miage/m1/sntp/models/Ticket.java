@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 @Entity
 public class Ticket {
+    public Ticket(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ticket", nullable = false)
