@@ -7,6 +7,12 @@ import java.util.Set;
 
 @Entity
 public class Reservation {
+    public Reservation(LocalDate dateDeReservation, Voyageur voyageurConcernee, Set<Ticket> tickets) {
+        this.dateDeReservation = dateDeReservation;
+        this.voyageurConcernee = voyageurConcernee;
+        this.tickets = tickets;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reservation", nullable = false)
@@ -14,7 +20,6 @@ public class Reservation {
 
     @Column(name = "dateDeReservation")
     private LocalDate dateDeReservation;
-
 
     @Column(name = "prix", nullable = false)
     private Double prix;

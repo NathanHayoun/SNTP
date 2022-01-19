@@ -23,6 +23,12 @@ public class Voyageur {
     @OneToMany(mappedBy="voyageurConcernee",fetch = FetchType.EAGER)
     private Set<Reservation> reservations;
 
+    public Voyageur(String nom, String prenom, String email) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+    }
+
     public String getPrenom() {
         return prenom;
     }
