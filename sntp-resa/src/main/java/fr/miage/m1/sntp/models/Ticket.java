@@ -38,10 +38,6 @@ public class Ticket {
 
     @Column(name = "place")
     private Integer place;
-
-//    @Column(name = "cle")
-//    private String cle;
-
     @ManyToOne
     @MapsId("idReservation")
     @JoinColumn(name = "id_reservation")
@@ -143,11 +139,4 @@ public class Ticket {
         this.reservationConcernee = reservationConcernee;
     }
 
-//    public String getCle() {
-//        return cle;
-//    }
-//
-//    public void setCle(String cle) {
-//        this.cle = cle;
-//    }
 }

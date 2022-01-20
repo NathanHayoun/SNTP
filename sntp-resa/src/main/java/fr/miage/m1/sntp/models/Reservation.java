@@ -2,7 +2,6 @@ package fr.miage.m1.sntp.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
