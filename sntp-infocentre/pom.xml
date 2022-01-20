@@ -133,6 +133,15 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-mailer</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-picocli</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.beryx</groupId>
+            <artifactId>text-io</artifactId>
+            <version>3.4.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
