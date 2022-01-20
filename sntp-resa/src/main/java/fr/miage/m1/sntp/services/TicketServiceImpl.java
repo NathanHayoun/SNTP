@@ -3,7 +3,7 @@ package fr.miage.m1.sntp.services;
 import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.dao.VoyageurDao;
-import fr.miage.m1.sntp.dto.ETicket;
+import fr.miage.m1.sntp.dto.ETicketDTO;
 import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.nio.charset.StandardCharsets;
 
 public class TicketServiceImpl implements TicketService {
     @Inject
@@ -41,7 +40,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Transactional
-    public Reservation emitTicket(ETicket eticket, Reservation reservation) throws VoyageurException, TicketException, ReservationException {
+    public Reservation emitTicket(ETicketDTO eticket, Reservation reservation) throws VoyageurException, TicketException, ReservationException {
         Voyageur voyageur = null;
 
         try {
