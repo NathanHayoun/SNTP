@@ -1,73 +1,99 @@
 package fr.miage.m1.sntp.dto;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.time.LocalTime;
+import java.util.List;
 
 public class ArretDTO {
     private Boolean doitMarquerArret;
     private GareDTO gareConcerner;
     private LocalTime heureDepart;
     private LocalTime heureArrivee;
+    private List<PassageDTO> passages;
     private Integer position;
+    private TrainDTO train;
 
-    public ArretDTO() {
-    }
-
-    public ArretDTO(Boolean doitMarquerArret, GareDTO gare, LocalTime heureDepart, LocalTime heureArrivee, Integer position) {
-        this.doitMarquerArret = doitMarquerArret;
-        this.gareConcerner = gare;
-        this.heureDepart = heureDepart;
-        this.heureArrivee = heureArrivee;
-        this.position = position;
-    }
-
+    @JsonProperty("doitMarquerArret")
     public Boolean getDoitMarquerArret() {
         return doitMarquerArret;
     }
 
-    public void setDoitMarquerArret(Integer doitMarquerArret) {
-        this.doitMarquerArret = doitMarquerArret == 1;
+    @JsonProperty("doitMarquerArret")
+    public void setDoitMarquerArret(Integer value) {
+        this.doitMarquerArret =  value == 1;
     }
 
+    @JsonProperty("gareConcerner")
     public GareDTO getGareConcerner() {
         return gareConcerner;
     }
 
-    public void setGareConcerner(GareDTO gareConcerner) {
-        this.gareConcerner = gareConcerner;
+    @JsonProperty("gareConcerner")
+    public void setGareConcerner(GareDTO value) {
+        this.gareConcerner = value;
     }
 
+    @JsonProperty("heureDepart")
     public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(LocalTime heureDepart) {
-        this.heureDepart = heureDepart;
+    @JsonProperty("heureDepart")
+    public void setHeureDepart(LocalTime value) {
+        this.heureDepart = value;
     }
 
+    @JsonProperty("passages")
+    public List<PassageDTO> getPassages() {
+        return passages;
+    }
+
+    @JsonProperty("passages")
+    public void setPassages(List<PassageDTO> value) {
+        this.passages = value;
+    }
+
+    @JsonProperty("position")
+    public long getPosition() {
+        return position;
+    }
+
+    @JsonProperty("position")
+    public void setPosition(Integer value) {
+        this.position = value;
+    }
+
+    @JsonProperty("train")
+    public TrainDTO getTrain() {
+        return train;
+    }
+
+    @JsonProperty("train")
+    public void setTrain(TrainDTO value) {
+        this.train = value;
+    }
+
+    @JsonProperty("heureArrivee")
     public LocalTime getHeureArrivee() {
         return heureArrivee;
     }
 
+    @JsonProperty("heureArrivee")
     public void setHeureArrivee(LocalTime heureArrivee) {
         this.heureArrivee = heureArrivee;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
     }
 
     @Override
     public String toString() {
         return "ArretDTO{" +
                 "doitMarquerArret=" + doitMarquerArret +
-                ", gare=" + gareConcerner +
+                ", gareConcerner=" + gareConcerner +
                 ", heureDepart=" + heureDepart +
                 ", heureArrivee=" + heureArrivee +
+                ", passages=" + passages +
                 ", position=" + position +
+                ", train=" + train +
                 '}';
     }
 }
