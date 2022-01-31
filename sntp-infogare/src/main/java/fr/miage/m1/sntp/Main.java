@@ -2,6 +2,7 @@ package fr.miage.m1.sntp;
 
 import fr.miage.m1.sntp.ressources.ArretService;
 import fr.miage.m1.sntp.ressources.GareService;
+import io.quarkus.qute.Template;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
@@ -25,16 +26,16 @@ public class Main {
     public static class InfoGare implements QuarkusApplication {
         @Inject
         @RestClient
-        GareService gs;
+        GareService gareService;
 
         @Inject
         @RestClient
-        ArretService as;
+        ArretService arretService;
 
         @Override
         public int run(String... args) throws Exception {
-            logger.info(gs.getGare(idGare).getNomGare());
-            logger.info(as.getArretsDepartByGare(idGare).toString());
+            logger.info(gareService.getGare(idGare).getNomGare());
+            logger.info(arretService.getArretsDepartByGare(idGare).toString());
             Quarkus.waitForExit();
             return 0;
         }
