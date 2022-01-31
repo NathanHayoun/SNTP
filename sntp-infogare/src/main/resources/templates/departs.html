@@ -9,47 +9,48 @@
 <body>
 <div class="container">
     <h1 class="mt-3 mb-3 text-white" style="text-align: center;"> SNTP INFOGARE </h1>
-    <div class = "container" style="background-color:black;">
-    <h4 class="text-white">
-        <span>Départs &nbsp;</span><span style="font-size: 18px"><em>Departures - Partenze </em></span>
-    </h4>
-    <div class="row text-white">
-        <table class="table table-striped" style="border: 4mm ridge rgba(0,0,0)">
-<!--            style="border: 4mm ridge rgba(0,0,0)"-->
-            <thead>
-            <tr>
-                <th scope="col">Type Train</th>
-                <th scope="col">N° Train</th>
-                <th scope="col">Horaire</th>
-                <th scope="col">Destination</th>
-                <th scope="col">N° Quai</th>
-            </tr>
-            </thead>
-            <tbody>
-            {#for arret in arrets}
+    <div class="card">
+        <div class="card-body text-white">
+        <h4>
+            <span>Départs &nbsp;</span><span style="font-size: 18px"><em>Departures - Partenze </em></span>
+        </h4>
+            <table class="table table-striped" >
+                <!--            style="border: 4mm ridge rgba(0,0,0)"-->
+                <thead>
+                <tr>
+                    <th scope="col">Type Train</th>
+                    <th scope="col">N° Train</th>
+                    <th scope="col">Horaire</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">N° Quai</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#for arret in arrets}
 
-            <tr>
-                <th scope="row" style="width: 10%">
-                    {#if arret.train.typeDeTrain == "TER" }
-                    <img src="https://nathanhayoun.fr/img/TERmini.png" alt="TER" width="50%">
-                    {#else}
-                    <img src="https://nathanhayoun.fr/img/TGVmini.png" alt="TGV" width="50%">
-                    {/if}
-                </th>
-                <td>{arret.train.numeroDeTrain}</td>
-                <td>{arret.heureDepart}</td>
-                <td>{arret.train.terminus}</td>
-                <td></td>
-            </tr>
-            {/for}
-            </tbody>
-        </table>
+                <tr>
+                    <th scope="row" style="width: 10%">
+                        {#if arret.train.typeDeTrain == "TER" }
+                        <img src="https://nathanhayoun.fr/img/TERmini.png" alt="TER" width="50%">
+                        {#else}
+                        <img src="https://nathanhayoun.fr/img/TGVmini.png" alt="TGV" width="50%">
+                        {/if}
+                    </th>
+                    <td>{arret.train.numeroDeTrain}</td>
+                    <td>{arret.heureDepart}</td>
+                    <td>{arret.train.terminus}</td>
+                    <td></td>
+                </tr>
+                {/for}
+                </tbody>
+            </table>
+        </div>
     </div>
-    </div>
+</div>
+</div>
 </div>
 </body>
 </html>
-
 
 
 <style>
@@ -72,5 +73,13 @@
         --bs-table-hover-color: #0b1d60;
         color: #ffffff;
         vertical-align: top;
+    }
+
+    .card{
+        border: 1px solid #000000 !important;
+    }
+
+    .card-body{
+        background-color: black !important;
     }
 </style>

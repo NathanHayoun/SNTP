@@ -8,112 +8,60 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-3 mb-3" style="text-align: center;"> SNTP INFOGARE </h1>
-    <h4>
-        <span>Arrivées &nbsp;</span><span style="font-size: 18px"><em>Arrivals - Arrivi </em></span>
-    </h4>
-    <div class="row text-white">
-        <table class="table table-striped" style="border: 4mm ridge rgba(0,0,0)">
-            <thead>
-            <tr>
-                <th scope="col">Type Train</th>
-                <th scope="col">N° Train</th>
-                <th scope="col">Horaire</th>
-                <th scope="col">Destination</th>
-                <th scope="col">N° Quai</th>
-            </tr>
-            </thead>
-            <tbody>
-            {#for arret in arrets}
-            <tr>
-                <th scope="row">1</th>
-                <td>{arret.train.numeroDeTrain}</td>
-                <td>{arret.heureDepart}</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            {/for}
-            <tr>
-                <th scope="row">1</th>
-                <td>ddfdih</td>
-                <td>sss</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>ichscihs</td>
-                <td>zeihezoh</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>dhohsicdh</td>
-                <td>zeofhezoifh</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>ducdhhoh</td>
-                <td>eieheihei</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>ducdhhoh</td>
-                <td>eieheihei</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>ducdhhoh</td>
-                <td>eieheihei</td>
-                <td>@mdo</td>
-                <td>idhdhdh</td>
-            </tr>
-            </tbody>
-        </table>
+    <h1 class="mt-3 mb-3 text-white" style="text-align: center;"> SNTP INFOGARE </h1>
+    <div class="card">
+        <div class="card-body text-white">
+            <h4>
+                <span>Arrivées &nbsp;</span><span style="font-size: 18px"><em>Arrivals - Arrivi </em></span>
+            </h4>
+            <table class="table table-striped" >
+                <thead>
+                <tr>
+                    <th scope="col">Type Train</th>
+                    <th scope="col">N° Train</th>
+                    <th scope="col">Horaire</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">N° Quai</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#for arret in arrets}
+
+                <tr>
+                    <th scope="row" style="width: 10%">
+                        {#if arret.train.typeDeTrain == "TER" }
+                        <img src="https://nathanhayoun.fr/img/TERmini.png" alt="TER" width="50%">
+                        {#else}
+                        <img src="https://nathanhayoun.fr/img/TGVmini.png" alt="TGV" width="50%">
+                        {/if}
+                    </th>
+                    <td>{arret.train.numeroDeTrain}</td>
+                    <td>{arret.heureDepart}</td>
+                    <td>{arret.train.terminus}</td>
+                    <td></td>
+                </tr>
+                {/for}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-{#for arret in arrets}
-{arret.gareConcerner.nomGare}<br>
-{arret.heureDepart}<br>
-<!--{#for passage in arret.passages}<br>-->
-<!--
-{#if passage.dateDePassage == "2022-01-13"}<br>
--->
-<!--{arret.heureDepartReel}<br>-->
-<!--{#if passage.numeroDeQuai}<br>-->
-<!--{passage.numeroDeQuai}<br>-->
-<!--{/if}-->
-<!--{passage.heureArriveeReel}<br>-->
-<!--
-{/if}
--->
-{/for}
-{#if arret.heureArrivee}
-{ arret.heureArrivee}<br>
-{/if}
-<br>
-{/for}
+</div>
+</div>
 </body>
 </html>
 
+
 <style>
-    /*body {*/
-    /*    margin: 0;*/
-    /*    padding: 0;*/
-    /*    background: url("../META-INF/resources/images/gare.jpg") no-repeat center fixed;*/
-    /*    -webkit-background-size: cover;*/
-    /*    -moz-background-size: cover;*/
-    /*    -o-background-size: cover;*/
-    /*    background-size: cover;*/
-    /*}*/
+    body {
+        margin: 0;
+        padding: 0;
+        background: url("https://nathanhayoun.fr/img/gare.jpg") no-repeat center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
     .table {
         --bs-table-bg: #ffffff;
@@ -121,8 +69,15 @@
         --bs-table-striped-color: #ffffff;
         --bs-table-striped-bg: rgb(98, 189, 79);
         --bs-table-active-bg: #ffffff;
-        /*--bs-table-hover-color: #0b1d60;*/
         color: #ffffff;
         vertical-align: top;
+    }
+
+    .card{
+        border: 1px solid #000000 !important;
+    }
+
+    .card-body{
+        background-color: black !important;
     }
 </style>
