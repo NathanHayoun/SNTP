@@ -38,7 +38,6 @@ public class ArretRessource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getDeparts(@QueryParam("name") String name) {
-      GareDTO gare =  gareService.getGare(idGare);
        List<ArretDTO> arrets =  arretService.getArretsDepartByGare(idGare);
 
         return departs.data("arrets", arrets);
@@ -48,9 +47,7 @@ public class ArretRessource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getArrivees(@QueryParam("name") String name) {
-      GareDTO gare =  gareService.getGare(idGare);
        List<ArretDTO> arrets =  arretService.getArretsDepartByGare(idGare);
-
-        return arrivees.data("arrets", arrets);
+       return arrivees.data("arrets", arrets);
     }
 }
