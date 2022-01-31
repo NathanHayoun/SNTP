@@ -6,7 +6,7 @@ public class TrainDTO {
     private Integer numeroDeTrain;
     private String terminus;
     private String typeDeTrain;
-    private String lingeDeTrain;
+    private String ligneDeTrain;
     private String depart;
 
     @JsonProperty("numeroDeTrain")
@@ -40,13 +40,13 @@ public class TrainDTO {
     }
 
     @JsonProperty("lingeDeTrain")
-    public String getLingeDeTrain() {
-        return lingeDeTrain;
+    public String getLigneDeTrain() {
+        return ligneDeTrain;
     }
 
     @JsonProperty("lingeDeTrain")
-    public void setLingeDeTrain(String value) {
-        this.lingeDeTrain = value;
+    public void setLigneDeTrain(String value) {
+        this.ligneDeTrain = value;
     }
 
     @JsonProperty("depart")
@@ -65,7 +65,7 @@ public class TrainDTO {
                 "numeroDeTrain=" + numeroDeTrain +
                 ", terminus='" + terminus + '\'' +
                 ", typeDeTrain='" + typeDeTrain + '\'' +
-                ", lingeDeTrain='" + lingeDeTrain + '\'' +
+                ", lingeDeTrain='" + ligneDeTrain + '\'' +
                 ", depart='" + depart + '\'' +
                 '}';
     }
