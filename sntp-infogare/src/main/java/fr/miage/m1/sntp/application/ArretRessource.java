@@ -47,7 +47,7 @@ public class ArretRessource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getArrivees(@QueryParam("name") String name) {
-       List<ArretDTO> arrets =  arretService.getArretsDepartByGare(idGare);
+       List<ArretDTO> arrets =  arretService.getArretsArriveeByGare(idGare);
        return arrivees.data("arrets", arrets);
     }
 }
