@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Session;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -35,6 +38,7 @@ public class InfoCentre {
     private static final String TRAIN_DELETE_SUBJECT = "Train n° %s supprimé ";
     private static final String TRAIN_DELETE_MESSAGE = "Madame, Monsieur, \n nous sommes dans le regret de vous annoncer que le train n° %s à destination de %s est malheuresement supprimé. \n Contactez le service client pour un remboursement. \n Nous vous prions de bien vouloir nous excuser. \n Cordialement, \n Le service SNTP ";
     private static final Logger logger = LoggerFactory.getLogger(InfoCentre.class);
+    public static final String JMS_TRAIN_INFOCENTRE = "jms:train/infocentre/";
     //DAO
     @Inject
     TrainDAO trainDAO;
@@ -42,6 +46,13 @@ public class InfoCentre {
     PassageDAO passageDAO;
     @Inject
     GareDAO gareDAO;
+
+    @Inject
+    InfoCentre infocentre;
+
+
+    @Inject
+    ConnectionFactory connectionFactory;
 
     //Services
     @Inject
@@ -108,6 +119,9 @@ public class InfoCentre {
                 }
                 passage.setArret(arret);
                 passageDAO.insertPassage(passage);
+
+                envoyerMessage(train.getId());
+
             }
 
             return true;
@@ -129,7 +143,6 @@ public class InfoCentre {
             String sujet = String.format(SUJET_MAIL_RETARD_TRAIN, train.getNumeroDeTrain());
             String message = String.format(MESSAGE_RETARD_TRAIN, train.getNumeroDeTrain(), train.getTerminus(), nombreDeMinute);
             LibMail.sendMailWithBcc(mailer, mails, sujet, message);
-
             return true;
         }
         logger.info(NB_REQUIS_NON_ATTEINDS_POUR_RETARD);
@@ -180,7 +193,7 @@ public class InfoCentre {
             }
             LibMail.sendMailWithBcc(mailer, emails, subject, message);
         }
-
+        //Génerer un msg camel
         return true;
     }
 
@@ -222,7 +235,7 @@ public class InfoCentre {
             return false;
         }
         generatePassage(date, arret, true);
-
+        //Génerer un msg camel
         return true;
     }
 
@@ -247,7 +260,7 @@ public class InfoCentre {
         for (Arret arret : setArret) {
             generatePassage(date, arret, false);
         }
-
+        //Génerer un msg camel
         return true;
     }
 
@@ -293,5 +306,12 @@ public class InfoCentre {
         passage.setHeureDepartReel(heureDepart);
         passage.setArret(arret);
         passageDAO.insertPassage(passage);
+    }
+
+
+    public void envoyerMessage(Long idTrain) {
+        try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
+            context.createProducer().send(context.createQueue(JMS_TRAIN_INFOCENTRE +idTrain), Integer.toString(3));
+        }
     }
 }
