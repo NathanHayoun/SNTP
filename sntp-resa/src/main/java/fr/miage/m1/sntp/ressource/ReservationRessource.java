@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.ressource;
 
+import fr.miage.m1.sntp.Trajets;
 import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
@@ -16,6 +17,8 @@ import java.util.List;
 public class ReservationRessource {
     @Inject
     ReservationDao reservationDao;
+    @Inject
+    Trajets trajets;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,6 +33,18 @@ public class ReservationRessource {
         try {
             return reservationDao.findById(id);
         } catch (ReservationException reservationException){
+            return null;
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/test")
+    public Object getReservationTest() throws ReservationException {
+        try {
+            System.out.println("test");
+            return trajets.generer(1, 3);
+        } catch (Exception e){
             return null;
         }
     }
