@@ -12,7 +12,7 @@ public interface TicketDao {
     List<Ticket> findAll();
 
     @Transactional
-    Ticket findById(long id) throws TicketException;
+    Ticket findById(long id);
 
     void save(Ticket ticket);
 

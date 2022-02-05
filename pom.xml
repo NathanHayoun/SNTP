@@ -14,5 +14,6 @@
         <module>sntp-resa</module>
         <module>sntp-infogare</module>
         <module>sntp-train</module>
+        <module>sntp-kiosque</module>
     </modules>
 </project>

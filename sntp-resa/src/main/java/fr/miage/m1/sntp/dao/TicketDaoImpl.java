@@ -31,7 +31,7 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     @Transactional
-    public Ticket findById(long id) throws TicketException {
+    public Ticket findById(long id) {
         return LibSQL.findObject(entityManager, Ticket.class, id);
     }
 
@@ -78,7 +78,7 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     @Transactional
-    public Reservation emitTicketForCustomer(Long ticketId, Voyageur voyageur, Reservation reservation) throws TicketException {
+    public Reservation emitTicketForCustomer(Long ticketId, Voyageur voyageur, Reservation reservation) {
         Ticket t = LibSQL.findObject(entityManager, Ticket.class, ticketId);
         Reservation r = LibSQL.findObject(entityManager, Reservation.class, reservation.getId());
         r.setVoyageur(voyageur);
