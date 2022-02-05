@@ -22,14 +22,15 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     @Transactional
-    public Reservation findById(Long id) throws ReservationException {
+    public Reservation findById(Long id) {
         return LibSQL.findObject(entityManager, Reservation.class, id);
     }
 
     @Override
     @Transactional
-    public void save(Reservation reservation) {
+    public Reservation save(Reservation reservation) {
         LibSQL.insertObject(entityManager, reservation);
+        return reservation;
     }
 
     @Override

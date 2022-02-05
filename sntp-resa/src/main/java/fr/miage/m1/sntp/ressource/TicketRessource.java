@@ -4,6 +4,7 @@ import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
+import fr.miage.m1.sntp.services.TicketService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,44 +16,41 @@ import java.util.List;
 
 @Path("/tickets")
 public class TicketRessource {
+
     @Inject
-    TicketDao ticketDao;
+    TicketService service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Ticket> getTickets() {
-        return ticketDao.findAll();
+        return service.getTickets();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/{id}")
-    public Ticket getTicket(@PathParam("id") Long id) throws TicketException {
-        try {
-            return ticketDao.findById(id);
-        } catch (TicketException ticketException) {
-            return null;
-        }
+    public Ticket getTicket(@PathParam("id") Long id) {
+        return service.getTicket(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/train/now/{numeroDeTrain}")
     public Long getNombreDeTicketByTrainAndDate(@PathParam("numeroDeTrain") int numeroDeTrain) {
-        return ticketDao.countNbTicketByNumeroTrainAndNow(numeroDeTrain);
+        return service.countNbTicketByNumeroTrainAndNow(numeroDeTrain);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/train/now/has/correspondance/{numeroDeTrain}")
     public Long getNombreDeTicketByTrainAndDateAndHasCorrespondance(@PathParam("numeroDeTrain") int numeroDeTrain) {
-        return ticketDao.countNbTicketByNumeroTrainAndNowAndHasEtape(numeroDeTrain);
+        return service.countNbTicketByNumeroTrainAndNowAndHasEtape(numeroDeTrain);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ticket/train/email/{numeroDeTrain}")
     public List<Voyageur> getEmailFromUserByTrainAndToDay(@PathParam("numeroDeTrain") int numeroDeTrain) {
-        return ticketDao.getEmailsByTrainAndDate(numeroDeTrain);
+        return service.getEmailsByTrainAndDate(numeroDeTrain);
     }
 }

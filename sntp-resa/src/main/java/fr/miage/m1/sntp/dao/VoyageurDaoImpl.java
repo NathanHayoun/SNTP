@@ -24,7 +24,7 @@ public class VoyageurDaoImpl implements VoyageurDao{
 
     @Override
     @Transactional
-    public Voyageur findById(int id) throws VoyageurException {
+    public Voyageur findById(int id) {
         return LibSQL.findObject(entityManager,Voyageur.class,id);
     }
 
