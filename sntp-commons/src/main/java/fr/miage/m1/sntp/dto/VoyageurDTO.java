@@ -31,4 +31,13 @@ public class VoyageurDTO {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
+
+    @Override
+    public String toString() {
+        return "VoyageurDTO{" +
+                "email='" + email + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                '}';
+    }
 }
