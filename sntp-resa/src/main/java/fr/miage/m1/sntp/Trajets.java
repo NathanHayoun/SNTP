@@ -10,10 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ApplicationScoped
 public class Trajets {
@@ -53,10 +50,9 @@ public class Trajets {
     }
 
     public Object generer(long idGareDepart, long idGareArrivee, LocalTime heureDepart) throws CloneNotSupportedException {
-        System.out.println("generer");
         List<ItineraireDTO> itineraires = itineraireService.getItineraire();
         Graph graph = new Graph();
-        System.out.println("bb");
+        Node arretDepartNode = null;
 
         // Récupération des arrets de départ et d'arrivée
         for (ItineraireDTO itineraire : itineraires) {
@@ -65,18 +61,36 @@ public class Trajets {
             Node arretEnCours;
 
             for (ArretDTO arret : itineraire.getArrets()) {
-                if (premierArret) {
-                    lastNode = new Node(arret);
-                    premierArret = false;
-                    System.out.println(lastNode.toString());
-                    System.out.println("aaaa");
-                } else {
-                    arretEnCours = new Node(arret);
-                    lastNode.addDestination(arretEnCours, (int) lastNode.getArret().getHeureArrivee().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-                    lastNode = arretEnCours;
+                if (arretDepartNode == null && arret.getGareConcerner().getId() == idGareDepart && arret.getDoitMarquerArret().equals(true) && arret.getHeureDepart() != null && (arret.getHeureDepart().isBefore(heureDepart) || arret.getHeureDepart().equals(heureDepart))) {
+                    arretDepartNode = new Node(arret);
                 }
-
+                if (premierArret && arret.getDoitMarquerArret()) {
+                    System.out.println("Arret : " + arret.getGareConcerner());
+                    lastNode = new Node(arret);
+                    graph.addNode(lastNode);
+                    premierArret = false;
+                } else if (arret.getDoitMarquerArret() && lastNode != null) {
+                    System.out.println("Ajout d'un arc entre " + lastNode.getArret().getGareConcerner() + " et " + arret.getGareConcerner());
+                    arretEnCours = new Node(arret);
+                    System.out.println("arretEnCours : " + arretEnCours.getArret().getGareConcerner());
+                    System.out.println("lastNode : " + lastNode.getArret().getGareConcerner());
+                    System.out.println("lastnode arrivee : " + lastNode.getArret().getHeureArrivee());
+                    System.out.println("arret heure arrivee : " + arret.getHeureArrivee() + '\n');
+                    System.out.println("diff : " + (int) lastNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
+                    lastNode.addDestination(arretEnCours, (int) lastNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
+                    lastNode = arretEnCours;
+                    graph.addNode(lastNode);
+                }
+                System.out.println("Ne marque pas l'arret");
             }
+            assert lastNode != null;
+            System.out.println("=====> " + lastNode.getArret().getGareConcerner());
+            System.out.println(lastNode.toString());
+
+        }
+        assert arretDepartNode != null;
+        graph = Dijkstra.calculateShortestPathFromSource(graph, arretDepartNode);
+
 
 //            for (ArretDTO arret : itineraire.getArrets()) {
 //                // Récupère l'arret de départ
@@ -114,7 +128,7 @@ public class Trajets {
 //                graph.addNode(lastNode);
 //                graph = Dijkstra.calculateShortestPathFromSource(graph, arretDepartNode);
 //            }
-        }
+        //}
 
         // arretDepartNode va changer à chaque itération
 
