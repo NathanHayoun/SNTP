@@ -43,12 +43,12 @@ public class TrainDTO {
         this.typeDeTrain = value;
     }
 
-    @JsonProperty("lingeDeTrain")
+    @JsonProperty("ligneDeTrain")
     public String getLigneDeTrain() {
         return ligneDeTrain;
     }
 
-    @JsonProperty("lingeDeTrain")
+    @JsonProperty("ligneDeTrain")
     public void setLigneDeTrain(String value) {
         this.ligneDeTrain = value;
     }
