@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <img class="displayed" src="https://nathanhayoun.fr/img/logoSNTP.png" alt="Logo SNTP" width="20%">
+    <img alt="Logo SNTP" class="displayed" src="https://nathanhayoun.fr/img/logoSNTP.png" width="20%">
     <div class="card mt-2">
         <div class="card-body text-white">
-        <h4>
-            <span>Départs &nbsp;</span><span style="font-size: 18px"><em>Departures - Partenze </em></span>
-        </h4>
+            <h4>
+                <span>Départs &nbsp;</span><span style="font-size: 18px"><em>Departures - Partenze </em></span>
+            </h4>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -29,16 +29,18 @@
                 <tr>
                     <th scope="row" style="width: 10%">
                         {#if arret.train.typeDeTrain == "TER"}
-                        <img src="https://nathanhayoun.fr/img/TERmini.png" alt="TER" width="50%">
+                        <img alt="TER" src="https://nathanhayoun.fr/img/TERmini.png" width="50%">
                         {#else}
-                        <img src="https://nathanhayoun.fr/img/TGVmini.png" alt="TGV" width="50%">
+                        <img alt="TGV" src="https://nathanhayoun.fr/img/TGVmini.png" width="50%">
                         {/if}
                     </th>
                     <td>{arret.train.numeroDeTrain}</td>
-                    <td>{arret.heureDepart}</td>
+                    <td>{arret.passageDuJour.heureDepartReel}</td>
                     <td>{arret.train.terminus}
                         <marquee>
-                            dddddddddddddddd
+                            {#for arretSuivant in arret.train.arretsSuivant}
+                            {arretSuivant} -
+                            {/for}
                         </marquee>
                     </td>
                     <td></td>
@@ -75,12 +77,12 @@
         vertical-align: top;
     }
 
-    .card{
+    .card {
         border: 1px solid #000000 !important;
         background-color: black !important;
     }
 
-    .card-body{
+    .card-body {
         background-color: black !important;
     }
 

@@ -3,9 +3,8 @@ package fr.miage.m1.sntp.models;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Nathan
@@ -68,6 +67,9 @@ public class Arret {
     @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Passage> passages;
 
+    @Transient
+    private Passage passageDuJour;
+
     /**
      * @return id
      */
@@ -103,9 +105,6 @@ public class Arret {
         return position;
     }
 
-    /**
-     * @param position
-     */
     public void setPosition(Integer position) {
         this.position = position;
     }
@@ -180,6 +179,15 @@ public class Arret {
         this.passages = passages;
     }
 
+    public Passage getPassageDuJour() {
+        return this.passageDuJour;
+    }
+
+    public void setPassageDuJour(Passage passageDuJour) {
+        this.passageDuJour = passageDuJour;
+    }
+
+
     public Map<String, Object> getTrain() {
         Map<String, Object> infoTrain = new HashMap<>();
         Train train = this.getItineraireConcerner().getTrain();
@@ -188,6 +196,14 @@ public class Arret {
         infoTrain.put("lingeDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
         infoTrain.put("depart", train.getStationDepart());
         infoTrain.put("terminus", train.getTerminus());
+        List<String> arretsSuivant = new ArrayList<>();
+        this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
+        for (Arret arretSuivant : this.getItineraireConcerner().getArrets()) {
+            if (arretSuivant.getPosition() > this.getPosition()) {
+                arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
+            }
+        }
+        infoTrain.put("arretsSuivant", arretsSuivant);
 
         return infoTrain;
     }

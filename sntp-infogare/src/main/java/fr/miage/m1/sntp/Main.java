@@ -2,7 +2,6 @@ package fr.miage.m1.sntp;
 
 import fr.miage.m1.sntp.ressources.ArretService;
 import fr.miage.m1.sntp.ressources.GareService;
-import io.quarkus.qute.Template;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
@@ -17,7 +16,6 @@ import javax.inject.Inject;
 public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final Integer idGare = Integer.parseInt(System.getProperty("idGare"));
 
     public static void main(String[] args) {
         Quarkus.run(InfoGare.class, args);
@@ -34,6 +32,12 @@ public class Main {
 
         @Override
         public int run(String... args) throws Exception {
+            int idGare;
+            try {
+                idGare = Integer.parseInt(System.getProperty("idGare"));
+            } catch (Exception e) {
+                idGare = 1;
+            }
             logger.info(gareService.getGare(idGare).getNomGare());
             logger.info(arretService.getArretsDepartByGare(idGare).toString());
             Quarkus.waitForExit();
