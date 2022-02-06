@@ -10,7 +10,8 @@ public class ArretDTO {
     private LocalTime heureDepart;
     private LocalTime heureArrivee;
     private PassageDTO passageDuJour;
-    private Integer position;
+    private Long position;
+
     private TrainDTO train;
 
     @JsonProperty("doitMarquerArret")
@@ -54,12 +55,12 @@ public class ArretDTO {
     }
 
     @JsonProperty("position")
-    public long getPosition() {
+    public Long getPosition() {
         return position;
     }
 
     @JsonProperty("position")
-    public void setPosition(Integer value) {
+    public void setPosition(Long value) {
         this.position = value;
     }
 

@@ -52,7 +52,6 @@ public class ReservationRessource {
     @Path("/test")
     public Object getReservationTest() throws ReservationException {
         try {
-            System.out.println("getReservationTest");
             return trajets.generer(1, 3, LocalTime.parse("10:00:00"));
         } catch (Exception e){
             return null;

@@ -27,5 +27,4 @@ public class ItineraireDTO {
     public void setID(long value) {
         this.id = value;
     }
-
 }
