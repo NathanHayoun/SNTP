@@ -3,6 +3,7 @@ package fr.miage.m1.sntp.ressource;
 import fr.miage.m1.sntp.dao.VoyageurDao;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Voyageur;
+import fr.miage.m1.sntp.services.VoyageurService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,23 +16,19 @@ import java.util.List;
 @Path("/voyageurs")
 public class VoyageurRessource {
     @Inject
-    VoyageurDao voyageurDao;
+    VoyageurService service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Voyageur> getVoyageurs() {
-        return voyageurDao.findAll();
+        return service.getVoyageurs();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/voyageur/{id}")
-    public Voyageur getVoyageur(@PathParam("id") int id) throws VoyageurException {
-        try {
-            return voyageurDao.findById(id);
-        } catch (VoyageurException voyageurException){
-            return null;
-        }
+    public Voyageur getVoyageur(@PathParam("id") int id) {
+        return service.getVoyageur(id);
     }
 
 }
