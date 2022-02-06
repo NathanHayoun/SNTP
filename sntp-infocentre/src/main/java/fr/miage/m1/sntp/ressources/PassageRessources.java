@@ -37,8 +37,19 @@ public class PassageRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/gare/{idGare}")
+    @Path("/gare/depart/{idGare}")
     public List<Passage> get10prochainsTrajetsDuJourByGareDepart(@PathParam("idGare") Long idGare) throws ArretException {
+        try {
+            return passageDAO.findprochainsTrajetsDuJourByGareDepart(idGare);
+        } catch (PassageException arretException) {
+            return null;
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/gare/arrivee/{idGare}")
+    public List<Passage> get10prochainsTrajetsDuJourByGareArrivee(@PathParam("idGare") Long idGare) throws ArretException {
         try {
             return passageDAO.findprochainsTrajetsDuJourByGareDepart(idGare);
         } catch (PassageException arretException) {

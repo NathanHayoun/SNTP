@@ -25,7 +25,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @ApplicationScoped
-
 public class InfoCentreMetier {
     public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
     public static final int MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN = 20;
@@ -310,9 +309,7 @@ public class InfoCentreMetier {
 
     private void generatePassage(LocalDate date, Arret arret, Boolean marquerArret) {
         Passage passage = new Passage();
-        passage.setArret(arret);
-        passage.setDateDePassage(date);
-        passage.setMarquerArret(marquerArret);
+        passage.setArret(arret).setDateDePassage(date).setMarquerArret(marquerArret);
         LocalTime heureArrivee = arret.getHeureArrivee();
         passage.setHeureArriveeReel(heureArrivee);
         LocalTime heureDepart = arret.getHeureDepart();
@@ -325,5 +322,28 @@ public class InfoCentreMetier {
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
             context.createProducer().send(context.createQueue(JMS_TRAIN_INFOCENTRE + idTrain), Integer.toString(3));
         }
+    }
+
+    public InfoCentreMetier genererPassages() {
+        List<Train> trains = trainDAO.getAllTrains();
+        for (Train train : trains) {
+            Set<Arret> arrets = train.getItineraireConcerner().getArrets();
+
+            for (Arret arret : arrets) {
+                Set<Passage> passages = arret.getPassages();
+
+                boolean find = false;
+                for (Passage passage : passages) {
+                    if (Objects.equals(passage.getDateDePassage(), LocalDate.now())) {
+                        find = true;
+                    }
+                }
+                if (!find) {
+                    generatePassage(LocalDate.now(), arret, arret.getDoitMarquerArret());
+                }
+            }
+        }
+
+        return this;
     }
 }
