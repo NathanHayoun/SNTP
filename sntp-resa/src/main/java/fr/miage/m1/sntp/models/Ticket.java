@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 @Entity
 public class Ticket {
+    public Ticket(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ticket", nullable = false)
@@ -37,7 +38,6 @@ public class Ticket {
 
     @Column(name = "place")
     private Integer place;
-
     @ManyToOne
     @MapsId("idReservation")
     @JoinColumn(name = "id_reservation")
@@ -138,4 +138,5 @@ public class Ticket {
     public void setReservationConcernee(Reservation reservationConcernee) {
         this.reservationConcernee = reservationConcernee;
     }
+
 }
