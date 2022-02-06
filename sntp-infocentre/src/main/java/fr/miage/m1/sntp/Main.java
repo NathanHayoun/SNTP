@@ -2,6 +2,7 @@ package fr.miage.m1.sntp;
 
 import fr.miage.m1.sntp.cli.ChoixUtilisateur;
 import fr.miage.m1.sntp.cli.UserInterfaceCLI;
+import fr.miage.m1.sntp.tasks.GeneratePassageTask;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import picocli.CommandLine;
@@ -9,17 +10,23 @@ import picocli.CommandLine;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.control.ActivateRequestContext;
 import javax.inject.Inject;
+import java.util.Timer;
 
 @CommandLine.Command(name = "greeting", mixinStandardHelpOptions = true)
 public class Main implements Runnable {
     public static final String CHOISIR_UNE_ACTION = "Choisir une action";
+    public static final long DOUZE_HEURES = 1000 * 60 * 60 * 12;
 
     @Inject
     UserInterfaceCLI cli;
 
+    @Inject
+    GeneratePassageTask generatePassageTask;
+
     @Override
     @ActivateRequestContext
     public void run() {
+        genererPassages();
         TextIO textIO = TextIoFactory.getTextIO();
 
         while (true) {
@@ -70,5 +77,12 @@ public class Main implements Runnable {
     @ActivateRequestContext
     public void genererRetard() {
         cli.genererRetard();
+    }
+
+    @Dependent
+    @ActivateRequestContext
+    public void genererPassages() {
+        Timer timer = new Timer();
+        timer.schedule(generatePassageTask, 0L, DOUZE_HEURES);
     }
 }

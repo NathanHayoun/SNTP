@@ -79,8 +79,10 @@ public class Passage {
     /**
      * @param arret
      */
-    public void setArret(Arret arret) {
+    public Passage setArret(Arret arret) {
         this.arret = arret;
+
+        return this;
     }
 
     /**
@@ -93,8 +95,10 @@ public class Passage {
     /**
      * @param heureArriveeReel
      */
-    public void setHeureArriveeReel(LocalTime heureArriveeReel) {
+    public Passage setHeureArriveeReel(LocalTime heureArriveeReel) {
         this.heureArriveeReel = heureArriveeReel;
+
+        return this;
     }
 
     /**
@@ -107,8 +111,10 @@ public class Passage {
     /**
      * @param heureDepartReel
      */
-    public void setHeureDepartReel(LocalTime heureDepartReel) {
+    public Passage setHeureDepartReel(LocalTime heureDepartReel) {
         this.heureDepartReel = heureDepartReel;
+
+        return this;
     }
 
     /**
@@ -121,8 +127,10 @@ public class Passage {
     /**
      * @param dateDePassage
      */
-    public void setDateDePassage(LocalDate dateDePassage) {
+    public Passage setDateDePassage(LocalDate dateDePassage) {
         this.dateDePassage = dateDePassage;
+
+        return this;
     }
 
     /**
@@ -135,8 +143,10 @@ public class Passage {
     /**
      * @param numeroDeQuai
      */
-    public void setNumeroDeQuai(Integer numeroDeQuai) {
+    public Passage setNumeroDeQuai(Integer numeroDeQuai) {
         this.numeroDeQuai = numeroDeQuai;
+
+        return this;
     }
 
     /**
@@ -149,8 +159,10 @@ public class Passage {
     /**
      * @param marquerArret
      */
-    public void setMarquerArret(Boolean marquerArret) {
+    public Passage setMarquerArret(Boolean marquerArret) {
         this.marquerArret = marquerArret;
+
+        return this;
     }
 
     @JsonbTransient
