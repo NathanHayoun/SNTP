@@ -25,7 +25,7 @@ public class Arret {
     /**
      * If the train has to stop
      */
-    private Integer doitMarquerArret;
+    private Boolean doitMarquerArret;
 
     /**
      * Position of the stop in relation to the train
@@ -85,14 +85,14 @@ public class Arret {
     /**
      * @return doitMarquerArret
      */
-    public Integer getDoitMarquerArret() {
+    public Boolean getDoitMarquerArret() {
         return doitMarquerArret;
     }
 
     /**
      * @param doitMarquerArret
      */
-    public void setDoitMarquerArret(Integer doitMarquerArret) {
+    public void setDoitMarquerArret(Boolean doitMarquerArret) {
         this.doitMarquerArret = doitMarquerArret;
     }
 
