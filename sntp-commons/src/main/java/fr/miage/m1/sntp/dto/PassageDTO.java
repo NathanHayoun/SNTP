@@ -12,6 +12,7 @@ public class PassageDTO {
     private TrainDTO train;
     private LocalTime heureArriveeReel;
     private Boolean marquerArret;
+    private Boolean estSupprime;
 
     @JsonProperty("dateDePassage")
     public LocalDate getDateDePassage() {
@@ -81,6 +82,16 @@ public class PassageDTO {
     @JsonProperty("marquerArret")
     public void setMarquerArret(Boolean value) {
         this.marquerArret = value;
+    }
+
+    @JsonProperty("estSupprime")
+    public Boolean getEstSupprime() {
+        return estSupprime;
+    }
+
+    @JsonProperty("estSupprime")
+    public void setEstSupprime(Boolean estSupprime) {
+        this.estSupprime = estSupprime;
     }
 
     @Override
