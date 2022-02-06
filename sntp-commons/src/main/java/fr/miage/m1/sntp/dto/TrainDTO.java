@@ -8,6 +8,7 @@ public class TrainDTO {
     private String typeDeTrain;
     private String ligneDeTrain;
     private String depart;
+    private ItineraireDTO itineraire;
 
     @JsonProperty("numeroDeTrain")
     public long getNumeroDeTrain() {
@@ -58,6 +59,17 @@ public class TrainDTO {
     public void setDepart(String value) {
         this.depart = value;
     }
+
+    @JsonProperty("itineraire")
+    public ItineraireDTO getItineraire() {
+        return itineraire;
+    }
+
+    @JsonProperty("itineraire")
+    public void setItineraire(ItineraireDTO itineraire) {
+        this.itineraire = itineraire;
+    }
+
 
     @Override
     public String toString() {
