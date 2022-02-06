@@ -49,6 +49,9 @@ public class InfoCentreMetier {
     @Inject
     GareDAO gareDAO;
 
+    @Inject
+    ConnectionFactory connectionFactory;
+
     //Services
     @Inject
     @RestClient
@@ -57,9 +60,6 @@ public class InfoCentreMetier {
     //Lib
     @Inject
     Mailer mailer;
-
-    @Inject
-    ConnectionFactory connectionFactory;
 
     public Tuple<Boolean, String> genererRetard(Long idTrain, Long idGare, Integer nombreDeMinute) {
         Train train;
@@ -121,7 +121,6 @@ public class InfoCentreMetier {
                 passageDAO.insertPassage(passage);
                 envoyerMessage(train.getId());
             }
-
             return new Tuple<>(true, "OK");
         }
     }
