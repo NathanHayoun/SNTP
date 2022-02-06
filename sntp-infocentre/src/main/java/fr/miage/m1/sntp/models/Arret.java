@@ -193,13 +193,13 @@ public class Arret {
         Train train = this.getItineraireConcerner().getTrain();
         infoTrain.put("numeroDeTrain", train.getNumeroDeTrain());
         infoTrain.put("typeDeTrain", train.getTypeDeTrain());
-        infoTrain.put("lingeDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+        infoTrain.put("ligneDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
         infoTrain.put("depart", train.getStationDepart());
         infoTrain.put("terminus", train.getTerminus());
         List<String> arretsSuivant = new ArrayList<>();
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
         for (Arret arretSuivant : this.getItineraireConcerner().getArrets()) {
-            if (arretSuivant.getPosition() > this.getPosition()) {
+            if (arretSuivant.getPosition() > this.getPosition() && arretSuivant.getDoitMarquerArret()) {
                 arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
             }
         }
