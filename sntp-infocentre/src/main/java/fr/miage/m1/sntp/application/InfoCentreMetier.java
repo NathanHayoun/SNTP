@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Session;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +33,7 @@ public class InfoCentreMetier {
     public static final String NB_REQUIS_NON_ATTEINDS_POUR_RETARD = "Le nombre de personnes requise pour générer un retard n'est pas atteinte";
     public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
     public static final String REFUS_AJOUTER_STATION = "Vous ne pouvez pas ajouter une station car le train précédent n a pas %s heures de retard";
+    public static final String JMS_TRAIN_INFOCENTRE = "jms:train/infocentre/";
     private static final String SUJET_MAIL_RETARD_TRAIN = "Retard du train n° %s";
     private static final String MESSAGE_RETARD_TRAIN = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
     private static final String TRAIN_NOT_FOUD = "Train with id %s not found";
@@ -53,6 +57,9 @@ public class InfoCentreMetier {
     //Lib
     @Inject
     Mailer mailer;
+
+    @Inject
+    ConnectionFactory connectionFactory;
 
     public Tuple<Boolean, String> genererRetard(Long idTrain, Long idGare, Integer nombreDeMinute) {
         Train train;
@@ -112,6 +119,7 @@ public class InfoCentreMetier {
                 }
                 passage.setArret(arret);
                 passageDAO.insertPassage(passage);
+                envoyerMessage(train.getId());
             }
 
             return new Tuple<>(true, "OK");
@@ -312,5 +320,11 @@ public class InfoCentreMetier {
         passage.setHeureDepartReel(heureDepart);
         passage.setArret(arret);
         passageDAO.insertPassage(passage);
+    }
+
+    public void envoyerMessage(Long idTrain) {
+        try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
+            context.createProducer().send(context.createQueue(JMS_TRAIN_INFOCENTRE + idTrain), Integer.toString(3));
+        }
     }
 }
