@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ReservationDao {
     List<Reservation> findAll();
-    Reservation findById(int id) throws ReservationException;
-    void save(Reservation reservation);
+    Reservation findById(Long id);
+    Reservation save(Reservation reservation);
     void update(Reservation reservation);
     void delete(Reservation reservation);
 }
