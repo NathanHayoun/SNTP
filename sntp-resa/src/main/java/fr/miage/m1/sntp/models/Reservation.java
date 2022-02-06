@@ -1,12 +1,19 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
 public class Reservation {
+    public Reservation(){}
+    public Reservation(LocalDate dateDeReservation, Voyageur voyageurConcernee, Set<Ticket> tickets) {
+        this.dateDeReservation = dateDeReservation;
+        this.voyageurConcernee = voyageurConcernee;
+        this.tickets = tickets;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_reservation", nullable = false)
@@ -14,7 +21,6 @@ public class Reservation {
 
     @Column(name = "dateDeReservation")
     private LocalDate dateDeReservation;
-
 
     @Column(name = "prix", nullable = false)
     private Double prix;
@@ -24,6 +30,7 @@ public class Reservation {
     private Voyageur voyageurConcernee;
 
     @OneToMany(mappedBy="reservationConcernee",fetch = FetchType.EAGER)
+    @JsonbTransient
     private Set<Ticket> tickets ;
 
     public Voyageur getVoyageur() {

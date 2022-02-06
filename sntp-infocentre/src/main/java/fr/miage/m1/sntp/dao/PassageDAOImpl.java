@@ -18,7 +18,8 @@ public class PassageDAOImpl implements PassageDAO {
     public static final String DATE_DE_PASSAGE = "dateDePassage";
     private static final String ID_GARE = "idGare";
     public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_DEPART = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE + " AND pa.heureDepartReel != null order by pa.heureDepartReel";
-    public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_ARRIVEE = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE + " AND pa.heureArriveeReel != null order by pa.heureDepartReel";
+    public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_ARRIVEE = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE + " AND pa.heureArriveeReel != null order by pa.heureArriveeReel";
+
     @PersistenceContext
     EntityManager em;
 

@@ -1,11 +1,13 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 public class Ticket {
+    public Ticket(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ticket", nullable = false)
@@ -37,10 +39,10 @@ public class Ticket {
 
     @Column(name = "place")
     private Integer place;
-
     @ManyToOne
     @MapsId("idReservation")
     @JoinColumn(name = "id_reservation")
+    @JsonbTransient
     private Reservation reservationConcernee;
 
     public Integer getPlace() {
@@ -138,4 +140,5 @@ public class Ticket {
     public void setReservationConcernee(Reservation reservationConcernee) {
         this.reservationConcernee = reservationConcernee;
     }
+
 }
