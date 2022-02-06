@@ -1,6 +1,10 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
 
 /**
  * @author Nathan
@@ -117,6 +121,7 @@ public class Train {
     /**
      * @return itineraireConcerner
      */
+    @JsonbTransient
     public Itineraire getItineraireConcerner() {
         return itineraireConcerner;
     }
@@ -132,12 +137,9 @@ public class Train {
      * @return station depart
      */
     public String getStationDepart() {
-        for (Arret iti : itineraireConcerner.getArrets()) {
-            if (iti.getPosition() == 1) {
-                return iti.getGareConcerner().getNomGare();
-            }
-        }
-        return "Error";
+        this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
+        Arret arret = (Arret) this.getItineraireConcerner().getArrets().toArray()[0];
+        return arret.getGareConcerner().getNomGare();
     }
 
     /**

@@ -56,6 +56,12 @@ public class Passage {
     private Boolean marquerArret;
 
     /**
+     * estSupprime
+     */
+    @Column(name = "est_supprime")
+    private Boolean estSupprime;
+
+    /**
      * @return idPassage
      */
     public Long getIdPassage() {
@@ -170,6 +176,21 @@ public class Passage {
         return arret.getItineraireConcerner().getTrain();
     }
 
+    /**
+     *
+     * @return estSupprime
+     */
+    public Boolean getEstSupprime() {
+        return estSupprime;
+    }
+
+    /**
+     *
+     * @param estSupprime
+     */
+    public void setEstSupprime(Boolean estSupprime) {
+        this.estSupprime = estSupprime;
+    }
 
     @Override
     public String toString() {
@@ -181,6 +202,7 @@ public class Passage {
                 ", dateDePassage=" + dateDePassage +
                 ", numeroDeQuai=" + numeroDeQuai +
                 ", marquerArret=" + marquerArret +
+                ", estSupprime=" + estSupprime +
                 '}';
     }
 }
