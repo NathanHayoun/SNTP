@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 
 /**
@@ -117,6 +118,7 @@ public class Train {
     /**
      * @return itineraireConcerner
      */
+    @JsonbTransient
     public Itineraire getItineraireConcerner() {
         return itineraireConcerner;
     }

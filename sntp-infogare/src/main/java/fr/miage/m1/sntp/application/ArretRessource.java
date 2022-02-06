@@ -1,7 +1,6 @@
 package fr.miage.m1.sntp.application;
 
 import fr.miage.m1.sntp.dto.ArretDTO;
-import fr.miage.m1.sntp.dto.GareDTO;
 import fr.miage.m1.sntp.ressources.ArretService;
 import fr.miage.m1.sntp.ressources.GareService;
 import io.quarkus.qute.Template;
@@ -18,7 +17,7 @@ import java.util.List;
 
 @Path("/main")
 public class ArretRessource {
-    private static final Integer idGare = Integer.parseInt(System.getProperty("idGare"));
+    private static final Integer idGare = 1;
 
     @Inject
     Template departs;
@@ -38,7 +37,7 @@ public class ArretRessource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getDeparts(@QueryParam("name") String name) {
-       List<ArretDTO> arrets =  arretService.getArretsDepartByGare(idGare);
+        List<ArretDTO> arrets = arretService.getArretsDepartByGare(idGare);
 
         return departs.data("arrets", arrets);
     }
@@ -47,7 +46,7 @@ public class ArretRessource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getArrivees(@QueryParam("name") String name) {
-       List<ArretDTO> arrets =  arretService.getArretsArriveeByGare(idGare);
-       return arrivees.data("arrets", arrets);
+        List<ArretDTO> arrets = arretService.getArretsArriveeByGare(idGare);
+        return arrivees.data("arrets", arrets);
     }
 }

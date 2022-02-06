@@ -1,6 +1,8 @@
 package fr.miage.m1.sntp.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class TrainDTO {
     private Integer numeroDeTrain;
@@ -9,6 +11,7 @@ public class TrainDTO {
     private String ligneDeTrain;
     private String depart;
     private ItineraireDTO itineraire;
+    private List<String> arretsSuivant;
 
     @JsonProperty("numeroDeTrain")
     public long getNumeroDeTrain() {
@@ -70,6 +73,15 @@ public class TrainDTO {
         this.itineraire = itineraire;
     }
 
+    @JsonProperty("arretsSuivant")
+    public List<String> getArretsSuivant() {
+        return arretsSuivant;
+    }
+
+    @JsonProperty("arretsSuivant")
+    public void setArretsSuivant(List<String> arretsSuivant) {
+        this.arretsSuivant = arretsSuivant;
+    }
 
     @Override
     public String toString() {

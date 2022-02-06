@@ -51,7 +51,7 @@ public class PassageRessources {
     @Path("/gare/arrivee/{idGare}")
     public List<Passage> get10prochainsTrajetsDuJourByGareArrivee(@PathParam("idGare") Long idGare) throws ArretException {
         try {
-            return passageDAO.findprochainsTrajetsDuJourByGareDepart(idGare);
+            return passageDAO.findprochainsTrajetsDuJourByGareArrivee(idGare);
         } catch (PassageException arretException) {
             return null;
         }
