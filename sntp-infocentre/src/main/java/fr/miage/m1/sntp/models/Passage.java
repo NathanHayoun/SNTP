@@ -153,6 +153,7 @@ public class Passage {
         this.marquerArret = marquerArret;
     }
 
+    @JsonbTransient
     public Train getTrain() {
         return arret.getItineraireConcerner().getTrain();
     }
