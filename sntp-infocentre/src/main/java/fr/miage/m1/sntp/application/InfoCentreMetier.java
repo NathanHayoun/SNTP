@@ -178,7 +178,7 @@ public class InfoCentreMetier {
             return new Tuple<>(false, "Gare non trouve");
         }
         LocalDate date = LocalDate.now();
-        generatePassage(date, arret, false);
+        generatePassage(date, arret, false, true);
 
         if (train.getTypeDeTrain() == TypeTrain.TGV) {
             String subject = String.format(TRAIN_DELETE_SUBJECT, train.getNumeroDeTrain());
@@ -232,7 +232,7 @@ public class InfoCentreMetier {
         if (Boolean.FALSE.equals(reponseVerif.getVal1())) {
             return reponseVerif;
         }
-        generatePassage(date, arret, true);
+        generatePassage(date, arret, true, false);
 
         return new Tuple<>(true, "ok");
     }
@@ -256,7 +256,7 @@ public class InfoCentreMetier {
         Set<Arret> setArret = train.getItineraireConcerner().getArrets();
 
         for (Arret arret : setArret) {
-            generatePassage(date, arret, false);
+            generatePassage(date, arret, false, true);
         }
 
         return new Tuple<>(true, "OK");
@@ -307,7 +307,7 @@ public class InfoCentreMetier {
         }
     }
 
-    private void generatePassage(LocalDate date, Arret arret, Boolean marquerArret) {
+    private void generatePassage(LocalDate date, Arret arret, Boolean marquerArret, Boolean estSupprime) {
         Passage passage = new Passage();
         passage.setArret(arret).setDateDePassage(date).setMarquerArret(marquerArret);
         LocalTime heureArrivee = arret.getHeureArrivee();
@@ -315,6 +315,7 @@ public class InfoCentreMetier {
         LocalTime heureDepart = arret.getHeureDepart();
         passage.setHeureDepartReel(heureDepart);
         passage.setArret(arret);
+        passage.setEstSupprime(estSupprime);
         passageDAO.insertPassage(passage);
     }
 
@@ -339,7 +340,7 @@ public class InfoCentreMetier {
                     }
                 }
                 if (!find) {
-                    generatePassage(LocalDate.now(), arret, arret.getDoitMarquerArret());
+                    generatePassage(LocalDate.now(), arret, arret.getDoitMarquerArret(), false);
                 }
             }
         }
