@@ -26,7 +26,7 @@ public class LigneDeTrainRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/ligneDeTrain/{id}")
-    public LigneDeTrain getLigneDeTrain(@PathParam("id") long id) throws LigneDeTrainException {
+    public LigneDeTrain getLigneDeTrain(@PathParam("id") long id) {
         try {
             return ligneDeTrainDAO.findLigneDeTrain(id);
         } catch (LigneDeTrainException ligneDeTrainException) {

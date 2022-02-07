@@ -177,7 +177,6 @@ public class Passage {
     }
 
     /**
-     *
      * @return estSupprime
      */
     public Boolean getEstSupprime() {
@@ -185,7 +184,6 @@ public class Passage {
     }
 
     /**
-     *
      * @param estSupprime
      */
     public void setEstSupprime(Boolean estSupprime) {
