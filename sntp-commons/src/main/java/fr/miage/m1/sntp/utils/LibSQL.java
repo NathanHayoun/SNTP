@@ -35,28 +35,23 @@ public class LibSQL {
     }
 
     /**
+     * Update object in Database
+     *
+     * @param object to insert
+     */
+    @Transactional
+    public static void updateObject(EntityManager entityManager, Object object) {
+        entityManager.merge(object);
+    }
+
+    /**
      * Delete object in parameter
      *
      * @param line          to delete
      * @param entityManager from class
      */
     public static void deleteObject(EntityManager entityManager, Object line) {
-        boolean transactionIsOk = false;
-        entityManager.getTransaction().begin();
-        try {
-            entityManager.remove(line);
-            transactionIsOk = true;
-        } catch (Exception exception) {
-            logger.warn("Error during delete object " + line, exception);
-        } finally {
-            if (transactionIsOk) {
-                entityManager.getTransaction().commit();
-                logger.info("Delete ok for object " + line);
-            } else {
-                entityManager.getTransaction().rollback();
-                logger.warn("Transaction rollback for object " + line);
-            }
-        }
+        entityManager.remove(line);
     }
 
     /**
