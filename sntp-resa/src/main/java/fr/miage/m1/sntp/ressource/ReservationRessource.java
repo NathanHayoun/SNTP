@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.ressource;
 
+import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.services.ReservationService;
@@ -32,7 +33,7 @@ public class ReservationRessource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/reservation")
-    public Reservation createReservation(Reservation reservation) {
+    public ReservationDTO createReservation(ReservationDTO reservation) {
         return service.reserver(reservation);
     }
 }
