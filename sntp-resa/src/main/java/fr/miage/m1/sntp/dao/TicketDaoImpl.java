@@ -73,7 +73,6 @@ public class TicketDaoImpl implements TicketDao {
         params.put(NUMERO_DE_TRAIN, numeroDeTrain);
 
         return LibSQL.executeSelectWithNamedParams(entityManager, Voyageur.class, GET_EMAIL_BY_RESERVATION_AND_TRAIN_TODAY, params);
-
     }
 
     @Override
