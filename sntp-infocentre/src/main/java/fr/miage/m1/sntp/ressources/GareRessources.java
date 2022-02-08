@@ -26,7 +26,7 @@ public class GareRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/gare/{id}")
-    public Gare getGare(@PathParam("id") long id) throws GareException {
+    public Gare getGare(@PathParam("id") long id) {
         try {
             return gareDAO.findGare(id);
         } catch (GareException gareException) {

@@ -1,16 +1,15 @@
 package fr.miage.m1.sntp.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalTime;
-import java.util.List;
 
 public class ArretDTO {
     private Boolean doitMarquerArret;
     private GareDTO gareConcerner;
     private LocalTime heureDepart;
     private LocalTime heureArrivee;
-    private List<PassageDTO> passages;
+    private PassageDTO passageDuJour;
     private Integer position;
     private TrainDTO train;
 
@@ -20,8 +19,8 @@ public class ArretDTO {
     }
 
     @JsonProperty("doitMarquerArret")
-    public void setDoitMarquerArret(Integer value) {
-        this.doitMarquerArret =  value == 1;
+    public void setDoitMarquerArret(Boolean value) {
+        this.doitMarquerArret = value;
     }
 
     @JsonProperty("gareConcerner")
@@ -44,14 +43,14 @@ public class ArretDTO {
         this.heureDepart = value;
     }
 
-    @JsonProperty("passages")
-    public List<PassageDTO> getPassages() {
-        return passages;
+    @JsonProperty("passageDuJour")
+    public PassageDTO getPassageDuJour() {
+        return passageDuJour;
     }
 
-    @JsonProperty("passages")
-    public void setPassages(List<PassageDTO> value) {
-        this.passages = value;
+    @JsonProperty("passageDuJour")
+    public void setPassageDuJour(PassageDTO value) {
+        this.passageDuJour = value;
     }
 
     @JsonProperty("position")
@@ -91,7 +90,7 @@ public class ArretDTO {
                 ", gareConcerner=" + gareConcerner +
                 ", heureDepart=" + heureDepart +
                 ", heureArrivee=" + heureArrivee +
-                ", passages=" + passages +
+                ", passageDuJour=" + passageDuJour +
                 ", position=" + position +
                 ", train=" + train +
                 '}';

@@ -2,10 +2,10 @@ package fr.miage.m1.sntp.models;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Nathan
@@ -45,7 +45,7 @@ public class Arret {
     @Column(name = "heureDepart")
     private LocalTime heureDepart;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @MapsId("idGare")
     @JoinColumn(name = "id_gare")
     /**
@@ -65,8 +65,11 @@ public class Arret {
     /**
      * Daily passage
      */
-    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Set<Passage> passages;
+
+    @Transient
+    private Passage passageDuJour;
 
     /**
      * @return id
@@ -103,9 +106,6 @@ public class Arret {
         return position;
     }
 
-    /**
-     * @param position
-     */
     public void setPosition(Integer position) {
         this.position = position;
     }
@@ -180,14 +180,47 @@ public class Arret {
         this.passages = passages;
     }
 
+    public Passage getPassageDuJour() {
+        return this.passageDuJour;
+    }
+
+    public void setPassageDuJour(Passage passageDuJour) {
+        this.passageDuJour = passageDuJour;
+    }
+
+
     public Map<String, Object> getTrain() {
         Map<String, Object> infoTrain = new HashMap<>();
         Train train = this.getItineraireConcerner().getTrain();
         infoTrain.put("numeroDeTrain", train.getNumeroDeTrain());
         infoTrain.put("typeDeTrain", train.getTypeDeTrain());
-        infoTrain.put("lingeDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+        infoTrain.put("ligneDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
         infoTrain.put("depart", train.getStationDepart());
         infoTrain.put("terminus", train.getTerminus());
+        List<String> arretsSuivant = new ArrayList<>();
+        this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
+
+        for (Arret arretSuivant : this.getItineraireConcerner().getArrets()) {
+            Passage passageDuJour = null;
+
+            for (Passage passage : arretSuivant.getPassages()) {
+                if (Objects.equals(passage.getDateDePassage(), LocalDate.now())) {
+                    passageDuJour = passage;
+
+                    break;
+                }
+            }
+            if (passageDuJour == null) {
+                continue;
+            }
+            if (Boolean.TRUE.equals(
+                    arretSuivant.getPosition() > this.getPosition() &&
+                            passageDuJour.getMarquerArret()) &&
+                    Boolean.FALSE.equals(passageDuJour.getEstSupprime())) {
+                arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
+            }
+        }
+        infoTrain.put("arretsSuivant", arretsSuivant);
 
         return infoTrain;
     }

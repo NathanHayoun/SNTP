@@ -6,10 +6,12 @@ import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.services.ReservationService;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.time.LocalTime;
 import java.util.List;
 
 @Path("/reservations")
@@ -23,6 +25,7 @@ public class ReservationRessource {
 
     @Inject
     Trajets trajets;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -50,8 +53,8 @@ public class ReservationRessource {
     @Path("/test")
     public Object getReservationTest() throws ReservationException {
         try {
-            System.out.println("test");
-            return trajets.generer(1, 3);
+            System.out.println("getReservationTest");
+            return trajets.generer(1, 3, LocalTime.parse("10:00:00"));
         } catch (Exception e){
             return null;
         }

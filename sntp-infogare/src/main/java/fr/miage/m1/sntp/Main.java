@@ -16,7 +16,6 @@ import javax.inject.Inject;
 public class Main {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final Integer idGare = Integer.parseInt(System.getProperty("idGare"));
 
     public static void main(String[] args) {
         Quarkus.run(InfoGare.class, args);
@@ -25,16 +24,22 @@ public class Main {
     public static class InfoGare implements QuarkusApplication {
         @Inject
         @RestClient
-        GareService gs;
+        GareService gareService;
 
         @Inject
         @RestClient
-        ArretService as;
+        ArretService arretService;
 
         @Override
         public int run(String... args) throws Exception {
-            logger.info(gs.getGare(idGare).getNomGare());
-            logger.info(as.getArretsDepartByGare(idGare).toString());
+            int idGare;
+            try {
+                idGare = Integer.parseInt(System.getProperty("idGare"));
+            } catch (Exception e) {
+                idGare = 1;
+            }
+            logger.info(gareService.getGare(idGare).getNomGare());
+            logger.info(arretService.getArretsDepartByGare(idGare).toString());
             Quarkus.waitForExit();
             return 0;
         }

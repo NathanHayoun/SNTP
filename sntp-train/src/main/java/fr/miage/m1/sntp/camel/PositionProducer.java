@@ -33,7 +33,7 @@ public class PositionProducer implements Runnable {
             JAXBContext context = JAXBContext.newInstance(driver.getClass());
             StringWriter writer = new StringWriter();
             context.createMarshaller().marshal(driver, writer);
-            logger.info(writer.toString());
+
             return writer.toString();
         } catch (JAXBException e) {
             logger.warn("Error when converting XML ", e);
