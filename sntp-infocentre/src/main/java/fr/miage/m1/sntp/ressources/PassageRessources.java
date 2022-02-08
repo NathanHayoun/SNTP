@@ -1,7 +1,6 @@
 package fr.miage.m1.sntp.ressources;
 
 import fr.miage.m1.sntp.dao.PassageDAO;
-import fr.miage.m1.sntp.exceptions.ArretException;
 import fr.miage.m1.sntp.exceptions.PassageException;
 import fr.miage.m1.sntp.models.Passage;
 
@@ -11,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/passages")
@@ -27,7 +27,7 @@ public class PassageRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/Passage/{id}")
-    public Passage getPassage(@PathParam("id") long id) throws PassageException {
+    public Passage getPassage(@PathParam("id") long id) {
         try {
             return passageDAO.findPassage(id);
         } catch (PassageException passageException) {
@@ -37,12 +37,23 @@ public class PassageRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/gare/{idGare}")
-    public List<Passage> get10prochainsTrajetsDuJourByGareDepart(@PathParam("idGare") Long idGare) throws ArretException {
+    @Path("/gare/depart/{idGare}")
+    public List<Passage> get10prochainsTrajetsDuJourByGareDepart(@PathParam("idGare") Long idGare) {
         try {
             return passageDAO.findprochainsTrajetsDuJourByGareDepart(idGare);
         } catch (PassageException arretException) {
-            return null;
+            return Collections.emptyList();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/gare/arrivee/{idGare}")
+    public List<Passage> get10prochainsTrajetsDuJourByGareArrivee(@PathParam("idGare") Long idGare) {
+        try {
+            return passageDAO.findprochainsTrajetsDuJourByGareArrivee(idGare);
+        } catch (PassageException arretException) {
+            return Collections.emptyList();
         }
     }
 

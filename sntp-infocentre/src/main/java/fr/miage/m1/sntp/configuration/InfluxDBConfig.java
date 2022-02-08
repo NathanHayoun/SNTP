@@ -7,7 +7,6 @@ import org.influxdb.InfluxDBFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.net.UnknownHostException;
 
 @ApplicationScoped
 @Named("influxDBBean")
@@ -22,16 +21,9 @@ public class InfluxDBConfig {
 
     @ConfigProperty(name = "influx.password")
     String influxPassword;
-
-    @ConfigProperty(name = "influx.db")
-    String influxDatabase;
-
-    public String getDatabaseName() {
-        return this.influxDatabase;
-    }
-
+    
     @ApplicationScoped
-    public InfluxDB influxDbBean() throws UnknownHostException {
+    public InfluxDB influxDbBean() {
         return InfluxDBFactory.connect(influxUrl, influxUsername, influxPassword).setRetentionPolicy(RETENTION_POLICY);
     }
 }

@@ -17,7 +17,9 @@ import java.util.Map;
 public class PassageDAOImpl implements PassageDAO {
     public static final String DATE_DE_PASSAGE = "dateDePassage";
     private static final String ID_GARE = "idGare";
-    public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE;
+    public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_DEPART = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE + " AND pa.heureDepartReel != null order by pa.heureDepartReel";
+    public static final String QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_ARRIVEE = "SELECT pa FROM Passage pa JOIN pa.arret ar JOIN ar.gareConcerner ga WHERE pa.dateDePassage = :" + DATE_DE_PASSAGE + " and ga.id = :" + ID_GARE + " AND pa.heureArriveeReel != null order by pa.heureArriveeReel";
+
     @PersistenceContext
     EntityManager em;
 
@@ -44,12 +46,27 @@ public class PassageDAOImpl implements PassageDAO {
     }
 
     @Override
+    @Transactional
+    public void updatePassage(Passage passage) {
+        LibSQL.updateObject(em, passage);
+    }
+
+    @Override
     public List<Passage> findprochainsTrajetsDuJourByGareDepart(long idGare) throws PassageException {
+        return getPassages(idGare, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_DEPART);
+    }
+
+    @Override
+    public List<Passage> findprochainsTrajetsDuJourByGareArrivee(long idGare) throws PassageException {
+        return getPassages(idGare, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_ARRIVEE);
+    }
+
+    private List<Passage> getPassages(long idGare, String querySelect10ProchainPassageDuJourByIdGareArrivee) {
         Map<String, Object> params = new HashMap<>();
         params.put(ID_GARE, idGare);
         LocalDate date = LocalDate.now();
         params.put(DATE_DE_PASSAGE, date);
-        return LibSQL.executeSelectWithNamedParams(em, Object[].class, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE, params);
+        return LibSQL.executeSelectWithNamedParams(em, Object[].class, querySelect10ProchainPassageDuJourByIdGareArrivee, params);
     }
 
 }

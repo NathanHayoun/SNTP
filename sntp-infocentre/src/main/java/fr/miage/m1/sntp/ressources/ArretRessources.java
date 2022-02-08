@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/arrets")
@@ -26,7 +27,7 @@ public class ArretRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/arret/{id}")
-    public Arret getArret(@PathParam("id") long id) throws ArretException {
+    public Arret getArret(@PathParam("id") long id) {
         try {
             return arretDAO.findArret(id);
         } catch (ArretException arretException) {
@@ -37,33 +38,33 @@ public class ArretRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/arret/train/{numero}")
-    public List<Arret> getArretByNumTrain(@PathParam("numero") int numeroDeTrain) throws ArretException {
+    public List<Arret> getArretByNumTrain(@PathParam("numero") Integer numeroDeTrain) {
         try {
             return arretDAO.getAllArretByNumeroDeTrain(numeroDeTrain);
         } catch (ArretException arretException) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/arret/depart/{idGare}")
-    public List<Arret> getArretsDepartByGare(@PathParam("idGare") int idGare) throws ArretException {
+    public List<Arret> getArretsDepartByGare(@PathParam("idGare") int idGare) {
         try {
             return arretDAO.getArretsDepartByGare(idGare);
         } catch (ArretException arretException) {
-            return null;
+            return Collections.emptyList();
         }
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/arret/arrivee/{idGare}")
-    public List<Arret> getArretsArriveeByGare(@PathParam("idGare") int idGare) throws ArretException {
+    public List<Arret> getArretsArriveeByGare(@PathParam("idGare") int idGare) {
         try {
             return arretDAO.getArretsArriveeByGare(idGare);
         } catch (ArretException arretException) {
-            return null;
+            return Collections.emptyList();
         }
     }
 }

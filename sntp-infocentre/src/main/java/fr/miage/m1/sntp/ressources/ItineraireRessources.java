@@ -26,7 +26,7 @@ public class ItineraireRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/itineraire/{id}")
-    public Itineraire getitineraireDAO(@PathParam("id") long id) throws ItineraireException {
+    public Itineraire getitineraireDAO(@PathParam("id") long id) {
         try {
             return itineraireDAO.findItineraire(id);
         } catch (ItineraireException itineraireException) {

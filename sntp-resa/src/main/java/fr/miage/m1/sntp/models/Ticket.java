@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,6 +42,7 @@ public class Ticket {
     @ManyToOne
     @MapsId("idReservation")
     @JoinColumn(name = "id_reservation")
+    @JsonbTransient
     private Reservation reservationConcernee;
 
     public Integer getPlace() {

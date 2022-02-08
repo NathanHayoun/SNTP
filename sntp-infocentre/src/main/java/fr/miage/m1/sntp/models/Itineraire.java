@@ -2,7 +2,10 @@ package fr.miage.m1.sntp.models;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Nathan
@@ -63,7 +66,7 @@ public class Itineraire {
      * @return arrets
      */
     public Set<Arret> getArrets() {
-        return arrets;
+        return arrets.stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /**
