@@ -2,14 +2,17 @@ package fr.miage.m1.sntp.ressource;
 
 import fr.miage.m1.sntp.Trajets;
 import fr.miage.m1.sntp.dao.ReservationDao;
+import fr.miage.m1.sntp.dao.VoyageurDao;
 import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
+import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -21,6 +24,9 @@ public class ReservationRessource {
 
     @Inject
     ReservationDao reservationDao;
+
+    @Inject
+    VoyageurDao voyageurDao;
   
     @Inject
     Trajets trajets;
@@ -50,9 +56,14 @@ public class ReservationRessource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/test")
-    public Object getReservationTest() throws ReservationException {
+    public Reservation getReservationTest() throws ReservationException {
+        System.out.println("je test");
         try {
-            return trajets.generer(1, 3, LocalTime.parse("10:00:00"));
+            Voyageur voyageur = new Voyageur();
+            voyageur.setEmail("nathanpapy@hotmail.fr");
+            voyageur.setNom("Hayoun");
+            voyageur.setPrenom("Nathan");
+            return trajets.generer("Paris", "Rome", LocalTime.parse("07:00:00"), LocalDate.now(),voyageur);
         } catch (Exception e){
             return null;
         }

@@ -25,7 +25,7 @@ public class Reservation {
     @Column(name = "prix", nullable = false)
     private Double prix;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_voyageur")
     private Voyageur voyageurConcernee;
 
@@ -71,5 +71,16 @@ public class Reservation {
 
     public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", dateDeReservation=" + dateDeReservation +
+                ", prix=" + prix +
+                ", voyageurConcernee=" + voyageurConcernee +
+                ", tickets=" + tickets +
+                '}';
     }
 }

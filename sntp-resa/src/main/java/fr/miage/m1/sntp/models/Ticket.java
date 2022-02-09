@@ -49,96 +49,118 @@ public class Ticket {
         return place;
     }
 
-    public void setPlace(Integer place) {
+    public Ticket setPlace(Integer place) {
         this.place = place;
+        return this;
     }
 
     public Integer getNumeroEtape() {
         return numeroEtape;
     }
 
-    public void setNumeroEtape(Integer numeroEtape) {
+    public Ticket setNumeroEtape(Integer numeroEtape) {
         this.numeroEtape = numeroEtape;
+
+        return this;
     }
 
     public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(LocalTime heureDepart) {
+    public Ticket setHeureDepart(LocalTime heureDepart) {
         this.heureDepart = heureDepart;
+        return this;
     }
 
     public LocalTime getHeureArrivee() {
         return heureArrivee;
     }
 
-    public void setHeureArrivee(LocalTime heureArrivee) {
+    public Ticket setHeureArrivee(LocalTime heureArrivee) {
         this.heureArrivee = heureArrivee;
+        return this;
     }
 
     public String getGareDepart() {
         return gareDepart;
     }
 
-    public void setGareDepart(String gareDepart) {
+    public Ticket setGareDepart(String gareDepart) {
         this.gareDepart = gareDepart;
+        return this;
     }
 
     public String getGareArrivee() {
         return gareArrivee;
     }
 
-    public void setGareArrivee(String gareArrivee) {
+    public Ticket setGareArrivee(String gareArrivee) {
         this.gareArrivee = gareArrivee;
+        return this;
     }
 
     public LocalDate getDateDepart() {
         return dateDepart;
     }
 
-    public void setDateDepart(LocalDate dateDepart) {
+    public Ticket setDateDepart(LocalDate dateDepart) {
         this.dateDepart = dateDepart;
+        return this;
     }
 
     public boolean getIsReservable() {
         return isReservable;
     }
 
-    public void setIsReservable(Boolean isReservable) {
+    public Ticket setIsReservable(Boolean isReservable) {
         this.isReservable = isReservable;
+        return this;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Ticket setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public Integer getNumeroTrain() {
         return numeroTrain;
     }
 
-    public void setNumeroTrain(Integer numeroTrain) {
+    public Ticket setNumeroTrain(Integer numeroTrain) {
         this.numeroTrain = numeroTrain;
+        return this;
     }
 
     public Boolean getReservable() {
         return isReservable;
     }
 
-    public void setReservable(Boolean reservable) {
-        isReservable = reservable;
-    }
-
     public Reservation getReservationConcernee() {
         return reservationConcernee;
     }
 
-    public void setReservationConcernee(Reservation reservationConcernee) {
+    public Ticket setReservationConcernee(Reservation reservationConcernee) {
         this.reservationConcernee = reservationConcernee;
+        return this;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                ", numeroTrain=" + numeroTrain +
+                ", isReservable=" + isReservable +
+                ", dateDepart=" + dateDepart +
+                ", gareArrivee='" + gareArrivee + '\'' +
+                ", gareDepart='" + gareDepart + '\'' +
+                ", heureArrivee=" + heureArrivee +
+                ", heureDepart=" + heureDepart +
+                ", numeroEtape=" + numeroEtape +
+                ", place=" + place +
+                '}';
+    }
 }
