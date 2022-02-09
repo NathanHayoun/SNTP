@@ -21,9 +21,8 @@ public class Graph {
 
     @Override
     public String toString() {
-        return "Graph{" +
-                "nodes=" + nodes +
-                '}';
+        return "Graph: " +
+                "nodes=" + nodes;
     }
 }
 
@@ -32,11 +31,11 @@ class Node {
 
     private List<Node> shortestPath = new LinkedList<>();
 
-    private Integer distance = Integer.MAX_VALUE;
+    private Long distance = Long.MAX_VALUE;
 
-    Map<Node, Integer> adjacentNodes = new HashMap<>();
+    Map<Node, Long> adjacentNodes = new HashMap<>();
 
-    public void addDestination(Node destination, int distance) {
+    public void addDestination(Node destination, Long distance) {
         adjacentNodes.put(destination, distance);
     }
 
@@ -60,36 +59,37 @@ class Node {
         this.shortestPath = shortestPath;
     }
 
-    public Integer getDistance() {
+    public Long getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(Long distance) {
         this.distance = distance;
     }
 
-    public Map<Node, Integer> getAdjacentNodes() {
+    public Map<Node, Long> getAdjacentNodes() {
         return adjacentNodes;
     }
 
-    public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
+    public void setAdjacentNodes(Map<Node, Long> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
     }
 
     @Override
     public String toString() {
-        return "Node{" +
-                "arret=" + arret +
-                ", shortestPath=" + shortestPath +
-                ", distance=" + distance +
-                ", adjacentNodes=" + adjacentNodes +
-                '}';
+        List<String> shortedPath = new ArrayList<>();
+        for(Node node : shortestPath) {
+            shortedPath.add(node.getArret().getGareConcerner().getNomGare());
+        }
+        return "Node: " +
+                "arret=" + arret.getGareConcerner().getNomGare() +
+                ", distance=" + distance + "minutes / chemin : " + shortedPath;
     }
 }
 
 class Dijkstra {
     public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
-        source.setDistance(0);
+        source.setDistance(0L);
 
         Set<Node> settledNodes = new HashSet<>();
         Set<Node> unsettledNodes = new HashSet<>();
@@ -99,10 +99,10 @@ class Dijkstra {
         while (unsettledNodes.size() != 0) {
             Node currentNode = getLowestDistanceNode(unsettledNodes);
             unsettledNodes.remove(currentNode);
-            for (Map.Entry< Node, Integer> adjacencyPair:
+            for (Map.Entry<Node, Long> adjacencyPair :
                     currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
-                Integer edgeWeight = adjacencyPair.getValue();
+                long edgeWeight = adjacencyPair.getValue();
                 if (!settledNodes.contains(adjacentNode)) {
                     calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
                     unsettledNodes.add(adjacentNode);
@@ -113,11 +113,11 @@ class Dijkstra {
         return graph;
     }
 
-    private static Node getLowestDistanceNode(Set < Node > unsettledNodes) {
+    private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
         Node lowestDistanceNode = null;
-        int lowestDistance = Integer.MAX_VALUE;
-        for (Node node: unsettledNodes) {
-            int nodeDistance = node.getDistance();
+        long lowestDistance = Long.MAX_VALUE;
+        for (Node node : unsettledNodes) {
+            long nodeDistance = node.getDistance();
             if (nodeDistance < lowestDistance) {
                 lowestDistance = nodeDistance;
                 lowestDistanceNode = node;
@@ -127,8 +127,8 @@ class Dijkstra {
     }
 
     private static void calculateMinimumDistance(Node evaluationNode,
-                                                 Integer edgeWeigh, Node sourceNode) {
-        Integer sourceDistance = sourceNode.getDistance();
+                                                 Long edgeWeigh, Node sourceNode) {
+        long sourceDistance = sourceNode.getDistance();
         if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
             evaluationNode.setDistance(sourceDistance + edgeWeigh);
             LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());

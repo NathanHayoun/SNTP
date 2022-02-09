@@ -1,16 +1,21 @@
 package fr.miage.m1.sntp;
 
+import fr.miage.m1.sntp.dao.ReservationDao;
+import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.dto.ArretDTO;
 import fr.miage.m1.sntp.dto.ItineraireDTO;
-import fr.miage.m1.sntp.services.ArretService;
+import fr.miage.m1.sntp.models.Reservation;
+import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ItineraireService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.Map.Entry;
 
 @ApplicationScoped
 public class Trajets {
@@ -19,6 +24,12 @@ public class Trajets {
     @Inject
     @RestClient
     ItineraireService itineraireService;
+
+    @Inject
+    TicketDao ticketDao;
+
+    @Inject
+    ReservationDao reservationDao;
 
 //    public Trajets(String villeDepart, String villeArrivee) {
 //        this.villeDepart = villeDepart;
@@ -49,103 +60,105 @@ public class Trajets {
                 '}';
     }
 
-    public Object generer(long idGareDepart, long idGareArrivee, LocalTime heureDepart) throws CloneNotSupportedException {
-        List<ItineraireDTO> itineraires = itineraireService.getItineraire();
-        Graph graph = new Graph();
-        Node arretDepartNode = null;
+    public Reservation generer(String nomGareDepart, String nomGareArrive, LocalTime heureDepart, LocalDate localDate, Voyageur voyageur) throws CloneNotSupportedException {
+        nomGareArrive = nomGareArrive.toUpperCase();
+        nomGareDepart = nomGareDepart.toUpperCase();
+        List<ItineraireDTO> itineraires = itineraireService.getItineraire(); // Récupération des itineraires
+        Map<String, Node> nodes = new HashMap<>();
 
-        // Récupération des arrets de départ et d'arrivée
         for (ItineraireDTO itineraire : itineraires) {
-            boolean premierArret = true;
-            Node lastNode = null;
-            Node arretEnCours;
-
             for (ArretDTO arret : itineraire.getArrets()) {
-                if (arretDepartNode == null && arret.getGareConcerner().getId() == idGareDepart && arret.getDoitMarquerArret().equals(true) && arret.getHeureDepart() != null && (arret.getHeureDepart().isBefore(heureDepart) || arret.getHeureDepart().equals(heureDepart))) {
-                    arretDepartNode = new Node(arret);
+                String nomGare = arret.getGareConcerner().getNomGare();
+                if (!nodes.containsKey(nomGare) && arret.getHeureDepart() != null && arret.getHeureDepart().isAfter(heureDepart) || Objects.equals(arret.getHeureDepart(), heureDepart)) {
+                    nodes.put(arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT), new Node(arret));
                 }
-                if (premierArret && arret.getDoitMarquerArret()) {
-                    System.out.println("Arret : " + arret.getGareConcerner());
-                    lastNode = new Node(arret);
-                    graph.addNode(lastNode);
-                    premierArret = false;
-                } else if (arret.getDoitMarquerArret() && lastNode != null) {
-                    System.out.println("Ajout d'un arc entre " + lastNode.getArret().getGareConcerner() + " et " + arret.getGareConcerner());
-                    arretEnCours = new Node(arret);
-                    System.out.println("arretEnCours : " + arretEnCours.getArret().getGareConcerner());
-                    System.out.println("lastNode : " + lastNode.getArret().getGareConcerner());
-                    System.out.println("lastnode arrivee : " + lastNode.getArret().getHeureArrivee());
-                    System.out.println("arret heure arrivee : " + arret.getHeureArrivee() + '\n');
-                    System.out.println("diff : " + (int) lastNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-                    lastNode.addDestination(arretEnCours, (int) lastNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-                    lastNode = arretEnCours;
-                    graph.addNode(lastNode);
-                }
-                System.out.println("Ne marque pas l'arret");
             }
-            assert lastNode != null;
-            System.out.println("=====> " + lastNode.getArret().getGareConcerner());
-            System.out.println(lastNode.toString());
-
         }
-        assert arretDepartNode != null;
-        graph = Dijkstra.calculateShortestPathFromSource(graph, arretDepartNode);
+
+        for (Entry<String, Node> entry : nodes.entrySet()) {
+            Node node = entry.getValue();
+
+            for (ItineraireDTO itineraire : itineraires) {
+                Long position = 0L;
+                ArretDTO arretPrecedent = null;
+
+                for (ArretDTO arret : itineraire.getArrets()) {
+                    if (arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT).equals(entry.getKey())) {
+                        arretPrecedent = arret;
+                        position = arret.getPosition();
+                    } else {
+                        if (position != null && arretPrecedent != null && arret.getDoitMarquerArret()) {
+                            Long size = arretPrecedent.getHeureDepart().until(arret.getHeureArrivee(), java.time.temporal.ChronoUnit.MINUTES);
+                            node.addDestination(nodes.get(arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT)), size);
+                        }
+                    }
+                }
+            }
+        }
 
 
-//            for (ArretDTO arret : itineraire.getArrets()) {
-//                // Récupère l'arret de départ
-//                if (arret.getGareConcerner().getId() == idGareDepart && arret.getDoitMarquerArret().equals(true) && arret.getHeureDepart() != null && (arret.getHeureDepart().isBefore(heureDepart) || arret.getHeureDepart().equals(heureDepart))) {
-//                    arretDepartNode = new Node(arret);
-//                } else {
-//                    if (listeArrets.stream().anyMatch(station -> Objects.equals(station.getGareConcerner().getId(), arret.getGareConcerner().getId()) && arret.getHeureDepart().isAfter(station.getHeureDepart()))) {
-//
-//                    } else {
-//                        listeArrets.add(arret);
-//                    }
-//                }
-//            }
+        Graph graph = new Graph();
 
-//            if (arretDepartNode != null) {
-//                boolean premierArret = true;
-//                Node lastNode = null;
-//                // On récupère les arrets qui suivent l'arret de départ
-//                for (ArretDTO arret : listeArrets) {
-//                    if (arret.getDoitMarquerArret()) {
-//                        if (premierArret) {
-//                            lastNode = new Node(arret);
-//                            // Ajout d'un noeud après l'arret de départ
-//                            arretDepartNode.addDestination(lastNode, (int) arretDepartNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-//                            premierArret = false;
-//                        } else {
-//                            // Ajout d'un noeud après l'arret précédent
-//                            lastNode.addDestination(new Node(arret), (int) lastNode.getArret().getHeureArrivee().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-//                            lastNode = new Node(arret);
-//                        }
-//
-//                    }
-//                }
-//                // Ajout de la lite de noeuds au graph
-//                graph.addNode(lastNode);
-//                graph = Dijkstra.calculateShortestPathFromSource(graph, arretDepartNode);
-//            }
-        //}
+        for (Entry<String, Node> entry : nodes.entrySet()) {
+            graph.addNode(entry.getValue());
+        }
 
-        // arretDepartNode va changer à chaque itération
+        Graph graph1;
+        graph1 = Dijkstra.calculateShortestPathFromSource(graph, nodes.get(nomGareDepart));
+        Map<String, List<ArretDTO>> arrets = new LinkedHashMap<>();
+        System.out.println(graph1.getNodes());
+        for (Node node : graph1.getNodes()) {
+            if (node.getArret().getGareConcerner().getNomGare().toUpperCase(Locale.ROOT).equals(nomGareArrive)) {
+                for (Node adjacent : node.getShortestPath()) {
+                    String ligneDeTrain = adjacent.getArret().getTrain().getLigneDeTrain();
+                    if (!arrets.containsKey(ligneDeTrain)) {
+                        arrets.put(ligneDeTrain, new ArrayList<>(List.of(adjacent.getArret())));
+                    } else {
+                        arrets.get(ligneDeTrain).add(adjacent.getArret());
+                    }
+                }
+            }
+        }
+        //Genere un nombre aleatoire avec une borne maximum et minimum
+        Set<Ticket> ticketList = new LinkedHashSet<>();
+        Reservation reservation = new Reservation();
+        double prix = arrets.values().stream().mapToDouble(List::size).sum() * 10;
+        reservation.setVoyageur(voyageur);
+        reservation.setPrix(prix);
+        reservation.setDateDeReservation(localDate);
+        reservationDao.save(reservation);
+        int numeroEtape = 0;
+        for (Entry<String, List<ArretDTO>> entry : arrets.entrySet()) {
+            System.out.println("==============================");
+            System.out.println("Ligne de train : " + entry.getKey());
+            System.out.println("==============================");
+            System.out.println(entry.getValue());
+            System.out.println("==============================");
+            numeroEtape++;
+            ArretDTO arretFirst = entry.getValue().get(0);
+            ArretDTO arretLast = entry.getValue().get(entry.getValue().size() - 1);
+            Random random = new Random();
+            int nombreAleatoire = random.nextInt(arrets.size());
+            Ticket ticket = new Ticket();
+            ticket.setDateDepart(localDate)
+                    .setGareDepart(arretFirst.getGareConcerner().getNomGare())
+                    .setGareArrivee(arretLast.getGareConcerner().getNomGare())
+                    .setHeureArrivee(arretLast.getHeureArrivee())
+                    .setHeureDepart(arretFirst.getHeureDepart())
+                    .setNumeroEtape(numeroEtape)
+                    .setPlace(nombreAleatoire)
+                    .setIsReservable(arretFirst.getTrain().getTypeDeTrain().equals("TGV"))
+                    .setNumeroTrain((int) arretFirst.getTrain().getNumeroDeTrain())
+                    .setReservationConcernee(reservation);
+            System.out.println(ticket);
+            ticketList.add(ticket);
+//            ticketDao.save(ticket);
+        }
 
-//        if (listeDeparts.isEmpty() || listeArrivees.isEmpty()) {
-//            System.out.println("Aucun trajet n'a été trouvé");
-//        } else {
-//            Graph graph = new Graph();
-//
-//            System.out.println("itineraires :");
-//            System.out.println(itineraires);
-//
-//            System.out.println("listeDeparts :");
-//            System.out.println(listeDeparts);
-//
-//            System.out.println("listeArrivees :");
-//            System.out.println(listeArrivees);
-//        }
-        return null;
+        reservation.setTickets(ticketList);
+
+        System.out.println(graph1);
+
+        return reservation;
     }
 }
