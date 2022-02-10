@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.ressource;
 
+import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.Trajets;
 import fr.miage.m1.sntp.dao.VoyageurDao;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
@@ -25,6 +26,9 @@ public class ReservationRessource {
     @Inject
     VoyageurDao voyageurDao;
     @Inject
+    ReservationDao reservationDao;
+  
+    @Inject
     Trajets trajets;
 
     @GET
@@ -44,7 +48,7 @@ public class ReservationRessource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/reservation")
-    public Reservation createReservation(Reservation reservation) {
+    public ReservationDTO createReservation(ReservationDTO reservation) {
         return service.reserver(reservation);
     }
 
