@@ -122,8 +122,11 @@ public class InfoCentreMetier {
                     passage.setMarquerArret(true);
                     nouveauPassage = true;
                 }
-
+                if (passage.getEstSupprime() == null) {
+                    passage.setEstSupprime(false);
+                }
                 LocalTime heureArrivee = arret.getHeureArrivee();
+
                 if (heureArrivee != null) {
                     heureArrivee = heureArrivee.plusMinutes(nombreDeMinute);
                     passage.setHeureArriveeReel(heureArrivee);

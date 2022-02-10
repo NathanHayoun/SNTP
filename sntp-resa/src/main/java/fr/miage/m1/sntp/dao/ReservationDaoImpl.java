@@ -1,6 +1,5 @@
 package fr.miage.m1.sntp.dao;
 
-import fr.miage.m1.sntp.exceptions.ReservationException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.utils.LibSQL;
 
@@ -29,14 +28,13 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     @Transactional
     public Reservation save(Reservation reservation) {
-        LibSQL.insertObject(entityManager, reservation);
-        return reservation;
+        return (Reservation) LibSQL.insertObject(entityManager, reservation);
     }
 
     @Override
     @Transactional
     public void update(Reservation reservation) {
-        LibSQL.update(entityManager,reservation);
+        LibSQL.update(entityManager, reservation);
     }
 
     @Override

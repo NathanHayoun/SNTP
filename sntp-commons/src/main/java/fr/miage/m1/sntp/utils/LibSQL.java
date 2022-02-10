@@ -30,8 +30,10 @@ public class LibSQL {
      * @param object to insert
      */
     @Transactional
-    public static void insertObject(EntityManager entityManager, Object object) {
+    public static Object insertObject(EntityManager entityManager, Object object) {
         entityManager.persist(object);
+
+        return object;
     }
 
     /**
