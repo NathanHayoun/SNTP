@@ -2,7 +2,10 @@ package fr.miage.m1.sntp.models;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Nathan
@@ -25,7 +28,7 @@ public class Gare {
     /**
      * Train passing in the station
      */
-    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonbTransient
     private Set<Arret> trainsQuiPasseDansLaGare;
 
@@ -61,7 +64,7 @@ public class Gare {
      * @return trainsQuiPasseDansLaGare
      */
     public Set<Arret> getTrainsQuiPasseDansLaGare() {
-        return trainsQuiPasseDansLaGare;
+        return trainsQuiPasseDansLaGare.stream().sorted(Comparator.comparing(Arret::getHeureArrivee, Comparator.nullsLast(Comparator.reverseOrder()))).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /**

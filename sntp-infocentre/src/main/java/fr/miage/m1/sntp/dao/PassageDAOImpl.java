@@ -46,6 +46,12 @@ public class PassageDAOImpl implements PassageDAO {
     }
 
     @Override
+    @Transactional
+    public void updatePassage(Passage passage) {
+        LibSQL.updateObject(em, passage);
+    }
+
+    @Override
     public List<Passage> findprochainsTrajetsDuJourByGareDepart(long idGare) throws PassageException {
         return getPassages(idGare, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_DEPART);
     }

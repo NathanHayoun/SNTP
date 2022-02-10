@@ -22,11 +22,11 @@
                     <th scope="col">Horaire</th>
                     <th scope="col">Provenance</th>
                     <th scope="col">N° Quai</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {#for arret in arrets}
-
                 <tr>
                     <th scope="row" style="width: 10%">
                         {#if arret.train.typeDeTrain == "TER" }
@@ -39,6 +39,19 @@
                     <td>{arret.heureArrivee}</td>
                     <td>{arret.train.depart}</td>
                     <td></td>
+                    <td>
+                        {#if arret.passageDuJour.estSupprime == true}
+                        <span class="badge bg-danger">Supprimé</span>
+                        {/if}
+
+                        {#if arret.passageDuJour.estSupprime == false && arret.passageDuJour.heureArriveeReel == arret.heureArrivee}
+                        <span class="badge bg-success">A l'heure</span>
+                        {/if}
+
+                        {#if arret.passageDuJour.estSupprime == false && arret.passageDuJour.heureArriveeReel != arret.heureArrivee}
+                        <span class="badge bg-warning">Retardé</span>
+                        {/if}
+                    </td>
                 </tr>
                 {/for}
                 </tbody>
@@ -84,6 +97,10 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .bg-success{
+        background-color: #6bb412 !important;
     }
 
 </style>

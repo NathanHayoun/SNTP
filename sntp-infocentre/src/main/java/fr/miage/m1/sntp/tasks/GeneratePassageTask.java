@@ -18,6 +18,6 @@ public class GeneratePassageTask extends TimerTask {
     @Override
     @ActivateRequestContext
     public void run() {
-        infoCentreMetier.genererPassages();
+        infoCentreMetier.genererPassagesDuJour();
     }
 }

@@ -38,12 +38,15 @@ public class ArretDAOImpl implements ArretDAO {
 
     @Override
     public List<Arret> getAllArret() {
-        return LibSQL.findAll(em, Arret.class);
+        return generateArrets(LibSQL.findAll(em, Arret.class));
     }
 
     @Override
     public List<Arret> getAllArretByNumeroDeTrain(int numeroDeTrain) {
-        return LibSQL.executeSelectWithNamedParams(em, Arret.class, QUERY_SELECT_ARRET_BY_TRAIN_NUMBER, getIdParamsWithOneParameters(numeroDeTrain, NUMERO_DE_TRAIN));
+        Map<String, Object> params = new HashMap<>();
+        params.put(NUMERO_DE_TRAIN, numeroDeTrain);
+
+        return generateArrets(LibSQL.executeSelectWithNamedParams(em, Arret.class, QUERY_SELECT_ARRET_BY_TRAIN_NUMBER, params));
     }
 
     @Override
@@ -61,7 +64,12 @@ public class ArretDAOImpl implements ArretDAO {
         Map<String, Object> params = new HashMap<>();
         params.put(ID_GARE, idGare);
         params.put(DATE_DE_PASSAGE, LocalDate.now());
-        List<Arret> arrets = LibSQL.executeSelectWithNamedParams(em, Arret.class, querySelectArriveeByIdGare, params);
+
+        return generateArrets(LibSQL.executeSelectWithNamedParams(em, Arret.class, querySelectArriveeByIdGare, params));
+    }
+
+    @NotNull
+    private List<Arret> generateArrets(List<Arret> arrets) {
         List<Arret> arretToReturn = new ArrayList<>();
         for (Arret arret : arrets) {
             Arret arretToPush = new Arret();
@@ -83,12 +91,5 @@ public class ArretDAOImpl implements ArretDAO {
             arretToReturn.add(arretToPush);
         }
         return arretToReturn;
-    }
-
-    @NotNull
-    private Map<String, Object> getIdParamsWithOneParameters(long value, String key) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(key, value);
-        return params;
     }
 }

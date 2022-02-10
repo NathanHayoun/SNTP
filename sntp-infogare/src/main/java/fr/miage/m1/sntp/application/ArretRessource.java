@@ -6,6 +6,7 @@ import fr.miage.m1.sntp.ressources.GareService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -36,6 +37,7 @@ public class ArretRessource {
     @Path("/departs")
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @Scheduled(cron="*/1 * * * *")
     public TemplateInstance getDeparts(@QueryParam("name") String name) {
         List<ArretDTO> arrets = arretService.getArretsDepartByGare(idGare);
 
