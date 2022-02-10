@@ -21,11 +21,12 @@ public class Voyageur {
     @Column(name = "prenom")
     private String prenom;
 
-    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonbTransient
     private Set<Reservation> reservations;
 
-    public Voyageur(){}
+    public Voyageur() {
+    }
 
     public Voyageur(String nom, String prenom, String email) {
         this.nom = nom;

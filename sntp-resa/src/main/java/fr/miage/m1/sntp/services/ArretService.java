@@ -1,6 +1,5 @@
 package fr.miage.m1.sntp.services;
 
-
 import fr.miage.m1.sntp.dto.ArretDTO;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -18,7 +17,7 @@ public interface ArretService {
 
     @Path("/arret/{id}")
     @GET
-    ArretDTO getArret(@PathParam("id") long id) ;
+    ArretDTO getArret(@PathParam("id") long id);
 
 //    @Path("/arret/train/{numero}")
 //    @GET

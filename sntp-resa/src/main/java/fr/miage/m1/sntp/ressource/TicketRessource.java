@@ -1,7 +1,5 @@
 package fr.miage.m1.sntp.ressource;
 
-import fr.miage.m1.sntp.dao.TicketDao;
-import fr.miage.m1.sntp.exceptions.TicketException;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.TicketService;
