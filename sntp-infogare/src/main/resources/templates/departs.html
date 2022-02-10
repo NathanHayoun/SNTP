@@ -23,6 +23,7 @@
                     <th scope="col">Destination</th>
                     <th scope="col">Ligne</th>
                     <th scope="col">N° Quai</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,16 +37,53 @@
                         {/if}
                     </th>
                     <td>{arret.train.numeroDeTrain}</td>
-                    <td>{arret.passageDuJour.heureDepartReel}</td>
+                    <td>
+                        {#if arret.passageDuJour.heureDepartReel != arret.heureDepart}
+                        <p> <span style="text-decoration:line-through;">
+                            {arret.heureDepart}</span> &nbsp;
+                            {arret.passageDuJour.heureDepartReel}
+                        </p>
+                        {/if}
+
+                        {#if arret.passageDuJour.heureDepartReel == arret.heureDepart}
+                        {arret.heureDepart}
+                        {/if}
+
+                    </td>
                     <td>{arret.train.terminus}
+                        {#if arret.train.arretsSuivant.size > 1}
                         <marquee>
                             {#for arretSuivant in arret.train.arretsSuivant}
-                            {arretSuivant} -
+                            {#if arretSuivant != arret.train.terminus}
+                            {arretSuivant} ●
+                            {/if}
+                            {#if arretSuivant == arret.train.terminus}
+                            {arretSuivant}
+                            {/if}
                             {/for}
                         </marquee>
+                        {/if}
+
                     </td>
                     <td>{arret.train.ligneDeTrain}</td>
-                    <td></td>
+                    <td>
+                        {#if arret.passageDuJour.numeroDeQuai > 0}
+                        {arret.passageDuJour.numeroDeQuai}
+                        {/if}
+                    </td>
+                    <td>
+                        {#if arret.passageDuJour.estSupprime == true}
+                        <span class="badge bg-danger">Supprimé</span>
+                        {/if}
+
+                        {#if arret.passageDuJour.estSupprime == false && arret.passageDuJour.heureDepartReel == arret.heureDepart}
+                        <span class="badge bg-success">A l'heure</span>
+                        {/if}
+
+                        {#if arret.passageDuJour.estSupprime == false && arret.passageDuJour.heureDepartReel != arret.heureDepart}
+                        <span class="badge bg-warning">Retardé</span>
+                        {/if}
+                    </td>
                 </tr>
                 {/for}
                 </tbody>

@@ -2,6 +2,7 @@ package fr.miage.m1.sntp.models;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class Arret {
     @Column(name = "heureDepart")
     private LocalTime heureDepart;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @MapsId("idGare")
     @JoinColumn(name = "id_gare")
     /**
@@ -64,7 +65,7 @@ public class Arret {
     /**
      * Daily passage
      */
-    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Set<Passage> passages;
 
     @Transient
@@ -198,8 +199,24 @@ public class Arret {
         infoTrain.put("terminus", train.getTerminus());
         List<String> arretsSuivant = new ArrayList<>();
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
+
         for (Arret arretSuivant : this.getItineraireConcerner().getArrets()) {
-            if (arretSuivant.getPosition() > this.getPosition() && arretSuivant.getDoitMarquerArret()) {
+            Passage passageDuJour = null;
+
+            for (Passage passage : arretSuivant.getPassages()) {
+                if (Objects.equals(passage.getDateDePassage(), LocalDate.now())) {
+                    passageDuJour = passage;
+
+                    break;
+                }
+            }
+            if (passageDuJour == null) {
+                continue;
+            }
+            if (Boolean.TRUE.equals(
+                    arretSuivant.getPosition() > this.getPosition() &&
+                            passageDuJour.getMarquerArret()) &&
+                    Boolean.FALSE.equals(passageDuJour.getEstSupprime())) {
                 arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
             }
         }
