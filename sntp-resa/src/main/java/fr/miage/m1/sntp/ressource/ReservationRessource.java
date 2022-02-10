@@ -1,14 +1,12 @@
 package fr.miage.m1.sntp.ressource;
 
-import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.Trajets;
 import fr.miage.m1.sntp.dao.VoyageurDao;
+import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ReservationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,15 +17,10 @@ import java.util.List;
 
 @Path("/reservations")
 public class ReservationRessource {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Inject
     ReservationService service;
     @Inject
     VoyageurDao voyageurDao;
-    @Inject
-    ReservationDao reservationDao;
-  
     @Inject
     Trajets trajets;
 

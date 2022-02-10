@@ -1,7 +1,5 @@
 package fr.miage.m1.sntp.models;
 
-import fr.miage.m1.sntp.dto.ReservationDTO;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
@@ -70,11 +68,11 @@ public class Reservation {
     public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
-  
+
     public void addTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
-  
+
     @Override
     public String toString() {
         return "Reservation{" +
