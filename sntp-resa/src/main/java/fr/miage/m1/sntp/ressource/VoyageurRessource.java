@@ -18,6 +18,9 @@ public class VoyageurRessource {
     @Inject
     VoyageurService service;
 
+    @Inject
+    VoyageurDao voyageurDao;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Voyageur> getVoyageurs() {
@@ -29,6 +32,27 @@ public class VoyageurRessource {
     @Path("/voyageur/{id}")
     public Voyageur getVoyageur(@PathParam("id") int id) {
         return service.getVoyageur(id);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/create/{nom}/{prenom}/{email}")
+    public Voyageur createVoyageur(
+            @PathParam("nom") String nom,
+            @PathParam("prenom") String prenom,
+            @PathParam("email") String email
+    ) throws VoyageurException {
+        Voyageur voyageur = voyageurDao.findByEmail(email);
+
+        if (voyageur == null) {
+            voyageur = new Voyageur();
+            voyageur.setEmail(email);
+            voyageur.setNom(nom);
+            voyageur.setPrenom(prenom);
+            voyageurDao.save(voyageur);
+        }
+        
+        return voyageur;
     }
 
 }

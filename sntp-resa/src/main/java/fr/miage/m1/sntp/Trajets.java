@@ -1,137 +1,192 @@
 package fr.miage.m1.sntp;
 
+import fr.miage.m1.sntp.dao.ReservationDao;
+import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.dto.ArretDTO;
 import fr.miage.m1.sntp.dto.ItineraireDTO;
-import fr.miage.m1.sntp.services.ArretService;
+import fr.miage.m1.sntp.graph.Dijkstra;
+import fr.miage.m1.sntp.graph.Graph;
+import fr.miage.m1.sntp.graph.Node;
+import fr.miage.m1.sntp.models.Reservation;
+import fr.miage.m1.sntp.models.Ticket;
+import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ItineraireService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jgroups.util.Tuple;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.Map.Entry;
 
 @ApplicationScoped
 public class Trajets {
-    private String villeDepart;
-    private String villeArrivee;
     @Inject
     @RestClient
     ItineraireService itineraireService;
+    @Inject
+    TicketDao ticketDao;
+    @Inject
+    ReservationDao reservationDao;
 
-//    public Trajets(String villeDepart, String villeArrivee) {
-//        this.villeDepart = villeDepart;
-//        this.villeArrivee = villeArrivee;
-//    }
+    public Reservation generer(String nomGareDepart, String nomGareArrive, LocalTime heureDepart, LocalDate localDate, Voyageur voyageur) {
+        nomGareArrive = nomGareArrive.toUpperCase();
+        nomGareDepart = nomGareDepart.toUpperCase();
+        List<ItineraireDTO> itineraires = itineraireService.getItineraire(); // Récupération des itineraires
+        Map<String, Node> nodes = new HashMap<>();
+        getAllNodes(heureDepart, itineraires, nodes);
+        getAllDestinationForNodes(itineraires, nodes);
+        Graph graph = getGraph(nodes);
 
-    public String getVilleDepart() {
-        return villeDepart;
+        return generateReservationAndTicket(nomGareDepart, nomGareArrive, localDate, voyageur, itineraires, nodes, graph);
     }
 
-    public String getVilleArrivee() {
-        return villeArrivee;
+    private Reservation generateReservationAndTicket(String nomGareDepart, String nomGareArrive, LocalDate localDate, Voyageur voyageur, List<ItineraireDTO> itineraires, Map<String, Node> nodes, Graph graph) {
+        Graph graph1;
+        graph1 = Dijkstra.calculateShortestPathFromSource(graph, nodes.get(nomGareDepart));
+        Map<String, Tuple<ArretDTO, ArretDTO>> arrets = new LinkedHashMap<>();
+        Node nodeFinal = null;
+        generateTupleForTicket(nomGareArrive, graph1, arrets, nodeFinal);
+        double prix = generateGoodTimeForArrivalsAndGetPrice(itineraires, arrets);
+        Set<Ticket> ticketList = new LinkedHashSet<>();
+        Reservation reservation = new Reservation();
+        reservation.setVoyageur(voyageur);
+        reservation.setPrix(prix);
+        reservation.setDateDeReservation(localDate);
+        reservation = reservationDao.save(reservation);
+        reservation = reservationDao.findById(reservation.getId());
+        persistTicket(localDate, arrets, ticketList, reservation);
+        reservation.setTickets(ticketList);
+
+        System.out.println(reservation);
+
+        return reservation;
     }
 
-    public void setVilleDepart(String villeDepart) {
-        this.villeDepart = villeDepart;
+    private void persistTicket(LocalDate localDate, Map<String, Tuple<ArretDTO, ArretDTO>> arrets, Set<Ticket> ticketList, Reservation reservation) {
+        int numeroEtape = 0;
+
+        for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
+            numeroEtape++;
+            ArretDTO arretFirst = entry.getValue().getVal1();
+            ArretDTO arretLast = entry.getValue().getVal2();
+            Random random = new Random();
+            int nombreAleatoire = random.nextInt(arrets.size());
+            Ticket ticket = new Ticket();
+            ticket.setDateDepart(localDate)
+                    .setGareDepart(arretFirst.getGareConcerner().getNomGare())
+                    .setGareArrivee(arretLast.getGareConcerner().getNomGare())
+                    .setHeureArrivee(arretLast.getHeureArrivee())
+                    .setHeureDepart(arretFirst.getHeureDepart())
+                    .setNumeroEtape(numeroEtape)
+                    .setPlace(nombreAleatoire)
+                    .setIsReservable(arretFirst.getTrain().getTypeDeTrain().equals("TGV"))
+                    .setNumeroTrain((int) arretFirst.getTrain().getNumeroDeTrain())
+                    .setReservationConcernee(reservation);
+            ticketList.add(ticket);
+            ticketDao.save(ticket);
+        }
     }
 
-    public void setVilleArrivee(String villeArrivee) {
-        this.villeArrivee = villeArrivee;
-    }
-
-    @Override
-    public String toString() {
-        return "Trajets{" +
-                "villeDepart='" + villeDepart + '\'' +
-                ", villeArrivee='" + villeArrivee + '\'' +
-                '}';
-    }
-
-    public Object generer(long idGareDepart, long idGareArrivee, LocalTime heureDepart) throws CloneNotSupportedException {
-        System.out.println("generer");
-        List<ItineraireDTO> itineraires = itineraireService.getItineraire();
-        Graph graph = new Graph();
-        System.out.println("bb");
-
-        // Récupération des arrets de départ et d'arrivée
-        for (ItineraireDTO itineraire : itineraires) {
-            boolean premierArret = true;
-            Node lastNode = null;
-            Node arretEnCours;
-
-            for (ArretDTO arret : itineraire.getArrets()) {
-                if (premierArret) {
-                    lastNode = new Node(arret);
-                    premierArret = false;
-                    System.out.println(lastNode.toString());
-                    System.out.println("aaaa");
-                } else {
-                    arretEnCours = new Node(arret);
-                    lastNode.addDestination(arretEnCours, (int) lastNode.getArret().getHeureArrivee().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-                    lastNode = arretEnCours;
+    private double generateGoodTimeForArrivalsAndGetPrice(List<ItineraireDTO> itineraires, Map<String, Tuple<ArretDTO, ArretDTO>> arrets) {
+        double prix = 0;
+        for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
+            ArretDTO arretDTO = entry.getValue().getVal1();
+            ItineraireDTO itineraireSave = null;
+            for (ItineraireDTO itineraireDTO : itineraires) {
+                for (ArretDTO arretDTO1 : itineraireDTO.getArrets()) {
+                    if (arretDTO1 == arretDTO) {
+                        itineraireSave = itineraireDTO;
+                        prix += itineraireDTO.getArrets().size() * 10;
+                    }
                 }
-
             }
-
-//            for (ArretDTO arret : itineraire.getArrets()) {
-//                // Récupère l'arret de départ
-//                if (arret.getGareConcerner().getId() == idGareDepart && arret.getDoitMarquerArret().equals(true) && arret.getHeureDepart() != null && (arret.getHeureDepart().isBefore(heureDepart) || arret.getHeureDepart().equals(heureDepart))) {
-//                    arretDepartNode = new Node(arret);
-//                } else {
-//                    if (listeArrets.stream().anyMatch(station -> Objects.equals(station.getGareConcerner().getId(), arret.getGareConcerner().getId()) && arret.getHeureDepart().isAfter(station.getHeureDepart()))) {
-//
-//                    } else {
-//                        listeArrets.add(arret);
-//                    }
-//                }
-//            }
-
-//            if (arretDepartNode != null) {
-//                boolean premierArret = true;
-//                Node lastNode = null;
-//                // On récupère les arrets qui suivent l'arret de départ
-//                for (ArretDTO arret : listeArrets) {
-//                    if (arret.getDoitMarquerArret()) {
-//                        if (premierArret) {
-//                            lastNode = new Node(arret);
-//                            // Ajout d'un noeud après l'arret de départ
-//                            arretDepartNode.addDestination(lastNode, (int) arretDepartNode.getArret().getHeureDepart().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-//                            premierArret = false;
-//                        } else {
-//                            // Ajout d'un noeud après l'arret précédent
-//                            lastNode.addDestination(new Node(arret), (int) lastNode.getArret().getHeureArrivee().until(arret.getHeureArrivee(), ChronoUnit.MINUTES));
-//                            lastNode = new Node(arret);
-//                        }
-//
-//                    }
-//                }
-//                // Ajout de la lite de noeuds au graph
-//                graph.addNode(lastNode);
-//                graph = Dijkstra.calculateShortestPathFromSource(graph, arretDepartNode);
-//            }
+            if (itineraireSave != null) {
+                ArretDTO arretDTOFinal = entry.getValue().getVal2();
+                for (ArretDTO arretToCheck : itineraireSave.getArrets()) {
+                    if (arretDTOFinal.getGareConcerner().getNomGare().equals(arretToCheck.getGareConcerner().getNomGare())) {
+                        entry.getValue().setVal2(arretToCheck);
+                    }
+                }
+            }
         }
 
-        // arretDepartNode va changer à chaque itération
+        return prix;
+    }
 
-//        if (listeDeparts.isEmpty() || listeArrivees.isEmpty()) {
-//            System.out.println("Aucun trajet n'a été trouvé");
-//        } else {
-//            Graph graph = new Graph();
-//
-//            System.out.println("itineraires :");
-//            System.out.println(itineraires);
-//
-//            System.out.println("listeDeparts :");
-//            System.out.println(listeDeparts);
-//
-//            System.out.println("listeArrivees :");
-//            System.out.println(listeArrivees);
-//        }
-        return null;
+    private void generateTupleForTicket(String nomGareArrive, Graph graph1, Map<String, Tuple<ArretDTO, ArretDTO>> arrets, Node nodeFinal) {
+        for (Node node : graph1.getNodes()) {
+            if (node.getArret().getGareConcerner().getNomGare().toUpperCase(Locale.ROOT).equals(nomGareArrive)) {
+                nodeFinal = node;
+                String ligneDeTrainPrecedent = null;
+
+                for (Node adjacent : node.getShortestPath()) {
+                    String ligneDeTrain = adjacent.getArret().getTrain().getLigneDeTrain();
+
+                    if (!Objects.equals(ligneDeTrain, ligneDeTrainPrecedent)) {
+                        if (arrets.get(ligneDeTrainPrecedent) != null) {
+                            arrets.get(ligneDeTrainPrecedent).setVal2(adjacent.getArret());
+                        }
+                        ligneDeTrainPrecedent = ligneDeTrain;
+                    }
+                    if (!arrets.containsKey(ligneDeTrain)) {
+                        Tuple<ArretDTO, ArretDTO> tuple = new Tuple<>(adjacent.getArret(), null);
+                        arrets.put(ligneDeTrain, tuple);
+                    }
+                }
+            }
+        }
+        for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
+            if (entry.getValue().getVal2() == null) {
+                entry.getValue().setVal2(nodeFinal.getArret());
+            }
+        }
+    }
+
+    private Graph getGraph(Map<String, Node> nodes) {
+        Graph graph = new Graph();
+
+        for (Entry<String, Node> entry : nodes.entrySet()) {
+            graph.addNode(entry.getValue());
+        }
+
+        return graph;
+    }
+
+    private void getAllDestinationForNodes(List<ItineraireDTO> itineraires, Map<String, Node> nodes) {
+        for (Entry<String, Node> entry : nodes.entrySet()) {
+            Node node = entry.getValue();
+
+            for (ItineraireDTO itineraire : itineraires) {
+                Long position = 0L;
+                ArretDTO arretPrecedent = null;
+
+                for (ArretDTO arret : itineraire.getArrets()) {
+                    if (arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT).equals(entry.getKey())) {
+                        arretPrecedent = arret;
+                        position = arret.getPosition();
+                    } else {
+                        if (position != null && arretPrecedent != null && arret.getDoitMarquerArret()) {
+                            Long size = arretPrecedent.getHeureDepart().until(arret.getHeureArrivee(), java.time.temporal.ChronoUnit.MINUTES);
+                            node.addDestination(nodes.get(arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT)), size);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void getAllNodes(LocalTime heureDepart, List<ItineraireDTO> itineraires, Map<String, Node> nodes) {
+        for (ItineraireDTO itineraire : itineraires) {
+            for (ArretDTO arret : itineraire.getArrets()) {
+                String nomGare = arret.getGareConcerner().getNomGare();
+
+                if (!nodes.containsKey(nomGare) && arret.getHeureDepart() != null && arret.getHeureDepart().isAfter(heureDepart) || Objects.equals(arret.getHeureDepart(), heureDepart)) {
+                    nodes.put(arret.getGareConcerner().getNomGare().toUpperCase(Locale.ROOT), new Node(arret));
+                }
+            }
+        }
     }
 }
