@@ -29,7 +29,7 @@ import java.util.Set;
 public class InfoCentreMetier {
     public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
     public static final int MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN = 20;
-    public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 30;
+    public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 120;
     public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
 
     public static final String NB_REQUIS_NON_ATTEINDS_POUR_RETARD = "Le nombre de personnes requise pour générer un retard n'est pas atteinte";
@@ -116,12 +116,13 @@ public class InfoCentreMetier {
                 }
                 if (passage == null) {
                     passage = new Passage();
+                    passage.setEstSupprime(false);
+                    passage.setArret(arret);
+                    passage.setDateDePassage(dateDuJour);
+                    passage.setMarquerArret(true);
                     nouveauPassage = true;
                 }
-                passage.setArret(arret);
-                passage.setDateDePassage(dateDuJour);
-                passage.setMarquerArret(true);
-                passage.setEstSupprime(false);
+
                 LocalTime heureArrivee = arret.getHeureArrivee();
                 if (heureArrivee != null) {
                     heureArrivee = heureArrivee.plusMinutes(nombreDeMinute);
@@ -133,7 +134,7 @@ public class InfoCentreMetier {
                     heureDepart = heureDepart.plusMinutes(nombreDeMinute);
                     passage.setHeureDepartReel(heureDepart);
                 }
-                passage.setArret(arret);
+
                 if (nouveauPassage) {
                     passageDAO.insertPassage(passage);
                 } else {
