@@ -216,7 +216,7 @@ public class Arret {
             if (Boolean.TRUE.equals(
                     arretSuivant.getPosition() > this.getPosition() &&
                             passageDuJour.getMarquerArret()) &&
-                    Boolean.FALSE.equals(passageDuJour.getEstSupprime())) {
+                    Boolean.FALSE.equals(passageDuJour.getEstSupprime()) || passageDuJour.getEstSupprime() == null) {
                 arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
             }
         }

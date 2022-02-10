@@ -7,43 +7,36 @@ import java.time.LocalTime;
 
 @Entity
 public class Ticket {
-    public Ticket(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ticket", nullable = false)
     private Long id;
-
     @Column(name = "numero_train", nullable = false)
     private Integer numeroTrain;
-
     @Column(name = "is_reservable", nullable = false)
     private Boolean isReservable;
-
     @Column(name = "date_depart")
     private LocalDate dateDepart;
-
     @Column(name = "gare_arrivee")
     private String gareArrivee;
-
     @Column(name = "gare_depart")
     private String gareDepart;
-
     @Column(name = "heure_arrivee")
     private LocalTime heureArrivee;
-
     @Column(name = "heure_depart")
     private LocalTime heureDepart;
-
     @Column(name = "numero_etape", nullable = false)
     private Integer numeroEtape;
-
     @Column(name = "place")
     private Integer place;
-    @ManyToOne
-    @MapsId("idReservation")
+
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_reservation")
     @JsonbTransient
     private Reservation reservationConcernee;
+
+    public Ticket() {
+    }
 
     public Integer getPlace() {
         return place;

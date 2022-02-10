@@ -1,14 +1,14 @@
 package fr.miage.m1.sntp.ressource;
 
 import fr.miage.m1.sntp.Trajets;
-import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.dao.VoyageurDao;
-import fr.miage.m1.sntp.exceptions.ReservationException;
+import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Reservation;
 import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,18 +19,13 @@ import java.util.List;
 @Path("/reservations")
 public class ReservationRessource {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Inject
     ReservationService service;
-
-    @Inject
-    ReservationDao reservationDao;
-
     @Inject
     VoyageurDao voyageurDao;
-  
     @Inject
     Trajets trajets;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,16 +50,21 @@ public class ReservationRessource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/test")
-    public Reservation getReservationTest() throws ReservationException {
-        System.out.println("je test");
+    @Path("/createResa/{gareDepart}/{gareArrive}/{time}/{date}/{voyageurEmail}")
+    public Reservation getReservationTest(
+            @PathParam("gareDepart") String gareDepart,
+            @PathParam("gareArrive") String gareArrive,
+            @PathParam("time") String time,
+            @PathParam("date") String date,
+            @PathParam("voyageurEmail") String email
+    ) {
         try {
-            Voyageur voyageur = new Voyageur();
-            voyageur.setEmail("nathanpapy@hotmail.fr");
-            voyageur.setNom("Hayoun");
-            voyageur.setPrenom("Nathan");
-            return trajets.generer("Paris", "Rome", LocalTime.parse("07:00:00"), LocalDate.now(),voyageur);
-        } catch (Exception e){
+            Voyageur voyageur = voyageurDao.findByEmail(email);
+            LocalTime timeForTicket = LocalTime.parse(time);
+            LocalDate dateForTicket = LocalDate.parse(date);
+            return trajets.generer(gareDepart, gareArrive, timeForTicket, dateForTicket, voyageur);
+        } catch (Exception | VoyageurException e) {
+            System.out.println("exception " + e);
             return null;
         }
     }
