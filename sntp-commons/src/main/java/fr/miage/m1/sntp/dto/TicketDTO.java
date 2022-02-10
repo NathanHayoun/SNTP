@@ -4,19 +4,21 @@ public class TicketDTO {
 
     private boolean isReservable;
     private Long id_ticket;
-    private String villeDepart;
-    private String villeArrivee;
+    private String gareDepart;
+    private String gareArrivee;
     private String typeTrain;
+    private String dateDepart;
 
     public TicketDTO() {
     }
 
-    public TicketDTO(boolean is_reservable, Long id_ticket, String villeDepart, String villeArrivee, String typeTrain) {
+    public TicketDTO(boolean is_reservable, Long id_ticket, String gareDepart, String gareArrivee, String typeTrain, String dateDepart) {
         this.isReservable = is_reservable;
         this.id_ticket = id_ticket;
-        this.villeDepart = villeDepart;
-        this.villeArrivee = villeArrivee;
+        this.gareDepart = gareDepart;
+        this.gareArrivee = gareArrivee;
         this.typeTrain = typeTrain;
+        this.dateDepart = dateDepart;
     }
 
     public boolean isReservable() {
@@ -35,20 +37,20 @@ public class TicketDTO {
         this.id_ticket = id_ticket;
     }
 
-    public String getVilleDepart() {
-        return this.villeDepart;
+    public String getGareDepart() {
+        return this.gareDepart;
     }
 
-    public void setVilleDepart(String villeDepart) {
-        this.villeDepart = villeDepart;
+    public void setGareDepart(String gareDepart) {
+        this.gareDepart = gareDepart;
     }
 
-    public String getVilleArrivee() {
-        return villeArrivee;
+    public String getGareArrivee() {
+        return gareArrivee;
     }
 
-    public void setVilleArrivee(String villeArrivee) {
-        this.villeArrivee = villeArrivee;
+    public void setGareArrivee(String gareArrivee) {
+        this.gareArrivee = gareArrivee;
     }
     public String getTypeTrain() {
         return typeTrain;
@@ -58,5 +60,12 @@ public class TicketDTO {
         this.typeTrain = typeTrain;
     }
 
+    public String getDateDepart() {
+        return dateDepart;
+    }
+
+    public void setDateDepart(String dateDepart) {
+        this.dateDepart = dateDepart;
+    }
 
 }
