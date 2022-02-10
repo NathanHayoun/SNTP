@@ -12,6 +12,4 @@ public interface UserInterface {
     String getCustomerLastName();
 
     String getCustomerEmail();
-
-    ReservationDTO getReservation();
 }
