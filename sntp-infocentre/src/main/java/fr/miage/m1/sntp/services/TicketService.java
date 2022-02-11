@@ -10,7 +10,7 @@ import javax.ws.rs.PathParam;
 import java.util.List;
 
 @RegisterRestClient(configKey = "resa-api")
-public interface ReservationService {
+public interface TicketService {
 
     String NUMERO_DE_TRAIN = "numeroDeTrain";
 

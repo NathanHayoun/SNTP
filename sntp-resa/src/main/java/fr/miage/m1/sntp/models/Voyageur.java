@@ -21,7 +21,7 @@ public class Voyageur {
     @Column(name = "prenom")
     private String prenom;
 
-    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonbTransient
     private Set<Reservation> reservations;
 

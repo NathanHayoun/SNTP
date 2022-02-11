@@ -36,6 +36,13 @@ public class VoyageurRessource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/voyageur/email/{email}")
+    public Boolean getVoyageurByEmail(@PathParam("email") String email) throws VoyageurException {
+        return service.getVoyageurByEmail(email) != null;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/create/{nom}/{prenom}/{email}")
     public Voyageur createVoyageur(
             @PathParam("nom") String nom,
@@ -49,9 +56,9 @@ public class VoyageurRessource {
             voyageur.setEmail(email);
             voyageur.setNom(nom);
             voyageur.setPrenom(prenom);
-            voyageurDao.save(voyageur);
+            service.createVoyageur(voyageur);
         }
-        
+
         return voyageur;
     }
 

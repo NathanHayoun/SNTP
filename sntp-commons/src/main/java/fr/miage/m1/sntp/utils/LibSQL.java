@@ -53,7 +53,7 @@ public class LibSQL {
      * @param entityManager from class
      */
     public static void deleteObject(EntityManager entityManager, Object line) {
-        entityManager.remove(line);
+        entityManager.remove(entityManager.contains(line) ? line : entityManager.merge(line));
     }
 
     /**

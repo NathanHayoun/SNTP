@@ -1,4 +1,4 @@
-package fr.miage.m1.sntp;
+package fr.miage.m1.sntp.metier;
 
 import fr.miage.m1.sntp.dao.ReservationDao;
 import fr.miage.m1.sntp.dao.TicketDao;
@@ -31,7 +31,7 @@ public class Trajets {
     @Inject
     ReservationDao reservationDao;
 
-    public Reservation generer(String nomGareDepart, String nomGareArrive, LocalTime heureDepart, LocalDate localDate, Voyageur voyageur) {
+    public Reservation generer(String nomGareDepart, String nomGareArrive, LocalTime heureDepart, LocalDate localDate, Voyageur voyageur, Long idReservation) {
         nomGareArrive = nomGareArrive.toUpperCase();
         nomGareDepart = nomGareDepart.toUpperCase();
         List<ItineraireDTO> itineraires = itineraireService.getItineraire(); // Récupération des itineraires
@@ -40,27 +40,39 @@ public class Trajets {
         getAllDestinationForNodes(itineraires, nodes);
         Graph graph = getGraph(nodes);
 
-        return generateReservationAndTicket(nomGareDepart, nomGareArrive, localDate, voyageur, itineraires, nodes, graph);
+        return generateReservationAndTicket(nomGareDepart, nomGareArrive, localDate, voyageur, itineraires, nodes, graph, idReservation);
     }
 
-    private Reservation generateReservationAndTicket(String nomGareDepart, String nomGareArrive, LocalDate localDate, Voyageur voyageur, List<ItineraireDTO> itineraires, Map<String, Node> nodes, Graph graph) {
+    private Reservation generateReservationAndTicket(String nomGareDepart, String nomGareArrive, LocalDate localDate, Voyageur voyageur, List<ItineraireDTO> itineraires, Map<String, Node> nodes, Graph graph, Long idReservation) {
         Graph graph1;
         graph1 = Dijkstra.calculateShortestPathFromSource(graph, nodes.get(nomGareDepart));
         Map<String, Tuple<ArretDTO, ArretDTO>> arrets = new LinkedHashMap<>();
         Node nodeFinal = null;
-        generateTupleForTicket(nomGareArrive, graph1, arrets, nodeFinal);
+        generateTupleForTicket(nomGareArrive, graph1, arrets, nodeFinal, itineraires);
         double prix = generateGoodTimeForArrivalsAndGetPrice(itineraires, arrets);
         Set<Ticket> ticketList = new LinkedHashSet<>();
-        Reservation reservation = new Reservation();
-        reservation.setVoyageur(voyageur);
-        reservation.setPrix(prix);
-        reservation.setDateDeReservation(localDate);
-        reservation = reservationDao.save(reservation);
-        reservation = reservationDao.findById(reservation.getId());
+        Reservation reservation;
+        if (idReservation == 0) {
+            reservation = new Reservation();
+            reservation.setVoyageur(voyageur);
+            reservation.setPrix(prix);
+            reservation.setDateDeReservation(localDate);
+            reservation = reservationDao.save(reservation);
+            reservation = reservationDao.findById(reservation.getId());
+        } else {
+            reservation = reservationDao.findById(idReservation);
+            double newPrix = prix - reservation.getPrix();
+            reservation.setPrix(newPrix);
+            reservation.setDateDeReservation(localDate);
+
+            for (Ticket ticketsExistant : reservation.getTickets()) {
+                ticketDao.delete(ticketsExistant);
+            }
+            reservation.setPrix(prix);
+            reservationDao.update(reservation);
+        }
         persistTicket(localDate, arrets, ticketList, reservation);
         reservation.setTickets(ticketList);
-
-        System.out.println(reservation);
 
         return reservation;
     }
@@ -116,7 +128,7 @@ public class Trajets {
         return prix;
     }
 
-    private void generateTupleForTicket(String nomGareArrive, Graph graph1, Map<String, Tuple<ArretDTO, ArretDTO>> arrets, Node nodeFinal) {
+    private void generateTupleForTicket(String nomGareArrive, Graph graph1, Map<String, Tuple<ArretDTO, ArretDTO>> arrets, Node nodeFinal, List<ItineraireDTO> itineraireDTOS) {
         for (Node node : graph1.getNodes()) {
             if (node.getArret().getGareConcerner().getNomGare().toUpperCase(Locale.ROOT).equals(nomGareArrive)) {
                 nodeFinal = node;
@@ -140,7 +152,36 @@ public class Trajets {
         }
         for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
             if (entry.getValue().getVal2() == null) {
-                entry.getValue().setVal2(nodeFinal.getArret());
+                ArretDTO departCourant = entry.getValue().getVal1();
+                ArretDTO arretNodeFinal = nodeFinal.getArret();
+                boolean trouver = false;
+
+                for (ItineraireDTO itineraireCourant : itineraireDTOS) {
+                    for (ArretDTO arretDTO : itineraireCourant.getArrets()) {
+                        if (arretDTO.getTrain().equals(departCourant.getTrain())) {
+                            trouver = true;
+                            System.out.println(itineraireCourant.getArrets());
+                            for (ArretDTO arretsDansItineraire : itineraireCourant.getArrets()) {
+                                System.out.println("Dans itineraire");
+                                System.out.println(arretsDansItineraire.getGareConcerner().getNomGare());
+                                System.out.println(arretNodeFinal.getGareConcerner().getNomGare());
+                                if (arretsDansItineraire.getGareConcerner().getNomGare().equals(arretNodeFinal.getGareConcerner().getNomGare())) {
+                                    System.out.println("SET ARRET NODE FINALE");
+                                    System.out.println(arretsDansItineraire);
+
+                                    arretNodeFinal = arretsDansItineraire;
+                                    break;
+                                }
+
+                            }
+                            break;
+                        }
+                        if (trouver) {
+                            break;
+                        }
+                    }
+                }
+                entry.getValue().setVal2(arretNodeFinal);
             }
         }
     }
