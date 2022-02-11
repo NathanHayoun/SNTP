@@ -14,7 +14,7 @@ public class Reservation {
     private LocalDate dateDeReservation;
     @Column(name = "prix", nullable = false)
     private Double prix;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_voyageur")
     private Voyageur voyageurConcernee;
     @OneToMany(mappedBy = "reservationConcernee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

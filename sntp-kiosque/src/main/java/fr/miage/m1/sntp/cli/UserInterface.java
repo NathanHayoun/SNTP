@@ -1,7 +1,5 @@
 package fr.miage.m1.sntp.cli;
 
-import fr.miage.m1.sntp.dto.ReservationDTO;
-
 public interface UserInterface {
     void showErrorMessage(String errorMessage);
 
@@ -12,4 +10,6 @@ public interface UserInterface {
     String getCustomerLastName();
 
     String getCustomerEmail();
+
+    void getEchangerBillet() throws Exception;
 }

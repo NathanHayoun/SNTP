@@ -23,7 +23,17 @@ public class Main implements Runnable {
 
         while (true) {
             try {
-                reservationGateway.sendReservation(terminalSNTP.getReservation());
+                ChoixUtilisateur choixUtilisateur = textIO.newEnumInputReader(ChoixUtilisateur.class).read("Bienvenu, choissez votre action");
+                switch (choixUtilisateur) {
+                    case Acheter_Un_Billet:
+                        terminalSNTP.getReservation(null);
+                        break;
+                    case Echanger_Mon_Billet:
+                        terminalSNTP.getEchangerBillet();
+                        break;
+                    default:
+                        break;
+                }
             } catch (Exception e) {
                 terminalSNTP.showErrorMessage(e.getMessage());
             }

@@ -21,7 +21,7 @@ public class ReservationGatewayImpl implements ReservationGateway {
     @Override
     public void sendReservation(ReservationDTO reservation) {
         try (ProducerTemplate producer = context.createProducerTemplate()) {
-            reservation.setKiosqueId(kiosqueId);
+            // reservation.setKiosqueId(kiosqueId);
             producer.sendBody("direct:cli", reservation);
         } catch (IOException e) {
             e.printStackTrace();

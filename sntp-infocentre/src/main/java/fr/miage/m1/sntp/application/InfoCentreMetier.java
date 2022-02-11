@@ -7,7 +7,7 @@ import fr.miage.m1.sntp.dao.TrainDAO;
 import fr.miage.m1.sntp.dto.VoyageurDTO;
 import fr.miage.m1.sntp.exceptions.TrainException;
 import fr.miage.m1.sntp.models.*;
-import fr.miage.m1.sntp.services.ReservationService;
+import fr.miage.m1.sntp.services.TicketService;
 import fr.miage.m1.sntp.utils.LibMail;
 import io.quarkus.mailer.Mailer;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -64,7 +64,7 @@ public class InfoCentreMetier {
 
     @Inject
     @RestClient
-    ReservationService rs;
+    TicketService rs;
 
     @Inject
     Mailer mailer;
