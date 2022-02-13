@@ -1,8 +1,10 @@
 package fr.miage.m1.sntp.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItineraireDTO {
     private List<ArretDTO> arrets;
@@ -10,7 +12,7 @@ public class ItineraireDTO {
 
     @JsonProperty("arrets")
     public List<ArretDTO> getArrets() {
-        return arrets;
+        return arrets.stream().sorted(Comparator.comparing(ArretDTO::getPosition)).collect(Collectors.toList());
     }
 
     @JsonProperty("arrets")
