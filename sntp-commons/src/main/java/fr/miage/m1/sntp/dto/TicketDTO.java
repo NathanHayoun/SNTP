@@ -1,48 +1,42 @@
 package fr.miage.m1.sntp.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class TicketDTO {
 
+    private Integer numeroTrain;
     private boolean isReservable;
-    private Long id_ticket;
-    private String gareDepart;
+    private LocalDate dateDeDepart;
     private String gareArrivee;
-    private String typeTrain;
-    private String dateDepart;
+    private String gareDepart;
+    private LocalTime heureArrivee;
+    private LocalTime heureDepart;
+    private int numeroEtape;
+    private int place;
 
-    public TicketDTO() {
+    public Integer getNumeroTrain() {
+        return numeroTrain;
     }
 
-    public TicketDTO(boolean is_reservable, Long id_ticket, String gareDepart, String gareArrivee, String typeTrain, String dateDepart) {
-        this.isReservable = is_reservable;
-        this.id_ticket = id_ticket;
-        this.gareDepart = gareDepart;
-        this.gareArrivee = gareArrivee;
-        this.typeTrain = typeTrain;
-        this.dateDepart = dateDepart;
+    public void setNumeroTrain(Integer numeroTrain) {
+        this.numeroTrain = numeroTrain;
     }
 
     public boolean isReservable() {
         return isReservable;
     }
 
-    public void setReservable(boolean is_reservable) {
-        this.isReservable = is_reservable;
+    public void setReservable(boolean reservable) {
+        isReservable = reservable;
     }
 
-    public Long getId_ticket() {
-        return id_ticket;
+    public LocalDate getDateDeDepart() {
+        return dateDeDepart;
     }
 
-    public void setId_ticket(Long id_ticket) {
-        this.id_ticket = id_ticket;
-    }
-
-    public String getGareDepart() {
-        return this.gareDepart;
-    }
-
-    public void setGareDepart(String gareDepart) {
-        this.gareDepart = gareDepart;
+    public void setDateDeDepart(LocalDate dateDeDepart) {
+        this.dateDeDepart = dateDeDepart;
     }
 
     public String getGareArrivee() {
@@ -52,20 +46,44 @@ public class TicketDTO {
     public void setGareArrivee(String gareArrivee) {
         this.gareArrivee = gareArrivee;
     }
-    public String getTypeTrain() {
-        return typeTrain;
+
+    public String getGareDepart() {
+        return gareDepart;
     }
 
-    public void setTypeTrain(String typeTrain) {
-        this.typeTrain = typeTrain;
+    public void setGareDepart(String gareDepart) {
+        this.gareDepart = gareDepart;
     }
 
-    public String getDateDepart() {
-        return dateDepart;
+    public LocalTime getHeureArrivee() {
+        return heureArrivee;
     }
 
-    public void setDateDepart(String dateDepart) {
-        this.dateDepart = dateDepart;
+    public void setHeureArrivee(LocalTime heureArrivee) {
+        this.heureArrivee = heureArrivee;
     }
 
+    public LocalTime getHeureDepart() {
+        return heureDepart;
+    }
+
+    public void setHeureDepart(LocalTime heureDepart) {
+        this.heureDepart = heureDepart;
+    }
+
+    public int getNumeroEtape() {
+        return numeroEtape;
+    }
+
+    public void setNumeroEtape(int numeroEtape) {
+        this.numeroEtape = numeroEtape;
+    }
+
+    public int getPlace() {
+        return place;
+    }
+
+    public void setPlace(int place) {
+        this.place = place;
+    }
 }

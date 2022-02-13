@@ -11,7 +11,6 @@ public class ArretDTO {
     private LocalTime heureArrivee;
     private PassageDTO passageDuJour;
     private Long position;
-
     private TrainDTO train;
 
     @JsonProperty("doitMarquerArret")

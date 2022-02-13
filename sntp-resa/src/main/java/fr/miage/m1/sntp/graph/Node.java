@@ -5,7 +5,7 @@ import fr.miage.m1.sntp.dto.ArretDTO;
 import java.util.*;
 
 public class Node {
-    Map<Node, Long> adjacentNodes = new HashMap<>();
+    Map<Node, Long> adjacentNodes = new LinkedHashMap<>();
     private ArretDTO arret;
     private List<Node> shortestPath = new LinkedList<>();
     private Long distance = Long.MAX_VALUE;
@@ -54,10 +54,13 @@ public class Node {
     public String toString() {
         List<String> shortedPath = new ArrayList<>();
         for (Node node : shortestPath) {
-            shortedPath.add(node.getArret().getGareConcerner().getNomGare());
+            shortedPath.add(node.getArret().getGareConcerner().getNomGare() + " Ligne - " + node.getArret().getTrain().getLigneDeTrain());
+        }
+        List<String> adj = new ArrayList<>();
+        for (Map.Entry<Node, Long> node : adjacentNodes.entrySet()) {
+            adj.add(node.getKey().getArret().getGareConcerner().getNomGare() + " Ligne - " + node.getKey().getArret().getTrain().getLigneDeTrain());
         }
         return "Node: " +
-                "arret=" + arret.getGareConcerner().getNomGare() +
-                ", distance=" + distance + "minutes / chemin : " + shortedPath;
+                "arret = " + arret.getGareConcerner().getNomGare() + " Ligne " + arret.getTrain().getLigneDeTrain() + " shortedPath: " + shortedPath + " adjacent: " + adj + " ,distance= " + distance + " minutes \n\n";
     }
 }
