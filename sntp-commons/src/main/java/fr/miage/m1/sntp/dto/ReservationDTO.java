@@ -1,65 +1,64 @@
 package fr.miage.m1.sntp.dto;
 
-import java.util.Collection;
+import java.time.LocalDate;
+import java.util.List;
 
 public class ReservationDTO {
 
+    private VoyageurDTO voyageur;
+    private List<TicketDTO> tickets;
     private int id;
+    private LocalDate dateDeReservation;
+    private double prix;
 
-    int kiosqueId;
-
-    VoyageurDTO acheteur;
-
-    Collection<TicketDTO> tickets;
-
-    int nbVoyageur;
-
-    public ReservationDTO() {
+    public VoyageurDTO getVoyageur() {
+        return voyageur;
     }
 
-    public ReservationDTO(int kiosqueId, VoyageurDTO acheteur, Collection<TicketDTO> tickets, int nbVoyageur) {
-        this.kiosqueId = kiosqueId;
-        this.acheteur = acheteur;
+    public void setVoyageur(VoyageurDTO voyageur) {
+        this.voyageur = voyageur;
+    }
+
+    public List<TicketDTO> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<TicketDTO> tickets) {
         this.tickets = tickets;
-        this.nbVoyageur = nbVoyageur;
-    }
-
-    public void setId(Long id) {
     }
 
     public int getId() {
         return id;
     }
 
-    public int getKiosqueId() {
-        return kiosqueId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setKiosqueId(int kiosqueId) {
-        this.kiosqueId = kiosqueId;
+    public LocalDate getDateDeReservation() {
+        return dateDeReservation;
     }
 
-    public VoyageurDTO getAcheteur() {
-        return acheteur;
+    public void setDateDeReservation(LocalDate dateDeReservation) {
+        this.dateDeReservation = dateDeReservation;
     }
 
-    public void setAcheteur(VoyageurDTO acheteur) {
-        this.acheteur = acheteur;
+    public double getPrix() {
+        return prix;
     }
 
-    public Collection<TicketDTO> getTickets() {
-        return tickets;
+    public void setPrix(double prix) {
+        this.prix = prix;
     }
 
-    public void setTickets(Collection<TicketDTO> tickets) {
-        this.tickets = tickets;
-    }
-
-    public int getNbVoyageur() {
-        return nbVoyageur;
-    }
-
-    public void setNbVoyageur(int nbVoyageur) {
-        this.nbVoyageur = nbVoyageur;
+    @Override
+    public String toString() {
+        return "ReservationDTO{" +
+                "voyageur=" + voyageur +
+                ", tickets=" + tickets +
+                ", id=" + id +
+                ", dateDeReservation=" + dateDeReservation +
+                ", prix=" + prix +
+                '}';
     }
 }

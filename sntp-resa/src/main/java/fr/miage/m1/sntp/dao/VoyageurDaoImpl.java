@@ -14,26 +14,31 @@ import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped
-public class VoyageurDaoImpl implements VoyageurDao{
+public class VoyageurDaoImpl implements VoyageurDao {
     @PersistenceContext
     EntityManager entityManager;
+
     @Override
     public List<Voyageur> findAll() {
-        return LibSQL.findAll(entityManager,Voyageur.class);
+        return LibSQL.findAll(entityManager, Voyageur.class);
     }
 
     @Override
     @Transactional
     public Voyageur findById(int id) {
-        return LibSQL.findObject(entityManager,Voyageur.class,id);
+        return LibSQL.findObject(entityManager, Voyageur.class, id);
     }
 
     @Override
     public Voyageur findByEmail(String email) throws VoyageurException {
         try {
-            Map<String, Object> params=new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             params.put("email", email);
-            return (Voyageur) LibSQL.executeSelectWithNamedParams(entityManager,Voyageur.class,"from Voyageur where email = :email",params).get(0);
+            List<Voyageur> voyageurList = LibSQL.executeSelectWithNamedParams(entityManager, Voyageur.class, "from Voyageur where email = :email", params);
+            if (voyageurList.size() == 0) {
+                return null;
+            }
+            return (voyageurList.get(0));
         } catch (NoResultException e) {
             throw new VoyageurException();
         }
@@ -42,19 +47,19 @@ public class VoyageurDaoImpl implements VoyageurDao{
     @Override
     @Transactional
     public void save(Voyageur voyageur) {
-        LibSQL.insertObject(entityManager,voyageur);
+        LibSQL.insertObject(entityManager, voyageur);
     }
 
     @Override
     @Transactional
     public void update(Voyageur voyageur) {
-        LibSQL.update(entityManager,voyageur);
+        LibSQL.update(entityManager, voyageur);
     }
 
     @Override
     @Transactional
     public void delete(Voyageur voyageur) {
-        LibSQL.deleteObject(entityManager,voyageur);
+        LibSQL.deleteObject(entityManager, voyageur);
     }
 
     @Override

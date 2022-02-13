@@ -1,10 +1,10 @@
 package fr.miage.m1.sntp.graph;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Graph {
-    private Set<Node> nodes = new HashSet<>();
+    private Set<Node> nodes = new LinkedHashSet<>();
 
     public void addNode(Node nodeA) {
         nodes.add(nodeA);
@@ -21,6 +21,6 @@ public class Graph {
     @Override
     public String toString() {
         return "Graph: " +
-                "nodes=" + nodes;
+                "nodes = " + nodes;
     }
 }
