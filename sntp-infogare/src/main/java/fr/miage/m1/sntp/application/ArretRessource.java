@@ -48,7 +48,6 @@ public class ArretRessource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getDeparts(@QueryParam(NAME) String name) {
         List<ArretDTO> arrets = arretService.getArretsDepartByGare(idGare);
-        System.out.println("Arrets " + arrets);
 
         return departs.data(ARRETS, arrets);
     }
@@ -62,6 +61,7 @@ public class ArretRessource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getArrivees(@QueryParam(NAME) String name) {
         List<ArretDTO> arrets = arretService.getArretsArriveeByGare(idGare);
+
         return arrivees.data(ARRETS, arrets);
     }
 }
