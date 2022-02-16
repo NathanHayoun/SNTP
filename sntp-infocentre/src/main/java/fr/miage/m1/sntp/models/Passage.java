@@ -11,12 +11,21 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "Passage")
 public class Passage {
+    public static final String ID_PASSAGE = "id_passage";
+    public static final String ID_GARE = "id_gare";
+    public static final String ID_ITINERAIRE = "id_itineraire";
+    public static final String HEURE_ARRIVEE_REEL = "heure_arrivee_reel";
+    public static final String HEURE_DEPART_REEL = "heure_depart_reel";
+    public static final String DATE_DE_PASSAGE = "date_de_passage";
+    public static final String NUMERO_DE_QUAI = "numero_de_quai";
+    public static final String MARQUER_ARRET = "marquer_arret";
+    public static final String EST_SUPPRIME = "est_supprime";
     /**
      * Primary key
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_passage", nullable = false)
+    @Column(name = ID_PASSAGE, nullable = false)
     private Long idPassage;
 
     /**
@@ -25,40 +34,40 @@ public class Passage {
     @JsonbTransient
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumns({
-            @JoinColumn(name = "id_gare", insertable = true, updatable = false),
-            @JoinColumn(name = "id_itineraire", insertable = true, updatable = false)
+            @JoinColumn(name = ID_GARE, insertable = true, updatable = false),
+            @JoinColumn(name = ID_ITINERAIRE, insertable = true, updatable = false)
     })
     private Arret arret;
     /**
      * heureArriveeReel
      */
-    @Column(name = "heure_arrivee_reel")
+    @Column(name = HEURE_ARRIVEE_REEL)
     private LocalTime heureArriveeReel;
     /**
      * heureDepartReel
      */
-    @Column(name = "heure_depart_reel")
+    @Column(name = HEURE_DEPART_REEL)
     private LocalTime heureDepartReel;
     /**
      * dateDePassage
      */
-    @Column(name = "date_de_passage", nullable = false)
+    @Column(name = DATE_DE_PASSAGE, nullable = false)
     private LocalDate dateDePassage;
     /**
      * numeroDeQuai
      */
-    @Column(name = "numero_de_quai")
+    @Column(name = NUMERO_DE_QUAI)
     private Integer numeroDeQuai;
     /**
      * marquerArret
      */
-    @Column(name = "marquer_arret")
+    @Column(name = MARQUER_ARRET)
     private Boolean marquerArret;
 
     /**
      * estSupprime
      */
-    @Column(name = "est_supprime")
+    @Column(name = EST_SUPPRIME)
     private Boolean estSupprime;
 
     /**

@@ -13,16 +13,19 @@ import java.util.List;
 public interface TicketService {
 
     String NUMERO_DE_TRAIN = "numeroDeTrain";
+    String PATH_TICKET_WITH_CORRESPONDANCE = "tickets/ticket/train/now/has/correspondance/{numeroDeTrain}";
+    String NB_PASSAGER_BY_TRAIN = "tickets/ticket/train/now/{numeroDeTrain}";
+    String PATH_GET_EMAIL_IN_TRAIN = "tickets/ticket/train/email/{numeroDeTrain}";
 
-    @Path("tickets/ticket/train/now/has/correspondance/{numeroDeTrain}")
+    @Path(PATH_TICKET_WITH_CORRESPONDANCE)
     @GET
     Integer getNbPassagerByTrainAndHasCorrespondance(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain);
 
-    @Path("tickets/ticket/train/now/{numeroDeTrain}")
+    @Path(NB_PASSAGER_BY_TRAIN)
     @GET
     Integer getNbPassagerByTrain(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain);
 
-    @Path("tickets/ticket/train/email/{numeroDeTrain}")
+    @Path(PATH_GET_EMAIL_IN_TRAIN)
     @GET
     List<VoyageurDTO> getEmailsByTrainAndNow(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain);
 

@@ -20,13 +20,15 @@ public class TrainCamel extends RouteBuilder {
     public static final String JMS_TRAIN_INFOCENTRE = "jms:%s/train/infocentre/%s";
     public static final String QUEUE_TRAIN_POSITION = "jms:%s/queue/train/position";
     public static final String URL_INFLUX_DB = "influxdb://influxDbBean?databaseName=%s";
+    public static final String INFLUX_DATABASE = "influx.database";
+    public static final String JMS_PREFIX = "fr.miage.m1.sntp.jmsPrefix";
     @Inject
     ConnectionFactory connectionFactory;
 
-    @ConfigProperty(name = "influx.database", defaultValue = "sntp")
+    @ConfigProperty(name = INFLUX_DATABASE, defaultValue = "sntp")
     String influxDatabase;
 
-    @ConfigProperty(name = "fr.miage.m1.sntp.jmsPrefix", defaultValue = "SNTP")
+    @ConfigProperty(name = JMS_PREFIX, defaultValue = "SNTP")
     String prefix;
 
     @Override

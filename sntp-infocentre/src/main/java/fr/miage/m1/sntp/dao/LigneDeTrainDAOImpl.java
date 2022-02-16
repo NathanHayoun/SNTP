@@ -19,6 +19,7 @@ public class LigneDeTrainDAOImpl implements LigneDeTrainDAO {
     @Transactional
     public LigneDeTrain findLigneDeTrain(long idLigneDeTrain) throws LigneDeTrainException {
         LigneDeTrain ligneDeTrain = LibSql.findObject(em, LigneDeTrain.class, idLigneDeTrain);
+
         if (ligneDeTrain == null) {
             throw new LigneDeTrainException();
         }

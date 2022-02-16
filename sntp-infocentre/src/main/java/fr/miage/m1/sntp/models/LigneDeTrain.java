@@ -8,18 +8,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "LigneDeTrain")
 public class LigneDeTrain {
+    public static final String ID_LIGNE_DE_TRAIN = "id_ligne_de_train";
+    public static final String NOM_LIGNE = "nom_ligne";
     /**
      * Primary key
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ligne_de_train", nullable = false)
+    @Column(name = ID_LIGNE_DE_TRAIN, nullable = false)
     private Long id;
 
     /**
      * Name of line
      */
-    @Column(name = "nom_ligne")
+    @Column(name = NOM_LIGNE)
     private String nomLigne;
 
     /**
