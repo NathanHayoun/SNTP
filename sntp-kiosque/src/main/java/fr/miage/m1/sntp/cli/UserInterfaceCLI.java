@@ -5,7 +5,10 @@ import org.beryx.textio.TextIO;
 
 import java.util.function.BiConsumer;
 
+/**
+ * @author Quentin Vaillant
+ */
 public interface UserInterfaceCLI extends BiConsumer<TextIO, RunnerData>, UserInterface {
 
-    ReservationDTO getReservation(ReservationDTO reservationDTO) throws Exception;
+    void getReservation(ReservationDTO reservationDTO) throws Exception;
 }

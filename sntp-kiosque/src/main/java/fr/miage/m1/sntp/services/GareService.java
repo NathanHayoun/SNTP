@@ -8,11 +8,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.Collection;
 
-
-@RegisterRestClient(configKey = "infocentre-api")
+/**
+ * @author Quentin Vaillant
+ */
+@RegisterRestClient(configKey = GareService.API_KEY_INFOCENTRE)
 public interface GareService {
 
-    @Path("gares")
+    String API_KEY_INFOCENTRE = "infocentre-api";
+    String PATH_TO_GARE = "gares";
+
+    @Path(PATH_TO_GARE)
     @GET
     Collection<GareDTO> getGares();
 }
