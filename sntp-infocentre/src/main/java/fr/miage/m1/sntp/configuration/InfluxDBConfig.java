@@ -12,16 +12,19 @@ import javax.inject.Named;
 @Named("influxDBBean")
 @RegisterForReflection
 public class InfluxDBConfig {
+    public static final String INFLUX_URL_KEY = "influx.url";
+    public static final String INFLUX_USERNAME_KEY = "influx.username";
+    public static final String INFLUX_PASSWORD_KEY = "influx.password";
     private static final String RETENTION_POLICY = "default";
-    @ConfigProperty(name = "influx.url")
+    @ConfigProperty(name = INFLUX_URL_KEY)
     String influxUrl;
 
-    @ConfigProperty(name = "influx.username")
+    @ConfigProperty(name = INFLUX_USERNAME_KEY)
     String influxUsername;
 
-    @ConfigProperty(name = "influx.password")
+    @ConfigProperty(name = INFLUX_PASSWORD_KEY)
     String influxPassword;
-    
+
     @ApplicationScoped
     public InfluxDB influxDbBean() {
         return InfluxDBFactory.connect(influxUrl, influxUsername, influxPassword).setRetentionPolicy(RETENTION_POLICY);

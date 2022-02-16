@@ -14,6 +14,8 @@ import java.util.List;
 
 @Path("/gares")
 public class GareRessources {
+    public static final String GARE_ID = "/gare/{id}";
+    public static final String ID = "id";
     @Inject
     GareDAO gareDAO;
 
@@ -25,8 +27,8 @@ public class GareRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/gare/{id}")
-    public Gare getGare(@PathParam("id") long id) {
+    @Path(GARE_ID)
+    public Gare getGare(@PathParam(ID) long id) {
         try {
             return gareDAO.findGare(id);
         } catch (GareException gareException) {
