@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.GareException;
 import fr.miage.m1.sntp.models.Gare;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -18,7 +18,7 @@ public class GareDAOImpl implements GareDAO {
     @Override
     @Transactional
     public Gare findGare(long idGare) throws GareException {
-        Gare gare = LibSQL.findObject(em, Gare.class, idGare);
+        Gare gare = LibSql.findObject(em, Gare.class, idGare);
         if (gare == null) {
             throw new GareException();
         }
@@ -28,6 +28,6 @@ public class GareDAOImpl implements GareDAO {
 
     @Override
     public List<Gare> getAllGare() {
-        return LibSQL.findAll(em, Gare.class);
+        return LibSql.findAll(em, Gare.class);
     }
 }
