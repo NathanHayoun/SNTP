@@ -5,6 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class TrainDTO {
+    public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
+    public static final String TERMINUS = "terminus";
+    public static final String TYPE_DE_TRAIN = "typeDeTrain";
+    public static final String LIGNE_DE_TRAIN = "ligneDeTrain";
+    public static final String DEPART = "depart";
+    public static final String ITINERAIRE = "itineraire";
+    public static final String ARRETS_SUIVANT = "arretsSuivant";
     private Integer numeroDeTrain;
     private String terminus;
     private String typeDeTrain;
@@ -13,72 +20,72 @@ public class TrainDTO {
     private ItineraireDTO itineraire;
     private List<String> arretsSuivant;
 
-    @JsonProperty("numeroDeTrain")
+    @JsonProperty(NUMERO_DE_TRAIN)
     public long getNumeroDeTrain() {
         return numeroDeTrain;
     }
 
-    @JsonProperty("numeroDeTrain")
+    @JsonProperty(NUMERO_DE_TRAIN)
     public void setNumeroDeTrain(int value) {
         this.numeroDeTrain = value;
     }
 
-    @JsonProperty("terminus")
+    @JsonProperty(TERMINUS)
     public String getTerminus() {
         return terminus;
     }
 
-    @JsonProperty("terminus")
+    @JsonProperty(TERMINUS)
     public void setTerminus(String value) {
         this.terminus = value;
     }
 
-    @JsonProperty("typeDeTrain")
+    @JsonProperty(TYPE_DE_TRAIN)
     public String getTypeDeTrain() {
         return typeDeTrain;
     }
 
-    @JsonProperty("typeDeTrain")
+    @JsonProperty(TYPE_DE_TRAIN)
     public void setTypeDeTrain(String value) {
         this.typeDeTrain = value;
     }
 
-    @JsonProperty("ligneDeTrain")
+    @JsonProperty(LIGNE_DE_TRAIN)
     public String getLigneDeTrain() {
         return ligneDeTrain;
     }
 
-    @JsonProperty("ligneDeTrain")
+    @JsonProperty(LIGNE_DE_TRAIN)
     public void setLigneDeTrain(String value) {
         this.ligneDeTrain = value;
     }
 
-    @JsonProperty("depart")
+    @JsonProperty(DEPART)
     public String getDepart() {
         return depart;
     }
 
-    @JsonProperty("depart")
+    @JsonProperty(DEPART)
     public void setDepart(String value) {
         this.depart = value;
     }
 
-    @JsonProperty("itineraire")
+    @JsonProperty(ITINERAIRE)
     public ItineraireDTO getItineraire() {
         return itineraire;
     }
 
-    @JsonProperty("itineraire")
+    @JsonProperty(ITINERAIRE)
     public void setItineraire(ItineraireDTO itineraire) {
         this.itineraire = itineraire;
     }
 
-    @JsonProperty("arretsSuivant")
+    @JsonProperty(ARRETS_SUIVANT)
     public List<String> getArretsSuivant() {
         return arretsSuivant;
     }
 
-    @JsonProperty("arretsSuivant")
+    @JsonProperty(ARRETS_SUIVANT)
     public void setArretsSuivant(List<String> arretsSuivant) {
         this.arretsSuivant = arretsSuivant;
     }

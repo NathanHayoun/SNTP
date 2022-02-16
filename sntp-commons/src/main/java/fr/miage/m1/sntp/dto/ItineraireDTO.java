@@ -10,25 +10,27 @@ import java.util.stream.Collectors;
  * @author Nathan Hayoun
  */
 public class ItineraireDTO {
+    public static final String ARRETS = "arrets";
+    public static final String ID = "id";
     private List<ArretDTO> arrets;
     private long id;
 
-    @JsonProperty("arrets")
+    @JsonProperty(ARRETS)
     public List<ArretDTO> getArrets() {
         return arrets.stream().sorted(Comparator.comparing(ArretDTO::getPosition)).collect(Collectors.toList());
     }
 
-    @JsonProperty("arrets")
+    @JsonProperty(ARRETS)
     public void setArrets(List<ArretDTO> value) {
         this.arrets = value;
     }
 
-    @JsonProperty("id")
+    @JsonProperty(ID)
     public long getID() {
         return id;
     }
 
-    @JsonProperty("id")
+    @JsonProperty(ID)
     public void setID(long value) {
         this.id = value;
     }
