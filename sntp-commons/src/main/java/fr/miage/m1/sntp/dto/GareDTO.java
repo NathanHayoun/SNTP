@@ -1,12 +1,11 @@
 package fr.miage.m1.sntp.dto;
 
+/**
+ * @author Nathan Hayoun
+ */
 public class GareDTO {
     private Long id;
     private String nomGare;
-
-    public GareDTO() {
-
-    }
 
     public GareDTO(Long id, String nomGare) {
         this.id = id;
