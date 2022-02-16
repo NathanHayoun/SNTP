@@ -8,10 +8,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
 
-@Path("/arrets")
-@RegisterRestClient(configKey = "infocentre-api")
+/**
+ * @author Etan Guir
+ */
+@Path(ArretService.MAIN_PATH_FOR_ARRETS)
+@RegisterRestClient(configKey = ArretService.INFOCENTRE_API_KEY)
 public interface ArretService {
-    @Path("/arret/train/{numero}")
+
+    String MAIN_PATH_FOR_ARRETS = "/arrets";
+    String INFOCENTRE_API_KEY = "infocentre-api";
+    String PATH_FOR_ARRET_BY_NUM_TRAIN = "/arret/train/{numero}";
+    String NUMERO = "numero";
+
+    @Path(PATH_FOR_ARRET_BY_NUM_TRAIN)
     @GET
-    List<ArretDTO> getArrets(@PathParam("numero") int numeroDeTrain);
+    List<ArretDTO> getArrets(@PathParam(NUMERO) int numeroDeTrain);
 }

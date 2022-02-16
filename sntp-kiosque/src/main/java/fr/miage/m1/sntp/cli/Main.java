@@ -1,36 +1,40 @@
 package fr.miage.m1.sntp.cli;
 
-import fr.miage.m1.sntp.camel.gateways.ReservationGateway;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import picocli.CommandLine.Command;
 
 import javax.inject.Inject;
 
+/**
+ * @author Quentin Vaillant
+ */
 @Command(name = "greeting", mixinStandardHelpOptions = true)
 public class Main implements Runnable {
 
+    public static final String CHOISSEZ_VOTRE_ACTION = "Bienvenu, choissez votre action";
     @Inject
     UserInterfaceCLI terminalSNTP;
-
-    @Inject
-    ReservationGateway reservationGateway;
 
     @Override
     public void run() {
         TextIO textIO = TextIoFactory.getTextIO();
         terminalSNTP.accept(textIO, new RunnerData(""));
+        boolean continueBoucle = true;
 
-        while (true) {
+        while (continueBoucle) {
             try {
-                ChoixUtilisateur choixUtilisateur = textIO.newEnumInputReader(ChoixUtilisateur.class).read("Bienvenu, choissez votre action");
+                ChoixUtilisateur choixUtilisateur = textIO.newEnumInputReader(ChoixUtilisateur.class).read(CHOISSEZ_VOTRE_ACTION);
+
                 switch (choixUtilisateur) {
-                    case Acheter_Un_Billet:
+                    case ACHETER_UN_BILLET:
                         terminalSNTP.getReservation(null);
                         break;
-                    case Echanger_Mon_Billet:
+                    case ECHANGER_UN_BILLET:
                         terminalSNTP.getEchangerBillet();
                         break;
+                    case SORTIR:
+                        continueBoucle = false;
                     default:
                         break;
                 }
