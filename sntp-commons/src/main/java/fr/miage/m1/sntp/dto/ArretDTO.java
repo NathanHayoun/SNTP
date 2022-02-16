@@ -23,6 +23,10 @@ public class ArretDTO {
     private Long position;
     private TrainDTO train;
 
+    public ArretDTO() {
+
+    }
+
     @JsonProperty(DOIT_MARQUER_ARRET)
     public Boolean getDoitMarquerArret() {
         return doitMarquerArret;

@@ -3,8 +3,10 @@ package fr.miage.m1.sntp.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * @author Aicha Nur
+ */
 public class ReservationDTO {
-
     private VoyageurDTO voyageur;
     private List<TicketDTO> tickets;
     private int id;
