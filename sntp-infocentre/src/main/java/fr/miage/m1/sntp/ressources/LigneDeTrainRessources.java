@@ -14,6 +14,8 @@ import java.util.List;
 
 @Path("/ligneDeTrains")
 public class LigneDeTrainRessources {
+    public static final String LIGNE_DE_TRAIN_BY_ID = "/ligneDeTrain/{id}";
+    public static final String ID = "id";
     @Inject
     LigneDeTrainDAO ligneDeTrainDAO;
 
@@ -25,8 +27,8 @@ public class LigneDeTrainRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/ligneDeTrain/{id}")
-    public LigneDeTrain getLigneDeTrain(@PathParam("id") long id) {
+    @Path(LIGNE_DE_TRAIN_BY_ID)
+    public LigneDeTrain getLigneDeTrain(@PathParam(ID) long id) {
         try {
             return ligneDeTrainDAO.findLigneDeTrain(id);
         } catch (LigneDeTrainException ligneDeTrainException) {

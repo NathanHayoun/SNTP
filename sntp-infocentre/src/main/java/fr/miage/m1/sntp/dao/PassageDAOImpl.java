@@ -52,12 +52,12 @@ public class PassageDAOImpl implements PassageDAO {
     }
 
     @Override
-    public List<Passage> findprochainsTrajetsDuJourByGareDepart(long idGare) throws PassageException {
+    public List<Passage> findprochainsTrajetsDuJourByGareDepart(long idGare) {
         return getPassages(idGare, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_DEPART);
     }
 
     @Override
-    public List<Passage> findprochainsTrajetsDuJourByGareArrivee(long idGare) throws PassageException {
+    public List<Passage> findprochainsTrajetsDuJourByGareArrivee(long idGare) {
         return getPassages(idGare, QUERY_SELECT_10_PROCHAIN_PASSAGE_DU_JOUR_BY_ID_GARE_ARRIVEE);
     }
 
@@ -66,6 +66,7 @@ public class PassageDAOImpl implements PassageDAO {
         params.put(ID_GARE, idGare);
         LocalDate date = LocalDate.now();
         params.put(DATE_DE_PASSAGE, date);
+        
         return LibSql.executeSelectWithNamedParams(em, Object[].class, querySelect10ProchainPassageDuJourByIdGareArrivee, params);
     }
 

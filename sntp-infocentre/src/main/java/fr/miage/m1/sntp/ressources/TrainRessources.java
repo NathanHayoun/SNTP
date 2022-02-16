@@ -14,6 +14,8 @@ import java.util.List;
 
 @Path("/trains")
 public class TrainRessources {
+    public static final String ID = "id";
+    public static final String TRAIN_ID = "/train/{id}";
     @Inject
     TrainDAO trainDAO;
 
@@ -25,8 +27,8 @@ public class TrainRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/train/{id}")
-    public Train getTrain(@PathParam("id") long id) throws TrainException {
+    @Path(TRAIN_ID)
+    public Train getTrain(@PathParam(ID) long id) throws TrainException {
         try {
             return trainDAO.findTrain(id);
         } catch (TrainException trainException) {

@@ -15,7 +15,8 @@ import java.util.Timer;
 @CommandLine.Command(name = "greeting", mixinStandardHelpOptions = true)
 public class Main implements Runnable {
     public static final String CHOISIR_UNE_ACTION = "Choisir une action";
-    public static final long DOUZE_HEURES = 1000 * 60 * 60 * 12;
+    public static final long ONE_HOURS_IN_MS = 1000L * 60 * 60;
+    public static final long DELAY = 0L;
 
     @Inject
     UserInterfaceCLI cli;
@@ -34,16 +35,16 @@ public class Main implements Runnable {
                 ChoixUtilisateur choixUtilisateur = textIO.newEnumInputReader(ChoixUtilisateur.class).read(CHOISIR_UNE_ACTION);
 
                 switch (choixUtilisateur) {
-                    case Ajouter_Une_Station:
+                    case AJOUTER_UNE_STATION:
                         ajouterStationForTrain();
                         break;
-                    case Supprimer_Une_Station:
+                    case SUPPRIMER_UNE_STATION:
                         supprimerStationForTrain();
                         break;
-                    case Supprimer_Un_Train:
+                    case SUPPRIMER_UN_TRAIN:
                         supprimerTrain();
                         break;
-                    case Generer_Un_Retard:
+                    case GENERER_UN_RETARD:
                         genererRetard();
                         break;
                     default:
@@ -83,6 +84,6 @@ public class Main implements Runnable {
     @ActivateRequestContext
     public void genererPassages() {
         Timer timer = new Timer();
-        timer.schedule(generatePassageTask, 0L, DOUZE_HEURES);
+        timer.schedule(generatePassageTask, DELAY, ONE_HOURS_IN_MS);
     }
 }

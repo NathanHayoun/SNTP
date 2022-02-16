@@ -50,12 +50,12 @@ public class ArretDAOImpl implements ArretDAO {
     }
 
     @Override
-    public List<Arret> getArretsDepartByGare(long idGare) throws ArretException {
+    public List<Arret> getArretsDepartByGare(long idGare) {
         return getArrets(idGare, QUERY_SELECT_DEPART_BY_ID_GARE);
     }
 
     @Override
-    public List<Arret> getArretsArriveeByGare(long idGare) throws ArretException {
+    public List<Arret> getArretsArriveeByGare(long idGare) {
         return getArrets(idGare, QUERY_SELECT_ARRIVEE_BY_ID_GARE);
     }
 
@@ -71,6 +71,7 @@ public class ArretDAOImpl implements ArretDAO {
     @NotNull
     private List<Arret> generateArrets(List<Arret> arrets) {
         List<Arret> arretToReturn = new ArrayList<>();
+
         for (Arret arret : arrets) {
             Arret arretToPush = new Arret();
             arretToPush.setDoitMarquerArret(arret.getDoitMarquerArret());
@@ -81,6 +82,7 @@ public class ArretDAOImpl implements ArretDAO {
             arretToPush.setItineraireConcerner(arret.getItineraireConcerner());
             arretToPush.setPosition(arret.getPosition());
             Set<Passage> passageSet = new HashSet<>();
+
             for (Passage passage : arret.getPassages()) {
                 if (Objects.equals(passage.getDateDePassage(), LocalDate.now())) {
                     passageSet.add(passage);
@@ -90,6 +92,7 @@ public class ArretDAOImpl implements ArretDAO {
             arretToPush.setPassages(passageSet);
             arretToReturn.add(arretToPush);
         }
+        
         return arretToReturn;
     }
 }
