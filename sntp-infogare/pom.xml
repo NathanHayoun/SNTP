@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>project-m1-sntp</groupId>
+    <groupId>fr.miage.m1.sntp</groupId>
     <artifactId>sntp-infogare</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
@@ -42,7 +42,7 @@
             <artifactId>quarkus-resteasy-qute</artifactId>
         </dependency>
         <dependency>
-            <groupId>project-m1-sntp</groupId>
+            <groupId>fr.miage.m1.sntp</groupId>
             <artifactId>sntp-commons</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
