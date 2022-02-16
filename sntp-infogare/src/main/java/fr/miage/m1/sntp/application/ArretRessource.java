@@ -1,12 +1,12 @@
 package fr.miage.m1.sntp.application;
 
+import fr.miage.m1.sntp.Main;
 import fr.miage.m1.sntp.dto.ArretDTO;
 import fr.miage.m1.sntp.ressources.ArretService;
-import fr.miage.m1.sntp.ressources.GareService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,9 +16,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+/**
+ * @author Guila Bismuth
+ */
 @Path("/main")
 public class ArretRessource {
-    private static final Integer idGare = 1;
+    private final String PATH_FOR_DEPARTURE = "/departs";
+    private final String NAME = "name";
+    private final String ARRETS = "arrets";
+    private final String PATH_FOR_ARRIVALS = "/arrivees";
 
     @Inject
     Template departs;
@@ -28,27 +34,34 @@ public class ArretRessource {
 
     @Inject
     @RestClient
-    GareService gareService;
-
-    @Inject
-    @RestClient
     ArretService arretService;
 
-    @Path("/departs")
+    @ConfigProperty(name = Main.InfoGare.PROPERTY_ID_GARE, defaultValue = "1")
+    int idGare;
+
+    /***
+     * @param name
+     * @return the template with the list of trains that must leave from the station passed in parameters
+     */
+    @Path(PATH_FOR_DEPARTURE)
     @GET
     @Produces(MediaType.TEXT_HTML)
-    @Scheduled(cron="*/1 * * * *")
-    public TemplateInstance getDeparts(@QueryParam("name") String name) {
+    public TemplateInstance getDeparts(@QueryParam(NAME) String name) {
         List<ArretDTO> arrets = arretService.getArretsDepartByGare(idGare);
+        System.out.println("Arrets " + arrets);
 
-        return departs.data("arrets", arrets);
+        return departs.data(ARRETS, arrets);
     }
 
-    @Path("/arrivees")
+    /***
+     * @param name
+     * @return Returns the template with the list of trains that should arrive in the station passed in parameters
+     */
+    @Path(PATH_FOR_ARRIVALS)
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance getArrivees(@QueryParam("name") String name) {
+    public TemplateInstance getArrivees(@QueryParam(NAME) String name) {
         List<ArretDTO> arrets = arretService.getArretsArriveeByGare(idGare);
-        return arrivees.data("arrets", arrets);
+        return arrivees.data(ARRETS, arrets);
     }
 }
