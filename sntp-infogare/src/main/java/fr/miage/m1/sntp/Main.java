@@ -26,6 +26,7 @@ public class Main {
 
     public static class InfoGare implements QuarkusApplication {
         public static final String PROPERTY_ID_GARE = "fr.miage.m1.sntp.idGare";
+        public static final String INFOGARE_STARTED_WITH_GARE_NAME = "Infogare started with gare name {}";
 
         @Inject
         @RestClient
@@ -36,7 +37,7 @@ public class Main {
 
         @Override
         public int run(String... args) {
-            logger.info("Infogare started with gare name " + gareService.getGare(idGare).getNomGare());
+            logger.info(INFOGARE_STARTED_WITH_GARE_NAME, gareService.getGare(idGare).getNomGare());
             Quarkus.waitForExit();
 
             return 0;
