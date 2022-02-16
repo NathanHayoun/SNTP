@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TicketDTO {
-
     private Integer numeroTrain;
     private boolean isReservable;
     private LocalDate dateDeDepart;

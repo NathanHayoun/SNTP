@@ -32,7 +32,6 @@ public class InfoCentreMetier {
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 120;
     public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
 
-    public static final String NB_REQUIS_NON_ATTEINDS_POUR_RETARD = "Le nombre de personnes requise pour générer un retard n'est pas atteinte";
     public static final String REFUS_AJOUTER_STATION = "Vous ne pouvez pas ajouter une station car le train précédent n a pas %s heures de retard";
     public static final String TRAIN_NOT_FOUND = "Aucun train trouvee";
     public static final String GARE_NOT_FOUND = "Gare non trouve";
@@ -209,13 +208,13 @@ public class InfoCentreMetier {
         String message = String.format(SUPPRESSION_STATION_MESSAGE_TRAIN_FORMAT, arret.getGareConcerner().getNomGare());
         trainCamel.envoyerMessageAuTrain(train.getNumeroDeTrain(), message);
 
-        return new Tuple<>(true, "OK");
+        return new Tuple<>(true, OK);
     }
 
     private Tuple<Boolean, String> verificationPourSuppressionStation(Train train) {
         try {
             if (rs.getNbPassagerByTrain(train.getNumeroDeTrain()) == 0) {
-                return new Tuple<>(true, "OK");
+                return new Tuple<>(true, OK);
             } else {
                 return new Tuple<>(false, "Impossible, des passagers on des reservations dans ce train à cette station.");
             }
@@ -267,7 +266,7 @@ public class InfoCentreMetier {
         String message = String.format(AJOUT_STATION_TRAIN_FORMAT, arret.getGareConcerner().getNomGare(), arret.getHeureDepart(), arret.getHeureArrivee());
         trainCamel.envoyerMessageAuTrain(train.getNumeroDeTrain(), message);
 
-        return new Tuple<>(true, "ok");
+        return new Tuple<>(true, OK);
     }
 
     private Tuple<Boolean, String> verificationPourAjouterStation(Gare gare, Arret arretConcerner, LocalDate date) {
@@ -292,7 +291,7 @@ public class InfoCentreMetier {
             if (p.getDateDePassage().equals(date) &&
                     precedent.getHeureArrivee().until(p.getHeureArriveeReel(), ChronoUnit.HOURS) >= NB_HEURE_MINIMUM_FOR_ADD_STATION ||
                     Boolean.TRUE.equals(p.getEstSupprime())) {
-                return new Tuple<>(true, "OK");
+                return new Tuple<>(true, OK);
             }
         }
         String messageDeRefus = String.format(REFUS_AJOUTER_STATION, NB_HEURE_MINIMUM_FOR_ADD_STATION);
@@ -324,12 +323,12 @@ public class InfoCentreMetier {
         }
         trainCamel.envoyerMessageAuTrain(train.getNumeroDeTrain(), TRAIN_SUPPRIMER);
 
-        return new Tuple<>(true, "OK");
+        return new Tuple<>(true, OK);
     }
 
     private Tuple<Boolean, String> verificationPourSuppressionTrain(Train train) {
         if (rs.getNbPassagerByTrain(train.getNumeroDeTrain()) <= MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN) {
-            return new Tuple<>(true, "OK");
+            return new Tuple<>(true, OK);
         } else {
             String messageError = String.format("Le nombre de passager acutel est superieur a %s . Il n est donc pas possible de supprimer le train", MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN);
             return new Tuple<>(false, messageError);
