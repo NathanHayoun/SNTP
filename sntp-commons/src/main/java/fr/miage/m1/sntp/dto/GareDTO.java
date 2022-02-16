@@ -7,11 +7,6 @@ public class GareDTO {
     private Long id;
     private String nomGare;
 
-    public GareDTO(Long id, String nomGare) {
-        this.id = id;
-        this.nomGare = nomGare;
-    }
-
     public Long getId() {
         return id;
     }
