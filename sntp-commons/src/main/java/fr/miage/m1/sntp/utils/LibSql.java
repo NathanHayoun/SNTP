@@ -15,6 +15,13 @@ import java.util.Map.Entry;
  * Library that allows easy access to the database
  */
 public class LibSql {
+
+    public static final String UTILITY_CLASS = "utility class";
+
+    private LibSql() {
+        throw new IllegalStateException(UTILITY_CLASS);
+    }
+
     /**
      * Insert object in Database
      *
