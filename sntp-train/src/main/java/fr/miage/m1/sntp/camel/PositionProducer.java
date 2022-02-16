@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
  */
 @ApplicationScoped
 public class PositionProducer implements Runnable {
+    public static final long INITIAL_DELAY = 10L;
+    public static final long PERIOD = 5L;
     private static final String ERROR_CONVERT_XML = "Error when converting XML ";
     private static final String QUEUE_TRAIN_POSITION = "%s/queue/train/position";
     private static final String ERROR_DURING_CNX_FACTORY = "Error during creation connection factory";
@@ -40,7 +42,7 @@ public class PositionProducer implements Runnable {
 
     private Driver driver;
 
-    private static String toXML(Driver driver) {
+    private static String toXML(Driver driver) throws JAXBException {
         try {
             JAXBContext context = JAXBContext.newInstance(driver.getClass());
             StringWriter writer = new StringWriter();
@@ -48,8 +50,7 @@ public class PositionProducer implements Runnable {
 
             return writer.toString();
         } catch (JAXBException e) {
-            logger.warn(ERROR_CONVERT_XML, e);
-            throw new RuntimeException(e);
+            throw new JAXBException(e);
         }
     }
 
@@ -59,7 +60,7 @@ public class PositionProducer implements Runnable {
         } catch (Exception e) {
             logger.warn(ERROR_DURING_CNX_FACTORY, e);
         }
-        scheduler.scheduleAtFixedRate(this, 10L, 5L, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this, INITIAL_DELAY, PERIOD, TimeUnit.SECONDS);
         driver = new Driver();
     }
 
@@ -71,8 +72,13 @@ public class PositionProducer implements Runnable {
     public void run() {
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
             driver.updateValue();
-            Message message = context.createTextMessage(toXML(driver));
-            context.createProducer().send(context.createQueue(String.format(QUEUE_TRAIN_POSITION, prefix)), message);
+            Message message = null;
+            try {
+                message = context.createTextMessage(toXML(driver));
+                context.createProducer().send(context.createQueue(String.format(QUEUE_TRAIN_POSITION, prefix)), message);
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
