@@ -4,10 +4,7 @@ public class VoyageurDTO {
     private String email;
     private String nom;
     private String prenom;
-
-    public VoyageurDTO() {
-    }
-
+    
     public String getEmail() {
         return email;
     }

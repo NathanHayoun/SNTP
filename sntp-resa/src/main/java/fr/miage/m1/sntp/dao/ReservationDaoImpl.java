@@ -1,7 +1,7 @@
 package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.models.Reservation;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -16,30 +16,30 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     public List<Reservation> findAll() {
-        return LibSQL.findAll(entityManager, Reservation.class);
+        return LibSql.findAll(entityManager, Reservation.class);
     }
 
     @Override
     @Transactional
     public Reservation findById(Long id) {
-        return LibSQL.findObject(entityManager, Reservation.class, id);
+        return LibSql.findObject(entityManager, Reservation.class, id);
     }
 
     @Override
     @Transactional
     public Reservation save(Reservation reservation) {
-        return (Reservation) LibSQL.insertObject(entityManager, reservation);
+        return (Reservation) LibSql.insertObject(entityManager, reservation);
     }
 
     @Override
     @Transactional
     public void update(Reservation reservation) {
-        LibSQL.update(entityManager, reservation);
+        LibSql.update(entityManager, reservation);
     }
 
     @Override
     @Transactional
     public void delete(Reservation reservation) {
-        LibSQL.deleteObject(entityManager, reservation);
+        LibSql.deleteObject(entityManager, reservation);
     }
 }

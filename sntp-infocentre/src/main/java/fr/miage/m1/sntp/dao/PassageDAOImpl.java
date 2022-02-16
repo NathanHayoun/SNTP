@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.PassageException;
 import fr.miage.m1.sntp.models.Passage;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -26,7 +26,7 @@ public class PassageDAOImpl implements PassageDAO {
     @Override
     @Transactional
     public Passage findPassage(long idPassage) throws PassageException {
-        Passage passage = LibSQL.findObject(em, Passage.class, idPassage);
+        Passage passage = LibSql.findObject(em, Passage.class, idPassage);
         if (passage == null) {
             throw new PassageException();
         }
@@ -36,19 +36,19 @@ public class PassageDAOImpl implements PassageDAO {
 
     @Override
     public List<Passage> getAllPassages() {
-        return LibSQL.findAll(em, Passage.class);
+        return LibSql.findAll(em, Passage.class);
     }
 
     @Override
     @Transactional
     public void insertPassage(Passage passage) {
-        LibSQL.insertObject(em, passage);
+        LibSql.insertObject(em, passage);
     }
 
     @Override
     @Transactional
     public void updatePassage(Passage passage) {
-        LibSQL.updateObject(em, passage);
+        LibSql.updateObject(em, passage);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PassageDAOImpl implements PassageDAO {
         params.put(ID_GARE, idGare);
         LocalDate date = LocalDate.now();
         params.put(DATE_DE_PASSAGE, date);
-        return LibSQL.executeSelectWithNamedParams(em, Object[].class, querySelect10ProchainPassageDuJourByIdGareArrivee, params);
+        return LibSql.executeSelectWithNamedParams(em, Object[].class, querySelect10ProchainPassageDuJourByIdGareArrivee, params);
     }
 
 }

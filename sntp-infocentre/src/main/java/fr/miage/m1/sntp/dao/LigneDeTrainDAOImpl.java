@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.LigneDeTrainException;
 import fr.miage.m1.sntp.models.LigneDeTrain;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -18,7 +18,7 @@ public class LigneDeTrainDAOImpl implements LigneDeTrainDAO {
     @Override
     @Transactional
     public LigneDeTrain findLigneDeTrain(long idLigneDeTrain) throws LigneDeTrainException {
-        LigneDeTrain ligneDeTrain = LibSQL.findObject(em, LigneDeTrain.class, idLigneDeTrain);
+        LigneDeTrain ligneDeTrain = LibSql.findObject(em, LigneDeTrain.class, idLigneDeTrain);
         if (ligneDeTrain == null) {
             throw new LigneDeTrainException();
         }
@@ -28,6 +28,6 @@ public class LigneDeTrainDAOImpl implements LigneDeTrainDAO {
 
     @Override
     public List<LigneDeTrain> getAllLigneDeTrains() {
-        return LibSQL.findAll(em, LigneDeTrain.class);
+        return LibSql.findAll(em, LigneDeTrain.class);
     }
 }
