@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.models.Voyageur;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -20,13 +20,13 @@ public class VoyageurDaoImpl implements VoyageurDao {
 
     @Override
     public List<Voyageur> findAll() {
-        return LibSQL.findAll(entityManager, Voyageur.class);
+        return LibSql.findAll(entityManager, Voyageur.class);
     }
 
     @Override
     @Transactional
     public Voyageur findById(int id) {
-        return LibSQL.findObject(entityManager, Voyageur.class, id);
+        return LibSql.findObject(entityManager, Voyageur.class, id);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class VoyageurDaoImpl implements VoyageurDao {
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("email", email);
-            List<Voyageur> voyageurList = LibSQL.executeSelectWithNamedParams(entityManager, Voyageur.class, "from Voyageur where email = :email", params);
+            List<Voyageur> voyageurList = LibSql.executeSelectWithNamedParams(entityManager, Voyageur.class, "from Voyageur where email = :email", params);
             if (voyageurList.size() == 0) {
                 return null;
             }
@@ -47,19 +47,19 @@ public class VoyageurDaoImpl implements VoyageurDao {
     @Override
     @Transactional
     public void save(Voyageur voyageur) {
-        LibSQL.insertObject(entityManager, voyageur);
+        LibSql.insertObject(entityManager, voyageur);
     }
 
     @Override
     @Transactional
     public void update(Voyageur voyageur) {
-        LibSQL.update(entityManager, voyageur);
+        LibSql.update(entityManager, voyageur);
     }
 
     @Override
     @Transactional
     public void delete(Voyageur voyageur) {
-        LibSQL.deleteObject(entityManager, voyageur);
+        LibSql.deleteObject(entityManager, voyageur);
     }
 
     @Override

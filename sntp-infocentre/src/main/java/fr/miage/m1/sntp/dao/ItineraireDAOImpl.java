@@ -3,7 +3,7 @@ package fr.miage.m1.sntp.dao;
 import fr.miage.m1.sntp.exceptions.ItineraireException;
 import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Itineraire;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -22,7 +22,7 @@ public class ItineraireDAOImpl implements ItineraireDAO {
     @Override
     @Transactional
     public Itineraire findItineraire(long idItineraire) throws ItineraireException {
-        Itineraire itineraire = LibSQL.findObject(em, Itineraire.class, idItineraire);
+        Itineraire itineraire = LibSql.findObject(em, Itineraire.class, idItineraire);
         if (itineraire == null) {
             throw new ItineraireException();
         }
@@ -32,7 +32,7 @@ public class ItineraireDAOImpl implements ItineraireDAO {
 
     @Override
     public List<Itineraire> getAllItineraires() {
-        List<Itineraire> itineraires = LibSQL.findAll(em, Itineraire.class);
+        List<Itineraire> itineraires = LibSql.findAll(em, Itineraire.class);
         for (Itineraire itineraire : itineraires) {
             itineraire.setArrets(itineraire.getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
         }
