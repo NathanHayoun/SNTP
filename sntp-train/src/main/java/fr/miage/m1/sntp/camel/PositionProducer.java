@@ -3,6 +3,7 @@ package fr.miage.m1.sntp.camel;
 import fr.miage.m1.sntp.driver.Driver;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +21,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Etan Guir
+ */
 @ApplicationScoped
 public class PositionProducer implements Runnable {
+    private static final String ERROR_CONVERT_XML = "Error when converting XML ";
+    private static final String QUEUE_TRAIN_POSITION = "%s/queue/train/position";
+    private static final String ERROR_DURING_CNX_FACTORY = "Error during creation connection factory";
     private static final Logger logger = LoggerFactory.getLogger(PositionProducer.class);
     private final ScheduledExecutorService scheduler = new ScheduledThreadPoolExecutor(1);
+
     @Inject
     ConnectionFactory connectionFactory;
+
+    @ConfigProperty(name = "fr.miage.m1.sntp.jmsPrefix", defaultValue = "SNTP")
+    String prefix;
+
     private Driver driver;
 
     private static String toXML(Driver driver) {
@@ -36,7 +48,7 @@ public class PositionProducer implements Runnable {
 
             return writer.toString();
         } catch (JAXBException e) {
-            logger.warn("Error when converting XML ", e);
+            logger.warn(ERROR_CONVERT_XML, e);
             throw new RuntimeException(e);
         }
     }
@@ -45,11 +57,8 @@ public class PositionProducer implements Runnable {
         try {
             connectionFactory.createConnection();
         } catch (Exception e) {
-            logger.warn("EX", e);
+            logger.warn(ERROR_DURING_CNX_FACTORY, e);
         }
-        //on planifie l'exécution de la méthode run() de cette classe:
-        // - 10s (initialDelay=10
-        // - toute les 5s (period = 5L, unit = secondes)
         scheduler.scheduleAtFixedRate(this, 10L, 5L, TimeUnit.SECONDS);
         driver = new Driver();
     }
@@ -60,12 +69,10 @@ public class PositionProducer implements Runnable {
 
     @Override
     public void run() {
-
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
-            //on crée un producteur et on y envoie un message dans une nouvelle queue "prices"
             driver.updateValue();
             Message message = context.createTextMessage(toXML(driver));
-            context.createProducer().send(context.createQueue("queue/train/position"), message);
+            context.createProducer().send(context.createQueue(String.format(QUEUE_TRAIN_POSITION, prefix)), message);
         }
     }
 }

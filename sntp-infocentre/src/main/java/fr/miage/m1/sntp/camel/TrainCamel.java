@@ -5,8 +5,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.influxdb.InfluxDbConstants;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.influxdb.dto.Point;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,35 +17,37 @@ import java.util.concurrent.TimeUnit;
 @ApplicationScoped
 public class TrainCamel extends RouteBuilder {
     public static final String RETENTION_POLICY = "autogen";
-    public static final String JMS_TRAIN_INFOCENTRE = "jms:train/infocentre/";
-
-    private static final Logger logger = LoggerFactory.getLogger(TrainCamel.class);
-
+    public static final String JMS_TRAIN_INFOCENTRE = "jms:%s/train/infocentre/%s";
+    public static final String QUEUE_TRAIN_POSITION = "jms:%s/queue/train/position";
+    public static final String URL_INFLUX_DB = "influxdb://influxDbBean?databaseName=%s";
     @Inject
     ConnectionFactory connectionFactory;
 
     @ConfigProperty(name = "influx.database", defaultValue = "sntp")
     String influxDatabase;
 
+    @ConfigProperty(name = "fr.miage.m1.sntp.jmsPrefix", defaultValue = "SNTP")
+    String prefix;
+
     @Override
-    public void configure() throws Exception {
-        from("jms:queue/train/position").unmarshal().jacksonxml(TrainPositionData.class).process(exchange -> {
+    public void configure() {
+        from(String.format(QUEUE_TRAIN_POSITION, prefix)).unmarshal().jacksonxml(TrainPositionData.class).process(exchange -> {
             TrainPositionData trainData = exchange.getIn().getBody(TrainPositionData.class);
             long millisecondTime = Instant.now().toEpochMilli();
+
             Point point = Point.measurementByPOJO(TrainPositionData.class)
                     .time(millisecondTime, TimeUnit.MILLISECONDS)
                     .addFieldsFromPOJO(trainData)
                     .build();
-            logger.info(point.toString());
             exchange.getIn().setBody(point);
             exchange.getIn().setHeader(InfluxDbConstants.DBNAME_HEADER, influxDatabase);
             exchange.getIn().setHeader(InfluxDbConstants.RETENTION_POLICY_HEADER, RETENTION_POLICY);
-        }).to("influxdb://influxDbBean?databaseName=" + influxDatabase);
+        }).to(String.format(URL_INFLUX_DB, influxDatabase));
     }
 
     public void envoyerMessageAuTrain(Integer numeroDeTrain, String message) {
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
-            context.createProducer().send(context.createQueue(JMS_TRAIN_INFOCENTRE + numeroDeTrain), message);
+            context.createProducer().send(context.createQueue(String.format(JMS_TRAIN_INFOCENTRE, prefix, numeroDeTrain)), message);
         }
     }
 }
