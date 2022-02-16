@@ -24,6 +24,7 @@ public class TrainPositionData implements Serializable {
     private Double longitude;
 
     public TrainPositionData() {
+        //NOP
     }
 
     public String getNumeroDeTrain() {
