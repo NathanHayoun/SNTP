@@ -1,5 +1,8 @@
 package fr.miage.m1.sntp.cli;
 
+/**
+ * @author Quentin Vaillant
+ */
 public enum ChoixUtilisateur {
-    Acheter_Un_Billet, Echanger_Mon_Billet
+    ACHETER_UN_BILLET, ECHANGER_UN_BILLET, SORTIR
 }
