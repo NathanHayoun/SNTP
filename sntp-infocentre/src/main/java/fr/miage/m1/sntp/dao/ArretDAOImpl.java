@@ -3,7 +3,7 @@ package fr.miage.m1.sntp.dao;
 import fr.miage.m1.sntp.exceptions.ArretException;
 import fr.miage.m1.sntp.models.Arret;
 import fr.miage.m1.sntp.models.Passage;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -28,7 +28,7 @@ public class ArretDAOImpl implements ArretDAO {
     @Override
     @Transactional
     public Arret findArret(long idArret) throws ArretException {
-        Arret arret = LibSQL.findObject(em, Arret.class, idArret);
+        Arret arret = LibSql.findObject(em, Arret.class, idArret);
         if (arret == null) {
             throw new ArretException();
         }
@@ -38,7 +38,7 @@ public class ArretDAOImpl implements ArretDAO {
 
     @Override
     public List<Arret> getAllArret() {
-        return generateArrets(LibSQL.findAll(em, Arret.class));
+        return generateArrets(LibSql.findAll(em, Arret.class));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ArretDAOImpl implements ArretDAO {
         Map<String, Object> params = new HashMap<>();
         params.put(NUMERO_DE_TRAIN, numeroDeTrain);
 
-        return generateArrets(LibSQL.executeSelectWithNamedParams(em, Arret.class, QUERY_SELECT_ARRET_BY_TRAIN_NUMBER, params));
+        return generateArrets(LibSql.executeSelectWithNamedParams(em, Arret.class, QUERY_SELECT_ARRET_BY_TRAIN_NUMBER, params));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ArretDAOImpl implements ArretDAO {
         params.put(ID_GARE, idGare);
         params.put(DATE_DE_PASSAGE, LocalDate.now());
 
-        return generateArrets(LibSQL.executeSelectWithNamedParams(em, Arret.class, querySelectArriveeByIdGare, params));
+        return generateArrets(LibSql.executeSelectWithNamedParams(em, Arret.class, querySelectArriveeByIdGare, params));
     }
 
     @NotNull

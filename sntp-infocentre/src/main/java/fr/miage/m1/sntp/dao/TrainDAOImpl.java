@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.dao;
 
 import fr.miage.m1.sntp.exceptions.TrainException;
 import fr.miage.m1.sntp.models.Train;
-import fr.miage.m1.sntp.utils.LibSQL;
+import fr.miage.m1.sntp.utils.LibSql;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -19,7 +19,7 @@ public class TrainDAOImpl implements TrainDAO {
     @Override
     @Transactional
     public Train findTrain(long idTrain) throws TrainException {
-        Train train = LibSQL.findObject(em, Train.class, idTrain);
+        Train train = LibSql.findObject(em, Train.class, idTrain);
         if (train == null) {
             throw new TrainException();
         }
@@ -29,12 +29,12 @@ public class TrainDAOImpl implements TrainDAO {
 
     @Override
     public List<Train> getAllTrains() {
-        return LibSQL.findAll(em, Train.class);
+        return LibSql.findAll(em, Train.class);
     }
 
     @Override
     @Transactional
     public void update(Train train) {
-        LibSQL.update(em, train);
+        LibSql.update(em, train);
     }
 }
