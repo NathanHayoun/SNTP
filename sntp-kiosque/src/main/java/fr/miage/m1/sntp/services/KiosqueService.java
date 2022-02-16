@@ -8,16 +8,28 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-@RegisterRestClient(configKey = "resa-api")
+/**
+ * @author Quentin Vaillant
+ */
+@RegisterRestClient(configKey = KiosqueService.RESA_API_CONFIG_KEY)
 public interface KiosqueService {
 
-    @Path("reservations/createResa/{gareDepart}/{gareArrive}/{time}/{date}/{voyageurEmail}/{idReservation}")
+    String PATH_FOR_CREATE_RESERVATION = "reservations/createResa/{gareDepart}/{gareArrive}/{time}/{date}/{voyageurEmail}/{idReservation}";
+    String GARE_DEPART = "gareDepart";
+    String GARE_ARRIVE = "gareArrive";
+    String TIME = "time";
+    String DATE = "date";
+    String VOYAGEUR_EMAIL = "voyageurEmail";
+    String ID_RESERVATION = "idReservation";
+    String RESA_API_CONFIG_KEY = "resa-api";
+
+    @Path(PATH_FOR_CREATE_RESERVATION)
     @GET
     ReservationDTO getVoyages(
-            @PathParam("gareDepart") String gareDepart,
-            @PathParam("gareArrive") String gareArrive,
-            @PathParam("time") String time,
-            @PathParam("date") String date,
-            @PathParam("voyageurEmail") String voyageurEmail,
-            @PathParam("idReservation") Integer idReservation);
+            @PathParam(GARE_DEPART) String gareDepart,
+            @PathParam(GARE_ARRIVE) String gareArrive,
+            @PathParam(TIME) String time,
+            @PathParam(DATE) String date,
+            @PathParam(VOYAGEUR_EMAIL) String voyageurEmail,
+            @PathParam(ID_RESERVATION) Integer idReservation);
 }

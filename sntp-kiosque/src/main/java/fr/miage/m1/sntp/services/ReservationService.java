@@ -8,12 +8,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-
-@RegisterRestClient(configKey = "resa-api")
+/**
+ * @author Quentin Vaillant
+ */
+@RegisterRestClient(configKey = ReservationService.RESA_API_CONFIG_KEY)
 public interface ReservationService {
 
-    @Path("reservations/reservation/{id}")
+    String RESA_API_CONFIG_KEY = "resa-api";
+    String PATH_FOR_GET_RESERVATION_FOR_API = "reservations/reservation/{id}";
+    String ID = "id";
+
+    @Path(PATH_FOR_GET_RESERVATION_FOR_API)
     @GET
-    ReservationDTO getReservation(@PathParam("id") Long id);
+    ReservationDTO getReservation(@PathParam(ID) Long id);
 
 }

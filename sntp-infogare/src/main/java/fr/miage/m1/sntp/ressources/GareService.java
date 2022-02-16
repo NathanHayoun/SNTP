@@ -7,12 +7,21 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-@Path("/gares")
+/**
+ * @author Guila Bismuth
+ * Class that retrieves the different stations from the webserver of the infocenter
+ */
+@Path(GareService.PATH_MAIN_GARES)
 @RegisterRestClient(configKey = "gare-api")
 public interface GareService {
-    @Path("/gare/{id}")
+
+    String PATH_MAIN_GARES = "/gares";
+    String PATH_FOR_GET_GARE_BY_ID = "/gare/{id}";
+    String ID = "id";
+
+    @Path(PATH_FOR_GET_GARE_BY_ID)
     @GET
-    GareDTO getGare(@PathParam("id") long id);
+    GareDTO getGare(@PathParam(ID) long id);
 }
 
 
