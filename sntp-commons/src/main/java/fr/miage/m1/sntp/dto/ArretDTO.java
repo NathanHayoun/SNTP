@@ -4,7 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalTime;
 
+/**
+ * @author Nathan Hayoun
+ */
 public class ArretDTO {
+    public static final String DOIT_MARQUER_ARRET = "doitMarquerArret";
+    public static final String GARE_CONCERNER = "gareConcerner";
+    public static final String HEURE_DEPART = "heureDepart";
+    public static final String PASSAGE_DU_JOUR = "passageDuJour";
+    public static final String POSITION = "position";
+    public static final String TRAIN = "train";
+    public static final String HEURE_ARRIVEE = "heureArrivee";
     private Boolean doitMarquerArret;
     private GareDTO gareConcerner;
     private LocalTime heureDepart;
@@ -13,72 +23,72 @@ public class ArretDTO {
     private Long position;
     private TrainDTO train;
 
-    @JsonProperty("doitMarquerArret")
+    @JsonProperty(DOIT_MARQUER_ARRET)
     public Boolean getDoitMarquerArret() {
         return doitMarquerArret;
     }
 
-    @JsonProperty("doitMarquerArret")
+    @JsonProperty(DOIT_MARQUER_ARRET)
     public void setDoitMarquerArret(Boolean value) {
         this.doitMarquerArret = value;
     }
 
-    @JsonProperty("gareConcerner")
+    @JsonProperty(GARE_CONCERNER)
     public GareDTO getGareConcerner() {
         return gareConcerner;
     }
 
-    @JsonProperty("gareConcerner")
+    @JsonProperty(GARE_CONCERNER)
     public void setGareConcerner(GareDTO value) {
         this.gareConcerner = value;
     }
 
-    @JsonProperty("heureDepart")
+    @JsonProperty(HEURE_DEPART)
     public LocalTime getHeureDepart() {
         return heureDepart;
     }
 
-    @JsonProperty("heureDepart")
+    @JsonProperty(HEURE_DEPART)
     public void setHeureDepart(LocalTime value) {
         this.heureDepart = value;
     }
 
-    @JsonProperty("passageDuJour")
+    @JsonProperty(PASSAGE_DU_JOUR)
     public PassageDTO getPassageDuJour() {
         return passageDuJour;
     }
 
-    @JsonProperty("passageDuJour")
+    @JsonProperty(PASSAGE_DU_JOUR)
     public void setPassageDuJour(PassageDTO value) {
         this.passageDuJour = value;
     }
 
-    @JsonProperty("position")
+    @JsonProperty(POSITION)
     public Long getPosition() {
         return position;
     }
 
-    @JsonProperty("position")
+    @JsonProperty(POSITION)
     public void setPosition(Long value) {
         this.position = value;
     }
 
-    @JsonProperty("train")
+    @JsonProperty(TRAIN)
     public TrainDTO getTrain() {
         return train;
     }
 
-    @JsonProperty("train")
+    @JsonProperty(TRAIN)
     public void setTrain(TrainDTO value) {
         this.train = value;
     }
 
-    @JsonProperty("heureArrivee")
+    @JsonProperty(HEURE_ARRIVEE)
     public LocalTime getHeureArrivee() {
         return heureArrivee;
     }
 
-    @JsonProperty("heureArrivee")
+    @JsonProperty(HEURE_ARRIVEE)
     public void setHeureArrivee(LocalTime heureArrivee) {
         this.heureArrivee = heureArrivee;
     }
