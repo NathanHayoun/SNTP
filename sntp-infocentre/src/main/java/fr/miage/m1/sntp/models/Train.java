@@ -18,6 +18,7 @@ public class Train {
     public static final String TYPE_DE_TRAIN = "type_de_train";
     public static final String LIGNE_DE_TRAIN_ID_LIGNE_DE_TRAIN = "ligne_de_train_id_ligne_de_train";
     public static final String ID_ITINERAIRE = "id_itineraire";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ID_TRAIN, nullable = false)

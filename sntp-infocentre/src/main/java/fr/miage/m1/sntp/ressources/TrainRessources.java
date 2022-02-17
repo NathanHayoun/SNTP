@@ -16,6 +16,7 @@ import java.util.List;
 public class TrainRessources {
     public static final String ID = "id";
     public static final String TRAIN_ID = "/train/{id}";
+    public static final String PATH_TRAIN_ID = "http://localhost:8080/trains/train/";
     @Inject
     TrainDAO trainDAO;
 
@@ -24,7 +25,7 @@ public class TrainRessources {
     public List<Train> getTrains() {
         List<Train> trains = trainDAO.getAllTrains();
         for (Train train : trains) {
-            train.setUri("Test");
+            train.setUri(PATH_TRAIN_ID+train.getId());
             train.setUri2("Test2");
         }
         
