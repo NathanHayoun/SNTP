@@ -1,6 +1,7 @@
 package fr.miage.m1.sntp.camel;
 
 
+import fr.miage.m1.sntp.models.Reservation;
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -26,12 +27,9 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
-
-        /** from("jms:" + jmsPrefix + "booking?exchangePattern=InOut")//
-         .log("reservation received: ${in.headers}")//
-         .unmarshal().json(ReservationDTO.class)//
-         .bean(reservationHandler, "book").marshal().json()
-         ;
-         **/
+        from("jms:" + jmsPrefix + "booking?exchangePattern=InOut")
+         .log("reservation received: ${in.headers}")
+         .unmarshal().json(Reservation.class)
+         .bean(reservationHandler, "book").marshal().json();
     }
 }
