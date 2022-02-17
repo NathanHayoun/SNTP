@@ -3,6 +3,10 @@
 ![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)
 ![Build with maven ](https://github.com/NathanHayoun/SNTP/actions/workflows/maven.yml/badge.svg)
 
+## Sonarqube
+
+![Schéma du système](diagrammes/sonarqube.png)
+
 ## 1. Système à modéliser
 
 Système de gestion de réservation de billet de train , gestion de la circulation des train.
