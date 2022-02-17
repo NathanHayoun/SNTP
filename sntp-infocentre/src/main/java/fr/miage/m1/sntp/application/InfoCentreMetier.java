@@ -32,30 +32,30 @@ public class InfoCentreMetier {
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 120;
     public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
 
-    public static final String REFUS_AJOUTER_STATION = "Vous ne pouvez pas ajouter une station car le train précédent n a pas %s heures de retard";
-    public static final String TRAIN_NOT_FOUND = "Aucun train trouvee";
-    public static final String GARE_NOT_FOUND = "Gare non trouve";
+    public static final String REFUS_AJOUTER_STATION = "Vous ne pouvez pas ajouter une station car le train précédent n'a pas %s heures de retard";
+    public static final String TRAIN_NOT_FOUND = "Aucun train trouvé";
+    public static final String GARE_NOT_FOUND = "Gare non trouvée";
     public static final String RESERVATION_INJOIGNABLE = "Le système de réservation est injoignable";
-    public static final String PASSAGER_MINIMUM_PAS_ATTEINDS = "Le nombre minimum de passager n est pas atteinds";
+    public static final String PASSAGER_MINIMUM_PAS_ATTEINDS = "Le nombre minimum de passager n'est pas atteint";
     public static final String OK = "OK";
-    public static final String NOMBRE_MINUTE_TROP_IMPORTANT = "Le nombre de minute était trop important, l'arret à été supprimée ";
+    public static final String NOMBRE_MINUTE_TROP_IMPORTANT = "Le nombre de minutes était trop important, l'arrêt a été supprimé";
 
-    public static final String NOUVELLE_HORRAIRE_FORMAT = "Nouvelle horraire pour %s. Arrivée : %s et Départ à %s";
+    public static final String NOUVELLE_HORRAIRE_FORMAT = "Nouvelle horaire pour %s. Arrivée : %s et Départ à %s";
     public static final String SUPPRESSION_STATION_MESSAGE_TRAIN_FORMAT = "Attention vous ne devez plus desservir la gare %s";
-    public static final String AJOUT_STATION_TRAIN_FORMAT = "Attention vous devez desservir la gare %s. Depart à %s et arrivée à %s";
-    public static final String TRAIN_SUPPRIMER = "Attention chauffeur votre train est supprimée !";
-    public static final String PASSAGER_AVEC_RESA_DANS_TRAIN = "Impossible, des passagers on des reservations dans ce train à cette station.";
-    public static final String RESERVATION_NON_JOIGNABLE = "Erreur le système de réservation est injoignable";
-    public static final String AUCUN_ARRET_TROUVEE = "Aucun Arret trouvee";
-    public static final String PREMIERE_GARE_DE_LA_JOURNEE = "Vous ne pouvez pas ajouter une station car c'est le premier de la journee a passer à la gare %s";
-    public static final String PASSAGER_SUPERIEUR_SEUIL = "Le nombre de passager acutel est superieur a %s . Il n est donc pas possible de supprimer le train";
+    public static final String AJOUT_STATION_TRAIN_FORMAT = "Attention, vous devez desservir la gare %s. Départ à %s et arrivée à %s";
+    public static final String TRAIN_SUPPRIMER = "Attention chauffeur, votre train est supprimée !";
+    public static final String PASSAGER_AVEC_RESA_DANS_TRAIN = "Impossible, des passagers ont des reservations dans ce train à cette station.";
+    public static final String RESERVATION_NON_JOIGNABLE = "Erreur, le système de réservation est injoignable";
+    public static final String AUCUN_ARRET_TROUVEE = "Aucun arrêt trouvé";
+    public static final String PREMIERE_GARE_DE_LA_JOURNEE = "Vous ne pouvez pas ajouter une station car c'est le premier de la journée à passer à la gare %s";
+    public static final String PASSAGER_SUPERIEUR_SEUIL = "Le nombre de passagers actuels est supérieur à %s . Il n'est donc pas possible de supprimer le train";
     public static final int ZERO = 0;
     private static final String SUJET_MAIL_RETARD_TRAIN_FORMAT = "Retard du train n° %s";
-    private static final String MESSAGE_RETARD_TRAIN_FORMAT = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
-    private static final String TRAIN_NOT_FOUD_FORMAT = "Train with id %s not found";
-    private static final String GARE_NOT_FOUND_FORMAT = "Gare with id %s not found";
-    private static final String TRAIN_DELETE_SUBJECT_FORMAT = "Train n° %s supprimé ";
-    private static final String TRAIN_DELETE_MESSAGE_FORMAT = "Madame, Monsieur, \n nous sommes dans le regret de vous annoncer que le train n° %s à destination de %s est malheuresement supprimé. \n Contactez le service client pour un remboursement. \n Nous vous prions de bien vouloir nous excuser. \n Cordialement, \n Le service SNTP ";
+    private static final String MESSAGE_RETARD_TRAIN_FORMAT = "Le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
+    private static final String TRAIN_NOT_FOUD_FORMAT = "Le train avec l'id %s n'a pas été trouvé";
+    private static final String GARE_NOT_FOUND_FORMAT = "La gare avec l'id %s n'a pas été trouvée";
+    private static final String TRAIN_DELETE_SUBJECT_FORMAT = "Train n° %s supprimé";
+    private static final String TRAIN_DELETE_MESSAGE_FORMAT = "Madame, Monsieur, \n nous sommes dans le regret de vous annoncer que le train n° %s à destination de %s est malheureusement supprimé. \n Contactez le service client pour un remboursement. \n Nous vous prions de bien vouloir nous excuser. \n Cordialement, \n Le service SNTP ";
     private static final Logger logger = LoggerFactory.getLogger(InfoCentreMetier.class);
     @Inject
     TrainDAO trainDAO;
