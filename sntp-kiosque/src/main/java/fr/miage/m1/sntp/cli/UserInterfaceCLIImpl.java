@@ -59,11 +59,11 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String SUPPLEMENT = "Supplément : %s euros ";
     private static final String PRIX_PAYE = "Prix payé : %s euros ";
     private static final String NUMERO_ETAPE = "Etape n° %s";
-    private static final String CHEMIN_AVEC_TRAIN = "Le chemin ce fera avec le train %s ";
+    private static final String CHEMIN_AVEC_TRAIN = "Le chemin se fera avec le train %s ";
     private static final String DEPART_DE_GARE_PLUS_HORRAIRE = "Départ de la gare %s à %s";
     private static final String ARRIVEE_A_LA_GARE_PLUS_HORRAIRE = "Arrivée à la gare %s à %s ";
     private static final String NUMERO_DE_PLACE = "Vous serez à la place %s";
-    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans reservation. Assayer vous où vous le souhaitez !";
+    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans reservation. Asseyez vous où vous le souhaitez !";
     private static final String RESERVATION_TROUVE = "Reservation trouvé !";
 
     @Inject
