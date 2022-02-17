@@ -32,7 +32,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("jms:" + jmsPrefix + "booking?exchangePattern=InOut")
                 .log(RESERVATION_RECEIVED)
-                .unmarshal().json(ReservationDTO.class)
-                .bean(reservationHandler, METHOD).marshal().json();
+                .unmarshal().jacksonxml(ReservationDTO.class)
+                .bean(reservationHandler, METHOD);
     }
 }

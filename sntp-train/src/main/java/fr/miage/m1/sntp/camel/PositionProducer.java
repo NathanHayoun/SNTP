@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 public class PositionProducer implements Runnable {
     public static final long INITIAL_DELAY = 10L;
     public static final long PERIOD = 5L;
-    private static final String ERROR_CONVERT_XML = "Erreur lors de la conversion de XML";
     private static final String QUEUE_TRAIN_POSITION = "%s/queue/train/position";
     private static final String ERROR_DURING_CNX_FACTORY = "Erreur lors de la création de la connexion factory";
     private static final Logger logger = LoggerFactory.getLogger(PositionProducer.class);

@@ -11,7 +11,7 @@ public interface ReservationDao {
 
     Reservation save(Reservation reservation);
 
-    void update(Reservation reservation);
+    Reservation update(Reservation reservation);
 
     void delete(Reservation reservation);
 }
