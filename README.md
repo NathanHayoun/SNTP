@@ -2,7 +2,6 @@
 
 ![Sonarqube](https://github.com/NathanHayoun/SNTP/actions/workflows/main.yml/badge.svg)
 ![Build with maven ](https://github.com/NathanHayoun/SNTP/actions/workflows/maven.yml/badge.svg)
-[![Lint Code Base](https://github.com/NathanHayoun/SNTP/actions/workflows/super-linter.yml/badge.svg)](https://github.com/NathanHayoun/SNTP/actions/workflows/super-linter.yml)
 
 ## 1. Système à modéliser
 
@@ -71,10 +70,36 @@ ___
 
 ## 2. Schémas et Diagrammes de séquences
 
+### Schéma de la base de données
+
+___
+Infocentre :
+![Schéma du système](diagrammes/EER.png)
+Reservation :
+![Schéma du système](diagrammes/EER2.png)
+
 ### Schéma du système
 
 ___
 ![Schéma du système](diagrammes/systeme.png)
+
+### Diagramme de classe
+
+___
+_Common_ :
+![Schéma du système](diagrammes/ClassCommon.png)
+_Infocentre_ :
+![Schéma du système](diagrammes/ClassInfoCentre.png)
+_Réservation_ :
+![Schéma du système](diagrammes/ClassResa.png)
+_Kiosque_ :
+![Schéma du système](diagrammes/ClassKiosque.png)
+_Infogare_ :
+![Schéma du système](diagrammes/ClassInfoGare.png)
+_Train_ :
+![Schéma du système](diagrammes/ClassTrain.png)
+_Ensemble_ :
+![Schéma du système](diagrammes/ClassTout.png)
 
 ### Diagramme de séquence
 

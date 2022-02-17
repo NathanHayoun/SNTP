@@ -20,8 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -126,7 +126,6 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
     private void afficherVoyage(int idReservation, ReservationDTO reservation) throws ParseException {
         showSuccessMessage(VOICI_VOTRE_VOYAGE);
-        terminal.println(String.format(AFFICHAGE_NUMERO_DE_RESERVATION, reservation.getId()));
         LocalDate dateResa = reservation.getDateDeReservation();
         terminal.println(String.format(DATE_DE_RESERVATION, formatDateInFrench(dateResa)));
 
@@ -155,7 +154,9 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
         String confirm = textIO.newStringInputReader().withPossibleValues(possibleValues).read("Valider ce voyage ? (Y/N)");
         if (confirm.equals("Y")) {
+            System.out.println(reservation);
             reservationGateway.sendReservation(reservation);
+            terminal.println(String.format(AFFICHAGE_NUMERO_DE_RESERVATION, reservation.getId()));
         }
     }
 
