@@ -6,6 +6,9 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import java.io.StringWriter;
 
 /**
  * @author Quentin Vaillant
@@ -20,14 +23,21 @@ public class CamelRoutes extends RouteBuilder {
     @Inject
     CamelContext camelContext;
 
+    private static String toXML(Object obj) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(obj.getClass());
+            StringWriter writer = new StringWriter();
+            context.createMarshaller().marshal(obj, writer);
+            return writer.toString();
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
         camelContext.setTracing(true);
 
-
-        from("direct:cli")
-                .marshal().json()
-                .to("jms:" + jmsPrefix + "booking?exchangePattern=InOut");
+        from("direct:cli").marshal().jacksonxml().to("jms:" + jmsPrefix + "booking?exchangePattern=InOut");
     }
 }

@@ -1,10 +1,8 @@
 package fr.miage.m1.sntp.services;
 
-import fr.miage.m1.sntp.dao.TicketDao;
 import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
 
-import javax.inject.Inject;
 import java.util.List;
 
 public interface TicketService {
