@@ -1,16 +1,17 @@
 package fr.miage.m1.sntp.dto;
 
-import java.time.LocalDate;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
  * @author Aicha Nur
  */
+@XmlRootElement
 public class ReservationDTO {
     private VoyageurDTO voyageur;
     private List<TicketDTO> tickets;
     private int id;
-    private LocalDate dateDeReservation;
+    private String dateDeReservation;
     private double prix;
 
     public VoyageurDTO getVoyageur() {
@@ -37,11 +38,11 @@ public class ReservationDTO {
         this.id = id;
     }
 
-    public LocalDate getDateDeReservation() {
+    public String getDateDeReservation() {
         return dateDeReservation;
     }
 
-    public void setDateDeReservation(LocalDate dateDeReservation) {
+    public void setDateDeReservation(String dateDeReservation) {
         this.dateDeReservation = dateDeReservation;
     }
 

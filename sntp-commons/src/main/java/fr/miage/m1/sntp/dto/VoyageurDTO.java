@@ -1,10 +1,13 @@
 package fr.miage.m1.sntp.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class VoyageurDTO {
     private String email;
     private String nom;
     private String prenom;
-    
+
     public String getEmail() {
         return email;
     }

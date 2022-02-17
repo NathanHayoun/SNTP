@@ -8,4 +8,6 @@ public interface ReservationService {
     List<Reservation> getReservations();
 
     Reservation getReservation(Long id);
+
+    Reservation createReservation(Reservation reservation);
 }

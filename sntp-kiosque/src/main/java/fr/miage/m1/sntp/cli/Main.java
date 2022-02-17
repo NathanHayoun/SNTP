@@ -35,6 +35,7 @@ public class Main implements Runnable {
                         break;
                     case SORTIR:
                         continueBoucle = false;
+                        break;
                     default:
                         break;
                 }
