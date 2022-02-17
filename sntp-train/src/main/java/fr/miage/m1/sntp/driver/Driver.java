@@ -25,7 +25,7 @@ public class Driver {
     private Double longitude;
 
     public Driver() {
-        //Genere une position aléatoire pour émuler un vrai driver
+        // Génère une position aléatoire pour émuler un vrai driver
         this.latitude = LATITUDE_START;
         this.longitude = LONGITUDE_START;
         this.numeroDeTrain = String.valueOf(numeroDeTrain);
