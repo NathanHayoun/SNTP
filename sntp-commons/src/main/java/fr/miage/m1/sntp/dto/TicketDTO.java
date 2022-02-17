@@ -1,16 +1,15 @@
 package fr.miage.m1.sntp.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class TicketDTO {
     private Integer numeroTrain;
     private boolean isReservable;
-    private LocalDate dateDeDepart;
     private String gareArrivee;
     private String gareDepart;
-    private LocalTime heureArrivee;
-    private LocalTime heureDepart;
+    private String heureArrivee;
+    private String heureDepart;
     private int numeroEtape;
     private int place;
 
@@ -30,14 +29,6 @@ public class TicketDTO {
         isReservable = reservable;
     }
 
-    public LocalDate getDateDeDepart() {
-        return dateDeDepart;
-    }
-
-    public void setDateDeDepart(LocalDate dateDeDepart) {
-        this.dateDeDepart = dateDeDepart;
-    }
-
     public String getGareArrivee() {
         return gareArrivee;
     }
@@ -54,19 +45,19 @@ public class TicketDTO {
         this.gareDepart = gareDepart;
     }
 
-    public LocalTime getHeureArrivee() {
+    public String getHeureArrivee() {
         return heureArrivee;
     }
 
-    public void setHeureArrivee(LocalTime heureArrivee) {
+    public void setHeureArrivee(String heureArrivee) {
         this.heureArrivee = heureArrivee;
     }
 
-    public LocalTime getHeureDepart() {
+    public String getHeureDepart() {
         return heureDepart;
     }
 
-    public void setHeureDepart(LocalTime heureDepart) {
+    public void setHeureDepart(String heureDepart) {
         this.heureDepart = heureDepart;
     }
 

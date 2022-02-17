@@ -33,8 +33,10 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     @Transactional
-    public void update(Reservation reservation) {
+    public Reservation update(Reservation reservation) {
         LibSql.update(entityManager, reservation);
+        
+        return reservation;
     }
 
     @Override

@@ -111,11 +111,14 @@ public class Trajets {
         double prix = generateGoodTimeForArrivalsAndGetPrice(itineraires, arrets);
         Set<Ticket> ticketList = new LinkedHashSet<>();
         Reservation reservation;
+
         if (idReservation == 0) {
             reservation = new Reservation();
             reservation.setVoyageur(voyageur);
             reservation.setPrix(prix);
             reservation.setDateDeReservation(localDate);
+            reservation = reservationDao.save(reservation);
+            reservation = reservationDao.findById(reservation.getId());
             reservation.setTickets(generateTicketList(localDate, arrets, ticketList, reservation));
         } else {
             reservation = reservationDao.findById(idReservation);
@@ -235,7 +238,6 @@ public class Trajets {
                     .setNumeroTrain((int) arretFirst.getTrain().getNumeroDeTrain())
                     .setReservationConcernee(reservation);
             ticketList.add(ticket);
-//            ticketDao.save(ticket);
         }
         return ticketList;
     }

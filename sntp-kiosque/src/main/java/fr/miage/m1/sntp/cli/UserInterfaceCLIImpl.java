@@ -30,6 +30,9 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
+    public static final String YES = "Y";
+    public static final String NO = "N";
+    public static final String VALIDATION_DU_VOYAGE = "Valider ce voyage ? (Y/N)";
     private static final String VOYAGEUR = "Voyageur : %s ";
     private static final String DATE_DE_VOYAGE = "Date de voyage : %s ";
     private static final String GARE_DE_DEPART = "Gare de départ : %s";
@@ -52,7 +55,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String TARGET = "/";
     private static final String REPLACEMENT = "-";
     private static final String AUCUN_VOYAGE_TROUVE = "Aucun voyage trouvé pour cette date";
-    private static final String VOICI_VOTRE_VOYAGE = "Réservation effectuée ! \n Voici votre voyage : ";
+    private static final String VOICI_VOTRE_VOYAGE = "Réservation trouvée ! \n Voici votre proposition de voyage : ";
     private static final String AFFICHAGE_NUMERO_DE_RESERVATION = "Numéro de reservation : %s à garder précieusement !";
     private static final String DATE_DE_RESERVATION = "Date de réservation : %s ";
     private static final String SUPPLEMENT = "Supplément : %s euros ";
@@ -64,7 +67,6 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String NUMERO_DE_PLACE = "Vous serez à la place %s";
     private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans réservation. Asseyez-vous où vous le souhaitez !";
     private static final String RESERVATION_TROUVE = "Réservation trouvée !";
-
     @Inject
     @RestClient
     KiosqueService kiosqueService;
@@ -126,7 +128,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
     private void afficherVoyage(int idReservation, ReservationDTO reservation) throws ParseException {
         showSuccessMessage(VOICI_VOTRE_VOYAGE);
-        LocalDate dateResa = reservation.getDateDeReservation();
+        LocalDate dateResa = LocalDate.parse(reservation.getDateDeReservation());
         terminal.println(String.format(DATE_DE_RESERVATION, formatDateInFrench(dateResa)));
 
         if (idReservation != 0) {
@@ -141,7 +143,6 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             terminal.println(String.format(CHEMIN_AVEC_TRAIN, ticket.getNumeroTrain()));
             terminal.println(String.format(DEPART_DE_GARE_PLUS_HORRAIRE, ticket.getGareDepart(), ticket.getHeureDepart()));
             terminal.println(String.format(ARRIVEE_A_LA_GARE_PLUS_HORRAIRE, ticket.getGareArrivee(), ticket.getHeureArrivee()));
-
             if (ticket.isReservable()) {
                 terminal.println(String.format(NUMERO_DE_PLACE, ticket.getPlace()));
             } else {
@@ -149,12 +150,11 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             }
         }
         List<String> possibleValues = new ArrayList<>();
-        possibleValues.add("Y");
-        possibleValues.add("N");
+        possibleValues.add(YES);
+        possibleValues.add(NO);
+        String confirm = textIO.newStringInputReader().withPossibleValues(possibleValues).read(VALIDATION_DU_VOYAGE);
 
-        String confirm = textIO.newStringInputReader().withPossibleValues(possibleValues).read("Valider ce voyage ? (Y/N)");
-        if (confirm.equals("Y")) {
-            System.out.println(reservation);
+        if (confirm.equals(YES)) {
             reservationGateway.sendReservation(reservation);
             terminal.println(String.format(AFFICHAGE_NUMERO_DE_RESERVATION, reservation.getId()));
         }
@@ -185,12 +185,14 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         Date dateSelected;
         String date = "";
         String time = "";
+
         do {
             try {
                 date = textIO.newStringInputReader().read(SELECTION_DATE);
                 time = textIO.newStringInputReader().read(SELECTION_HEURE);
                 SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_FOR_CAST_DATE);
                 dateSelected = sdf.parse(date + " " + time);
+
                 if (dateSelected.before(new Date())) {
                     showErrorMessage(DATE_DEPART_INFERIEUR);
                 } else {
@@ -207,7 +209,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private void printReservationExisted(ReservationDTO reservationDTO) throws ParseException {
         showSuccessMessage(RESERVATION_TROUVE);
         terminal.println(String.format(VOYAGEUR, reservationDTO.getVoyageur().getNom()));
-        terminal.println(String.format(DATE_DE_VOYAGE, formatDateInFrench(reservationDTO.getDateDeReservation())));
+        terminal.println(String.format(DATE_DE_VOYAGE, formatDateInFrench(LocalDate.parse(reservationDTO.getDateDeReservation()))));
         terminal.println(String.format(GARE_DE_DEPART, reservationDTO.getTickets().get(0).getGareDepart()));
         terminal.println(String.format(GARE_D_ARRIVEE, reservationDTO.getTickets().get(reservationDTO.getTickets().size() - 1).getGareArrivee()));
     }
