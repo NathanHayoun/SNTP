@@ -12,9 +12,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/tickets")
+@Path(TicketRessource.TICKETS_MAIN)
 public class TicketRessource {
 
+    public static final String TICKETS_MAIN = "/tickets";
+    public static final String GET_TICKET_BY_ID = "/ticket/{id}";
+    public static final String GET_TICKET_BY_NUM_TRAIN = "/ticket/train/now/{numeroDeTrain}";
+    public static final String GET_TICKET_WITH_CORRESPONDANCE = "/ticket/train/now/has/correspondance/{numeroDeTrain}";
+    public static final String GET_EMAIL_IN_TRAIN = "/ticket/train/email/{numeroDeTrain}";
+    public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
+    public static final String ID = "id";
     @Inject
     TicketService service;
 
@@ -26,29 +33,29 @@ public class TicketRessource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/ticket/{id}")
-    public Ticket getTicket(@PathParam("id") Long id) {
+    @Path(GET_TICKET_BY_ID)
+    public Ticket getTicket(@PathParam(ID) Long id) {
         return service.getTicket(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/ticket/train/now/{numeroDeTrain}")
-    public Long getNombreDeTicketByTrainAndDate(@PathParam("numeroDeTrain") int numeroDeTrain) {
+    @Path(GET_TICKET_BY_NUM_TRAIN)
+    public Long getNombreDeTicketByTrainAndDate(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain) {
         return service.countNbTicketByNumeroTrainAndNow(numeroDeTrain);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/ticket/train/now/has/correspondance/{numeroDeTrain}")
-    public Long getNombreDeTicketByTrainAndDateAndHasCorrespondance(@PathParam("numeroDeTrain") int numeroDeTrain) {
+    @Path(GET_TICKET_WITH_CORRESPONDANCE)
+    public Long getNombreDeTicketByTrainAndDateAndHasCorrespondance(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain) {
         return service.countNbTicketByNumeroTrainAndNowAndHasEtape(numeroDeTrain);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/ticket/train/email/{numeroDeTrain}")
-    public List<Voyageur> getEmailFromUserByTrainAndToDay(@PathParam("numeroDeTrain") int numeroDeTrain) {
+    @Path(GET_EMAIL_IN_TRAIN)
+    public List<Voyageur> getEmailFromUserByTrainAndToDay(@PathParam(NUMERO_DE_TRAIN) int numeroDeTrain) {
         return service.getEmailsByTrainAndDate(numeroDeTrain);
     }
 }

@@ -7,25 +7,31 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Voyageur {
+    public static final String ID_VOYAGEUR = "id_voyageur";
+    public static final String EMAIL = "email";
+    public static final String NOM = "nom";
+    public static final String PRENOM = "prenom";
+    public static final String VOYAGEUR_CONCERNEE = "voyageurConcernee";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_voyageur", nullable = false)
+    @Column(name = ID_VOYAGEUR, nullable = false)
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = EMAIL)
     private String email;
 
-    @Column(name = "nom")
+    @Column(name = NOM)
     private String nom;
 
-    @Column(name = "prenom")
+    @Column(name = PRENOM)
     private String prenom;
 
-    @OneToMany(mappedBy = "voyageurConcernee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = VOYAGEUR_CONCERNEE, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonbTransient
     private Set<Reservation> reservations;
 
     public Voyageur() {
+        //NOP
     }
 
     public Voyageur(String nom, String prenom, String email) {

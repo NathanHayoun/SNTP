@@ -9,8 +9,7 @@ import java.util.List;
 
 @ApplicationScoped
 public class ReservationServiceImpl implements ReservationService {
-
-
+    
     @Inject
     ReservationDao reservationDao;
 

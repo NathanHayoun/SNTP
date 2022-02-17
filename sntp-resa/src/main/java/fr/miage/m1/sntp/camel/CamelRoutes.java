@@ -13,7 +13,10 @@ import javax.inject.Inject;
 public class CamelRoutes extends RouteBuilder {
 
 
-    @ConfigProperty(name = "fr.miage.m1.sntp.jmsPrefix")
+    public static final String JMS_PREFIX_CONFIG_KEY = "fr.miage.m1.sntp.jmsPrefix";
+    public static final String RESERVATION_RECEIVED = "reservation received: ${in.headers}";
+    public static final String METHOD = "book";
+    @ConfigProperty(name = JMS_PREFIX_CONFIG_KEY)
     String jmsPrefix;
 
     @Inject
@@ -28,8 +31,8 @@ public class CamelRoutes extends RouteBuilder {
         camelContext.setTracing(true);
 
         from("jms:" + jmsPrefix + "booking?exchangePattern=InOut")
-                .log("reservation received: ${in.headers}")
+                .log(RESERVATION_RECEIVED)
                 .unmarshal().json(ReservationDTO.class)
-                .bean(reservationHandler, "book").marshal().json();
+                .bean(reservationHandler, METHOD).marshal().json();
     }
 }

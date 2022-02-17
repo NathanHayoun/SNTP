@@ -115,7 +115,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             String email = getEmailOrCreateNewAccount(idReservation);
             ReservationDTO reservation = kiosqueService.getVoyages(villeDepart, villeArrivee, time, date.replace(TARGET, REPLACEMENT), email, idReservation);
 
-            if (reservation.getTickets().size() == 0) {
+            if (reservation.getTickets().isEmpty()) {
                 showErrorMessage(AUCUN_VOYAGE_TROUVE);
                 shouldRestart = true;
                 continue;
@@ -166,7 +166,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         if (idReservation == 0) {
             email = getCustomerEmail();
 
-            if (voyageurService.getVoyageurByEmail(email)) {
+            if (voyageurService.getVoyageurByEmail(email) != null) {
                 terminal.println(COMPTE_DEJA_CREER);
             } else {
                 String prenom = getCustomerFirstName();
