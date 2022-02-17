@@ -44,6 +44,12 @@ public class InfoCentreMetier {
     public static final String SUPPRESSION_STATION_MESSAGE_TRAIN_FORMAT = "Attention vous ne devez plus desservir la gare %s";
     public static final String AJOUT_STATION_TRAIN_FORMAT = "Attention vous devez desservir la gare %s. Depart à %s et arrivée à %s";
     public static final String TRAIN_SUPPRIMER = "Attention chauffeur votre train est supprimée !";
+    public static final String PASSAGER_AVEC_RESA_DANS_TRAIN = "Impossible, des passagers on des reservations dans ce train à cette station.";
+    public static final String RESERVATION_NON_JOIGNABLE = "Erreur le système de réservation est injoignable";
+    public static final String AUCUN_ARRET_TROUVEE = "Aucun Arret trouvee";
+    public static final String PREMIERE_GARE_DE_LA_JOURNEE = "Vous ne pouvez pas ajouter une station car c'est le premier de la journee a passer à la gare %s";
+    public static final String PASSAGER_SUPERIEUR_SEUIL = "Le nombre de passager acutel est superieur a %s . Il n est donc pas possible de supprimer le train";
+    public static final int ZERO = 0;
     private static final String SUJET_MAIL_RETARD_TRAIN_FORMAT = "Retard du train n° %s";
     private static final String MESSAGE_RETARD_TRAIN_FORMAT = "le train n° %s à destination de %s est en retard de %s minutes. Nous vous prions de bien vouloir nous excuser.";
     private static final String TRAIN_NOT_FOUD_FORMAT = "Train with id %s not found";
@@ -103,11 +109,20 @@ public class InfoCentreMetier {
                 return new Tuple<>(false, NOMBRE_MINUTE_TROP_IMPORTANT);
             }
         }
+        generatePassage(nombreDeMinute, train, setArret, positionGareConcerner);
+
+        return new Tuple<>(true, OK);
+    }
+
+    private void generatePassage(Integer nombreDeMinute, Train train, Set<Arret> setArret, Integer positionGareConcerner) {
         LocalDate dateDuJour = LocalDate.now();
+
         for (Arret arret : setArret) {
             boolean nouveauPassage = false;
+
             if (arret.getPosition() >= positionGareConcerner) {
                 Passage passage = null;
+
                 for (Passage passageFor : arret.getPassages()) {
                     if (passageFor.getDateDePassage().equals(LocalDate.now())) {
                         passage = passageFor;
@@ -136,7 +151,6 @@ public class InfoCentreMetier {
                     heureDepart = heureDepart.plusMinutes(nombreDeMinute);
                     passage.setHeureDepartReel(heureDepart);
                 }
-
                 if (nouveauPassage) {
                     passageDAO.insertPassage(passage);
                 } else {
@@ -146,8 +160,6 @@ public class InfoCentreMetier {
                 trainCamel.envoyerMessageAuTrain(train.getNumeroDeTrain(), message);
             }
         }
-
-        return new Tuple<>(true, OK);
     }
 
     public Tuple<Boolean, String> verificationPourRetard(Train train, int nombreDeMinute) {
@@ -171,7 +183,6 @@ public class InfoCentreMetier {
 
     public Tuple<Boolean, String> supprimerStation(Long idTrain, Long idGare) {
         Train train;
-
         try {
             train = trainDAO.findTrain(idTrain);
         } catch (TrainException exception) {
@@ -203,7 +214,7 @@ public class InfoCentreMetier {
         generatePassagePrecis(date, arret, false, true);
 
         if (train.getTypeDeTrain() == TypeTrain.TGV) {
-            sendEmail(TRAIN_DELETE_SUBJECT_FORMAT, TRAIN_DELETE_MESSAGE_FORMAT, train, 0);
+            sendEmail(TRAIN_DELETE_SUBJECT_FORMAT, TRAIN_DELETE_MESSAGE_FORMAT, train, ZERO);
         }
         String message = String.format(SUPPRESSION_STATION_MESSAGE_TRAIN_FORMAT, arret.getGareConcerner().getNomGare());
         trainCamel.envoyerMessageAuTrain(train.getNumeroDeTrain(), message);
@@ -213,13 +224,13 @@ public class InfoCentreMetier {
 
     private Tuple<Boolean, String> verificationPourSuppressionStation(Train train) {
         try {
-            if (rs.getNbPassagerByTrain(train.getNumeroDeTrain()) == 0) {
+            if (rs.getNbPassagerByTrain(train.getNumeroDeTrain()) == ZERO) {
                 return new Tuple<>(true, OK);
             } else {
-                return new Tuple<>(false, "Impossible, des passagers on des reservations dans ce train à cette station.");
+                return new Tuple<>(false, PASSAGER_AVEC_RESA_DANS_TRAIN);
             }
         } catch (Exception e) {
-            return new Tuple<>(false, "Erreur le système de réservation est injoignable");
+            return new Tuple<>(false, RESERVATION_NON_JOIGNABLE);
         }
 
     }
@@ -236,7 +247,7 @@ public class InfoCentreMetier {
             return new Tuple<>(false, msgError);
         }
 
-        Gare gare = null;
+        Gare gare;
 
         try {
             gare = gareDAO.findGare(idGare);
@@ -255,7 +266,7 @@ public class InfoCentreMetier {
             }
         }
         if (arret == null) {
-            return new Tuple<>(false, "Aucun Arret trouvee");
+            return new Tuple<>(false, AUCUN_ARRET_TROUVEE);
         }
         LocalDate date = LocalDate.now();
         Tuple<Boolean, String> reponseVerif = verificationPourAjouterStation(gare, arret, date);
@@ -282,7 +293,7 @@ public class InfoCentreMetier {
             }
         }
         if (precedent == null) {
-            return new Tuple<>(false, "Vous ne pouvez pas ajouter une station car c'est le premier de la journee a passer à la gare " + gare.getNomGare());
+            return new Tuple<>(false, String.format(PREMIERE_GARE_DE_LA_JOURNEE, gare.getNomGare()));
         }
         for (Passage p : precedent.getPassages()) {
             if (p.getHeureArriveeReel() == null) {
@@ -330,7 +341,7 @@ public class InfoCentreMetier {
         if (rs.getNbPassagerByTrain(train.getNumeroDeTrain()) <= MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN) {
             return new Tuple<>(true, OK);
         } else {
-            String messageError = String.format("Le nombre de passager acutel est superieur a %s . Il n est donc pas possible de supprimer le train", MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN);
+            String messageError = String.format(PASSAGER_SUPERIEUR_SEUIL, MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN);
             return new Tuple<>(false, messageError);
         }
     }
@@ -338,6 +349,7 @@ public class InfoCentreMetier {
     private void generatePassagePrecis(LocalDate date, Arret arret, Boolean marquerArret, Boolean estSupprime) {
         Passage passage = null;
         boolean nouveauPassage = false;
+
         for (Passage passageFor : arret.getPassages()) {
             if (passageFor.getDateDePassage().equals(LocalDate.now())) {
                 passage = passageFor;
@@ -393,6 +405,10 @@ public class InfoCentreMetier {
             message = String.format(messageConst, train.getNumeroDeTrain(), train.getTerminus());
         }
         List<VoyageurDTO> voyageurs = rs.getEmailsByTrainAndNow(train.getNumeroDeTrain());
+
+        if (voyageurs.size() == 0) {
+            return;
+        }
         List<String> emails = new ArrayList<>();
 
         for (VoyageurDTO voyageur : voyageurs) {

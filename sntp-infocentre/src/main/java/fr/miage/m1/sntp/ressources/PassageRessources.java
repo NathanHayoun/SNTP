@@ -15,6 +15,11 @@ import java.util.List;
 
 @Path("/passages")
 public class PassageRessources {
+    public static final String PASSAGE_BY_ID = "/passage/{id}";
+    public static final String GARE_DEPART_BY_ID_GARE = "/gare/depart/{idGare}";
+    public static final String ID = "id";
+    public static final String ID_GARE = "idGare";
+    public static final String GARE_ARRIVEE_BY_ID_GARE = "/gare/arrivee/{idGare}";
     @Inject
     PassageDAO passageDAO;
 
@@ -26,8 +31,8 @@ public class PassageRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Passage/{id}")
-    public Passage getPassage(@PathParam("id") long id) {
+    @Path(PASSAGE_BY_ID)
+    public Passage getPassage(@PathParam(ID) long id) {
         try {
             return passageDAO.findPassage(id);
         } catch (PassageException passageException) {
@@ -37,8 +42,8 @@ public class PassageRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/gare/depart/{idGare}")
-    public List<Passage> get10prochainsTrajetsDuJourByGareDepart(@PathParam("idGare") Long idGare) {
+    @Path(GARE_DEPART_BY_ID_GARE)
+    public List<Passage> get10prochainsTrajetsDuJourByGareDepart(@PathParam(ID_GARE) Long idGare) {
         try {
             return passageDAO.findprochainsTrajetsDuJourByGareDepart(idGare);
         } catch (PassageException arretException) {
@@ -48,8 +53,8 @@ public class PassageRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/gare/arrivee/{idGare}")
-    public List<Passage> get10prochainsTrajetsDuJourByGareArrivee(@PathParam("idGare") Long idGare) {
+    @Path(GARE_ARRIVEE_BY_ID_GARE)
+    public List<Passage> get10prochainsTrajetsDuJourByGareArrivee(@PathParam(ID_GARE) Long idGare) {
         try {
             return passageDAO.findprochainsTrajetsDuJourByGareArrivee(idGare);
         } catch (PassageException arretException) {

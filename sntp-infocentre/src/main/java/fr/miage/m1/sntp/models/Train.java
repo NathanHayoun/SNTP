@@ -12,9 +12,15 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "Train")
 public class Train {
+    public static final String ID_TRAIN = "id_train";
+    public static final String NOMBRE_DE_PLACE = "nombre_de_place";
+    public static final String NUMERO_DE_TRAIN = "numero_de_train";
+    public static final String TYPE_DE_TRAIN = "type_de_train";
+    public static final String LIGNE_DE_TRAIN_ID_LIGNE_DE_TRAIN = "ligne_de_train_id_ligne_de_train";
+    public static final String ID_ITINERAIRE = "id_itineraire";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_train", nullable = false)
+    @Column(name = ID_TRAIN, nullable = false)
     /**
      * Primary key
      */
@@ -22,31 +28,37 @@ public class Train {
     /**
      * nombreDePlace
      */
-    @Column(name = "nombre_de_place", nullable = false)
+    @Column(name = NOMBRE_DE_PLACE, nullable = false)
     private Integer nombreDePlace;
     /**
      * numeroDeTrain
      */
-    @Column(name = "numero_de_train", nullable = false)
+    @Column(name = NUMERO_DE_TRAIN, nullable = false)
     private Integer numeroDeTrain;
     /**
      * typeDeTrain
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "type_de_train")
+    @Column(name = TYPE_DE_TRAIN)
     private TypeTrain typeDeTrain;
     /**
      * Foreign Key
      */
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ligne_de_train_id_ligne_de_train")
+    @JoinColumn(name = LIGNE_DE_TRAIN_ID_LIGNE_DE_TRAIN)
     private LigneDeTrain ligneDeTrainIdLigneDeTrain;
     /**
      * Foreign Key
      */
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_itineraire")
+    @JoinColumn(name = ID_ITINERAIRE)
     private Itineraire itineraireConcerner;
+
+    @Transient
+    private String uri;
+
+    @Transient
+    private String uri2;
 
     /**
      * @return id of train line
@@ -139,6 +151,7 @@ public class Train {
     public String getStationDepart() {
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
         Arret arret = (Arret) this.getItineraireConcerner().getArrets().toArray()[0];
+
         return arret.getGareConcerner().getNomGare();
     }
 
@@ -154,6 +167,23 @@ public class Train {
                 nomGareToReturn = iti.getGareConcerner().getNomGare();
             }
         }
+
         return nomGareToReturn;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri2() {
+        return uri2;
+    }
+
+    public void setUri2(String uri2) {
+        this.uri2 = uri2;
     }
 }

@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 @Embeddable
 public class ArretId implements Serializable {
+    public static final String ID_GARE = "id_gare";
+    public static final String ID_ITINERAIRE = "id_itineraire";
     /**
      * Many to Many must implement serializable
      */
@@ -21,13 +23,13 @@ public class ArretId implements Serializable {
     /**
      * Composed primary key
      */
-    @Column(name = "id_gare", nullable = false)
+    @Column(name = ID_GARE, nullable = false)
     @JsonbTransient
     private Long idGare;
     /**
      * Composed primary key
      */
-    @Column(name = "id_itineraire", nullable = false)
+    @Column(name = ID_ITINERAIRE, nullable = false)
     @JsonbTransient
     private Long idItineraire;
 
@@ -66,9 +68,14 @@ public class ArretId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         ArretId entity = (ArretId) o;
+
         return Objects.equals(this.idGare, entity.idGare) &&
                 Objects.equals(this.idItineraire, entity.idItineraire);
     }

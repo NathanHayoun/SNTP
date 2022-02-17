@@ -13,22 +13,25 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "Gare")
 public class Gare {
+    public static final String ID_GARE = "id_gare";
+    public static final String NOM_GARE = "nom_gare";
+    public static final String GARE_CONCERNER = "gareConcerner";
     /**
      * Primary key
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_gare", nullable = false)
+    @Column(name = ID_GARE, nullable = false)
     private Long id;
     /**
      * Name of station
      */
-    @Column(name = "nom_gare")
+    @Column(name = NOM_GARE)
     private String nomGare;
     /**
      * Train passing in the station
      */
-    @OneToMany(mappedBy = "gareConcerner", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = GARE_CONCERNER, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonbTransient
     private Set<Arret> trainsQuiPasseDansLaGare;
 

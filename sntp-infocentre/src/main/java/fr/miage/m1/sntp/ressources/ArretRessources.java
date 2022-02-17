@@ -15,6 +15,13 @@ import java.util.List;
 
 @Path("/arrets")
 public class ArretRessources {
+    public static final String ARRET_ID = "/arret/{id}";
+    public static final String ARRET_BY_TRAIN_NUMERO = "/arret/train/{numero}";
+    public static final String ID = "id";
+    public static final String NUMERO = "numero";
+    public static final String ID_GARE = "idGare";
+    public static final String ARRET_DEPART_BY_ID_GARE = "/arret/depart/{idGare}";
+    public static final String ARRET_ARRIVEE_BY_ID_GARE = "/arret/arrivee/{idGare}";
     @Inject
     ArretDAO arretDAO;
 
@@ -26,8 +33,8 @@ public class ArretRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/arret/{id}")
-    public Arret getArret(@PathParam("id") long id) {
+    @Path(ARRET_ID)
+    public Arret getArret(@PathParam(ID) long id) {
         try {
             return arretDAO.findArret(id);
         } catch (ArretException arretException) {
@@ -37,8 +44,8 @@ public class ArretRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/arret/train/{numero}")
-    public List<Arret> getArretByNumTrain(@PathParam("numero") Integer numeroDeTrain) {
+    @Path(ARRET_BY_TRAIN_NUMERO)
+    public List<Arret> getArretByNumTrain(@PathParam(NUMERO) Integer numeroDeTrain) {
         try {
             return arretDAO.getAllArretByNumeroDeTrain(numeroDeTrain);
         } catch (ArretException arretException) {
@@ -48,8 +55,8 @@ public class ArretRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/arret/depart/{idGare}")
-    public List<Arret> getArretsDepartByGare(@PathParam("idGare") int idGare) {
+    @Path(ARRET_DEPART_BY_ID_GARE)
+    public List<Arret> getArretsDepartByGare(@PathParam(ID_GARE) int idGare) {
         try {
             return arretDAO.getArretsDepartByGare(idGare);
         } catch (ArretException arretException) {
@@ -59,8 +66,8 @@ public class ArretRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/arret/arrivee/{idGare}")
-    public List<Arret> getArretsArriveeByGare(@PathParam("idGare") int idGare) {
+    @Path(ARRET_ARRIVEE_BY_ID_GARE)
+    public List<Arret> getArretsArriveeByGare(@PathParam(ID_GARE) int idGare) {
         try {
             return arretDAO.getArretsArriveeByGare(idGare);
         } catch (ArretException arretException) {

@@ -14,6 +14,21 @@ import java.util.stream.Collectors;
 @Table(name = "Arret")
 public class Arret {
 
+    public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
+    public static final String TYPE_DE_TRAIN = "typeDeTrain";
+    public static final String LIGNE_DE_TRAIN = "ligneDeTrain";
+    public static final String DEPART = "depart";
+    public static final String TERMINUS = "terminus";
+    public static final String ARRETS_SUIVANT = "arretsSuivant";
+    public static final String DOIT_MARQUER_ARRET = "doit_marquer_arret";
+    public static final String POSITION = "position";
+    public static final String HEURE_ARRIVEE = "heureArrivee";
+    public static final String HEURE_DEPART = "heureDepart";
+    public static final String ID_GARE_MAP_ID = "idGare";
+    public static final String ID_GARE = "id_gare";
+    public static final String ID_ITINERAIRE_MAP_ID = "idItineraire";
+    public static final String ID_ITINERAIRE = "id_itineraire";
+    public static final String ARRET = "arret";
     @EmbeddedId
     @JsonbTransient
     /**
@@ -21,7 +36,7 @@ public class Arret {
      */
     private ArretId id;
 
-    @Column(name = "doit_marquer_arret", nullable = false)
+    @Column(name = DOIT_MARQUER_ARRET, nullable = false)
     /**
      * If the train has to stop
      */
@@ -30,32 +45,32 @@ public class Arret {
     /**
      * Position of the stop in relation to the train
      */
-    @Column(name = "position", nullable = false)
+    @Column(name = POSITION, nullable = false)
     private Integer position;
 
     /**
      * Usual arrival time
      */
-    @Column(name = "heureArrivee")
+    @Column(name = HEURE_ARRIVEE)
     private LocalTime heureArrivee;
 
     /**
      * Usual depart time
      */
-    @Column(name = "heureDepart")
+    @Column(name = HEURE_DEPART)
     private LocalTime heureDepart;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @MapsId("idGare")
-    @JoinColumn(name = "id_gare")
+    @MapsId(ID_GARE_MAP_ID)
+    @JoinColumn(name = ID_GARE)
     /**
      * Station where the stop is located
      */
     private Gare gareConcerner;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @MapsId("idItineraire")
-    @JoinColumn(name = "id_itineraire")
+    @MapsId(ID_ITINERAIRE_MAP_ID)
+    @JoinColumn(name = ID_ITINERAIRE)
     @JsonbTransient
     /**
      * Route in which the stop is located
@@ -65,7 +80,7 @@ public class Arret {
     /**
      * Daily passage
      */
-    @OneToMany(mappedBy = "arret", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = ARRET, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Set<Passage> passages;
 
     @Transient
@@ -192,35 +207,35 @@ public class Arret {
     public Map<String, Object> getTrain() {
         Map<String, Object> infoTrain = new HashMap<>();
         Train train = this.getItineraireConcerner().getTrain();
-        infoTrain.put("numeroDeTrain", train.getNumeroDeTrain());
-        infoTrain.put("typeDeTrain", train.getTypeDeTrain());
-        infoTrain.put("ligneDeTrain", train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
-        infoTrain.put("depart", train.getStationDepart());
-        infoTrain.put("terminus", train.getTerminus());
+        infoTrain.put(NUMERO_DE_TRAIN, train.getNumeroDeTrain());
+        infoTrain.put(TYPE_DE_TRAIN, train.getTypeDeTrain());
+        infoTrain.put(LIGNE_DE_TRAIN, train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+        infoTrain.put(DEPART, train.getStationDepart());
+        infoTrain.put(TERMINUS, train.getTerminus());
         List<String> arretsSuivant = new ArrayList<>();
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
 
         for (Arret arretSuivant : this.getItineraireConcerner().getArrets()) {
-            Passage passageDuJour = null;
+            Passage passageDeCeJour = null;
 
             for (Passage passage : arretSuivant.getPassages()) {
                 if (Objects.equals(passage.getDateDePassage(), LocalDate.now())) {
-                    passageDuJour = passage;
+                    passageDeCeJour = passage;
 
                     break;
                 }
             }
-            if (passageDuJour == null) {
+            if (passageDeCeJour == null) {
                 continue;
             }
             if (Boolean.TRUE.equals(
                     arretSuivant.getPosition() > this.getPosition() &&
-                            passageDuJour.getMarquerArret()) &&
-                    Boolean.FALSE.equals(passageDuJour.getEstSupprime()) || passageDuJour.getEstSupprime() == null) {
+                            passageDeCeJour.getMarquerArret()) &&
+                    Boolean.FALSE.equals(passageDeCeJour.getEstSupprime()) || passageDeCeJour.getEstSupprime() == null) {
                 arretsSuivant.add(arretSuivant.getGareConcerner().getNomGare());
             }
         }
-        infoTrain.put("arretsSuivant", arretsSuivant);
+        infoTrain.put(ARRETS_SUIVANT, arretsSuivant);
 
         return infoTrain;
     }
