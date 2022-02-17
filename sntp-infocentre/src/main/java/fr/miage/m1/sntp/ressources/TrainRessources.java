@@ -22,7 +22,13 @@ public class TrainRessources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Train> getTrains() {
-        return trainDAO.getAllTrains();
+        List<Train> trains = trainDAO.getAllTrains();
+        for (Train train : trains) {
+            train.setUri("Test");
+            train.setUri2("Test2");
+        }
+        
+        return trains;
     }
 
     @GET
