@@ -35,8 +35,8 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String GARE_DE_DEPART = "Gare de départ : %s";
     private static final String GARE_D_ARRIVEE = "Gare d'arrivée : %s";
     private static final String INFOCENTRE_NON_JOIGNABLE = "Infocentre non joignable";
-    private static final String SELECTION_DATE = "Selectionner date de départ (format: dd/MM/yyyy)";
-    private static final String SELECTION_HEURE = "Selectionner heure de départ (format: HH:mm)";
+    private static final String SELECTION_DATE = "Sélectionner date de départ (format: dd/MM/yyyy)";
+    private static final String SELECTION_HEURE = "Sélectionner heure de départ (format: HH:mm)";
     private static final String DATE_FORMAT_FOR_CAST_DATE = "dd/MM/yyyy HH:mm";
     private static final String DATE_DEPART_INFERIEUR = "Date de départ antérieure à la date actuelle";
     private static final String DATE_INVALIDE = "Date invalide ! (format: dd/MM/yyyy HH:mm)";
@@ -45,25 +45,25 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String PATTERN_FRENCH_DATE = "EEEE dd MMMMM yyyy";
     private static final String PATTERN_DATE_FRENCH_LITTlE = "dd-MM-yyyy";
     private static final String SAISIR_NUMERO_RESERVATION = "Saisir votre numéro de reservation :";
-    private static final String RESERVATION_INTROUVABLE = "Reservation introuvable !";
+    private static final String RESERVATION_INTROUVABLE = "Réservation introuvable !";
     private static final String EMAIL = "Email : ";
     private static final String NOM = "Nom : ";
     private static final String PRENOM = "Prénom : ";
     private static final String TARGET = "/";
     private static final String REPLACEMENT = "-";
     private static final String AUCUN_VOYAGE_TROUVE = "Aucun voyage trouvé pour cette date";
-    private static final String VOICI_VOTRE_VOYAGE = "Réservation effectué ! \n Voici votre voyage : ";
-    private static final String AFFICHAGE_NUMERO_DE_RESERVATION = "Numéro de reservation : %s à garder precieusement !";
-    private static final String DATE_DE_RESERVATION = "Date de reservation : %s ";
+    private static final String VOICI_VOTRE_VOYAGE = "Réservation effectuée ! \n Voici votre voyage : ";
+    private static final String AFFICHAGE_NUMERO_DE_RESERVATION = "Numéro de reservation : %s à garder précieusement !";
+    private static final String DATE_DE_RESERVATION = "Date de réservation : %s ";
     private static final String SUPPLEMENT = "Supplément : %s euros ";
     private static final String PRIX_PAYE = "Prix payé : %s euros ";
-    private static final String NUMERO_ETAPE = "Etape n° %s";
-    private static final String CHEMIN_AVEC_TRAIN = "Le chemin ce fera avec le train %s ";
+    private static final String NUMERO_ETAPE = "Étape n° %s";
+    private static final String CHEMIN_AVEC_TRAIN = "Le chemin se fera avec le train %s ";
     private static final String DEPART_DE_GARE_PLUS_HORRAIRE = "Départ de la gare %s à %s";
     private static final String ARRIVEE_A_LA_GARE_PLUS_HORRAIRE = "Arrivée à la gare %s à %s ";
     private static final String NUMERO_DE_PLACE = "Vous serez à la place %s";
-    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans reservation. Assayer vous où vous le souhaitez !";
-    private static final String RESERVATION_TROUVE = "Reservation trouvé !";
+    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans réservation. Asseyez-vous où vous le souhaitez !";
+    private static final String RESERVATION_TROUVE = "Réservation trouvée !";
 
     @Inject
     @RestClient
