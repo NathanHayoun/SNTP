@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  */
 public class LibSql {
 
-    public static final String UTILITY_CLASS = "utility class";
+    public static final String UTILITY_CLASS = "classe utilitaire";
 
     private LibSql() {
         throw new IllegalStateException(UTILITY_CLASS);

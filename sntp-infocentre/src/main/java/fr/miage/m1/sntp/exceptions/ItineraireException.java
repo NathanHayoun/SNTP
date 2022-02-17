@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.exceptions;
 
 public class ItineraireException extends Exception {
 
-    public static final String NO_ITINERAIRE_FOUND_WITH_ID = "No itineraire found with id %s";
+    public static final String NO_ITINERAIRE_FOUND_WITH_ID = "Aucun itineraire trouvé avec l'id %s";
 
     public static class NoItineraireException extends Throwable {
         public NoItineraireException(String message, Throwable cause) {
