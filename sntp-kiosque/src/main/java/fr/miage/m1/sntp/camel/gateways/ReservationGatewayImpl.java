@@ -25,8 +25,11 @@ public class ReservationGatewayImpl implements ReservationGateway {
     public void sendReservation(ReservationDTO reservation) {
         try (ProducerTemplate producer = context.createProducerTemplate()) {
             // reservation.setKiosqueId(kiosqueId);
+            System.out.println("ICI");
             producer.sendBody("direct:cli", reservation);
+            System.out.println("LA");
         } catch (IOException e) {
+            System.out.println("Erreur ici ");
             e.printStackTrace();
         }
     }
