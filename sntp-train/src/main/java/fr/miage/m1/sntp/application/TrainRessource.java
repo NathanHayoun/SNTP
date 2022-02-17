@@ -20,7 +20,7 @@ public class TrainRessource {
     private static final String ARRETS = "arrets";
     public static final String LIGNE_DE_TRAIN = "ligneDeTrain";
     public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
-
+  
     @Inject
     Template main;
 

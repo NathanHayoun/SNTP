@@ -21,10 +21,10 @@ import java.util.List;
  */
 @Path("/main")
 public class ArretRessource {
-    private final String PATH_FOR_DEPARTURE = "/departs";
-    private final String NAME = "name";
-    private final String ARRETS = "arrets";
-    private final String PATH_FOR_ARRIVALS = "/arrivees";
+    private static final String PATH_FOR_DEPARTURE = "/departs";
+    private static final String NAME = "name";
+    private static final String ARRETS = "arrets";
+    private static final String PATH_FOR_ARRIVALS = "/arrivees";
 
     @Inject
     Template departs;

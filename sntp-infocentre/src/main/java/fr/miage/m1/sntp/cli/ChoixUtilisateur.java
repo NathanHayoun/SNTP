@@ -1,5 +1,5 @@
 package fr.miage.m1.sntp.cli;
 
 public enum ChoixUtilisateur {
-    Ajouter_Une_Station, Supprimer_Une_Station, Generer_Un_Retard, Supprimer_Un_Train
+    AJOUTER_UNE_STATION, SUPPRIMER_UNE_STATION, GENERER_UN_RETARD, SUPPRIMER_UN_TRAIN
 }

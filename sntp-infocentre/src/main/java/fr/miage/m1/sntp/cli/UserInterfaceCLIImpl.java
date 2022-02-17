@@ -28,6 +28,15 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     public static final String STATION_SUPPRIMER_AVEC_SUCCES = "Station supprimer avec succes";
     public static final String TRAIN_SUPPRIMER_AVEC_SUCCESS = "Train supprimer avec success";
     public static final String RETARD_AJOUTER = "Retard ajouté avec succès";
+    public static final String ERREUR = "Erreur";
+    public static final String CHOIX_TRAIN = "[ Choix numero: %s - Numéro du train: %s - Ligne: %s ]";
+    public static final String AFFICHAGE_GARE = "[ %s ] - %s";
+    public static final String QUEL_GARE_EST_CONCERNEE = "Quel gare est concernee ?";
+    public static final String QUEL_TRAIN_EST_CONCERNEE = "Quel train est concernee ?";
+    public static final String QUEL_TRAIN = "Quel train?";
+    public static final String COMBIEN_DE_MINUTE = "De combien de minute parle t'on ?";
+    public static final int NEGATIVE_NUMBER = -1;
+    public static final long NEGATIVE_LONG = -1L;
     private static final TextIO textIO = TextIoFactory.getTextIO();
     private static final TextTerminal<?> terminal = textIO.getTextTerminal();
     @Inject
@@ -40,7 +49,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     public void ajouterStationForTrain() {
         Tuple<Long, Long> ids = generateIdTrainAndGare(false, AUCUNE_GARE_A_AJOUTER_DISPONIBLE);
 
-        if (ids.getVal1() == -1) {
+        if (ids.getVal1() == NEGATIVE_NUMBER) {
             return;
         }
         Tuple<Boolean, String> reponseICM = icm.ajouterStation(ids.getVal1(), ids.getVal2());
@@ -51,7 +60,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     public void supprimerStationForTrain() {
         Tuple<Long, Long> ids = generateIdTrainAndGare(true, AUCUNE_STATION_A_SUPPRIMER_TROUVER);
 
-        if (ids.getVal1() == -1) {
+        if (ids.getVal1() == NEGATIVE_NUMBER) {
             return;
         }
         generateResponse(icm.supprimerStation(ids.getVal1(), ids.getVal2()), STATION_SUPPRIMER_AVEC_SUCCES);
@@ -65,9 +74,9 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
     @Override
     public void genererRetard() {
-        Tuple<Long, Long> ids = generateIdTrainAndGare(true, "Erreur");
+        Tuple<Long, Long> ids = generateIdTrainAndGare(true, ERREUR);
         Integer nombreDeMinute = getNbMinuteForRetard();
-        if (ids.getVal1() == -1) {
+        if (ids.getVal1() == NEGATIVE_NUMBER) {
             return;
         }
         generateResponse(icm.genererRetard(ids.getVal1(), ids.getVal2(), nombreDeMinute), RETARD_AJOUTER);
@@ -78,7 +87,8 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         List<Long> ids = new ArrayList<>();
         List<Train> trains = trainDAO.getAllTrains();
         for (Train train : trains) {
-            terminal.println("[ Choix numero : " + train.getId() + " Numéro du train " + train.getNumeroDeTrain() + "  - Ligne : " + train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
+
+            terminal.println(String.format(CHOIX_TRAIN, train.getId(), train.getNumeroDeTrain(), train.getLigneDeTrainIdLigneDeTrain().getNomLigne()));
             ids.add(train.getId());
         }
 
@@ -88,7 +98,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     @Override
     public void displayAvailableGareToCli(List<Gare> gares) {
         for (Gare gare : gares) {
-            terminal.println("[" + gare.getId() + "] " + gare.getNomGare());
+            terminal.println(String.format(AFFICHAGE_GARE, gare.getId(), gare.getNomGare()));
         }
     }
 
@@ -99,7 +109,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         try {
             train = trainDAO.findTrain(idTrain);
         } catch (Exception e) {
-            return new Tuple<>(-1L, -1L);
+            return new Tuple<>(NEGATIVE_LONG, NEGATIVE_LONG);
         }
         List<Gare> gares = new ArrayList<>();
 
@@ -111,9 +121,9 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         if (gares.isEmpty()) {
             terminal.println(msgIfNoGare);
 
-            return new Tuple<>(-1L, -1L);
+            return new Tuple<>(NEGATIVE_LONG, NEGATIVE_LONG);
         }
-        terminal.println("Quel gare est concernee ?");
+        terminal.println(QUEL_GARE_EST_CONCERNEE);
         displayAvailableGareToCli(gares);
         Long idGare = textIO.newLongInputReader().withPossibleValues(gares.stream().map(Gare::getId).collect(Collectors.toList())).read("Quel gare?");
 
@@ -121,13 +131,13 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     }
 
     private long getIdTrainFromUser() {
-        terminal.println("Quel train est concernee ?");
+        terminal.println(QUEL_TRAIN_EST_CONCERNEE);
         List<Long> idsTrain = displayAvailableTrainToCli();
-        return textIO.newLongInputReader().withPossibleValues(idsTrain).read("Quel train?");
+        return textIO.newLongInputReader().withPossibleValues(idsTrain).read(QUEL_TRAIN);
     }
 
     private Integer getNbMinuteForRetard() {
-        return textIO.newIntInputReader().read("De combien de minute parle t'on ?");
+        return textIO.newIntInputReader().read(COMBIEN_DE_MINUTE);
     }
 
     private void generateResponse(Tuple<Boolean, String> reponseICM, String msgIfSuccess) {

@@ -14,6 +14,8 @@ import java.util.List;
 
 @Path("/itineraires")
 public class ItineraireRessources {
+    public static final String ITINERAIRE_BY_ID = "/itineraire/{id}";
+    public static final String ID = "id";
     @Inject
     ItineraireDAO itineraireDAO;
 
@@ -25,8 +27,8 @@ public class ItineraireRessources {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/itineraire/{id}")
-    public Itineraire getitineraireDAO(@PathParam("id") long id) {
+    @Path(ITINERAIRE_BY_ID)
+    public Itineraire getitineraireDAO(@PathParam(ID) long id) {
         try {
             return itineraireDAO.findItineraire(id);
         } catch (ItineraireException itineraireException) {

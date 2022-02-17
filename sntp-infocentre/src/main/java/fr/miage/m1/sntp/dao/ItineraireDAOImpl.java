@@ -36,6 +36,7 @@ public class ItineraireDAOImpl implements ItineraireDAO {
         for (Itineraire itineraire : itineraires) {
             itineraire.setArrets(itineraire.getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
         }
+        
         return itineraires;
 
     }
