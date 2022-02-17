@@ -27,7 +27,7 @@ import java.util.Set;
 
 @ApplicationScoped
 public class InfoCentreMetier {
-    public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 50;
+    public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 1;
     public static final int MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN = 20;
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 120;
     public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
@@ -327,6 +327,7 @@ public class InfoCentreMetier {
         if (Boolean.FALSE.equals(verifDelTuple.getVal1())) {
             return verifDelTuple;
         }
+
         Set<Arret> setArret = train.getItineraireConcerner().getArrets();
 
         for (Arret arret : setArret) {
@@ -349,7 +350,6 @@ public class InfoCentreMetier {
     private void generatePassagePrecis(LocalDate date, Arret arret, Boolean marquerArret, Boolean estSupprime) {
         Passage passage = null;
         boolean nouveauPassage = false;
-
         for (Passage passageFor : arret.getPassages()) {
             if (passageFor.getDateDePassage().equals(LocalDate.now())) {
                 passage = passageFor;
