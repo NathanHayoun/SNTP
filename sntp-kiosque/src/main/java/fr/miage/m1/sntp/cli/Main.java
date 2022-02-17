@@ -12,7 +12,7 @@ import javax.inject.Inject;
 @Command(name = "greeting", mixinStandardHelpOptions = true)
 public class Main implements Runnable {
 
-    public static final String CHOISSEZ_VOTRE_ACTION = "Bienvenu, choissez votre action";
+    public static final String CHOISSEZ_VOTRE_ACTION = "Bienvenue, choisissez votre action";
     @Inject
     UserInterfaceCLI terminalSNTP;
 

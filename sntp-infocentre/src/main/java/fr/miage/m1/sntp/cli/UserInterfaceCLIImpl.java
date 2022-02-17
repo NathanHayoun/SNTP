@@ -22,19 +22,19 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UserInterfaceCLIImpl implements UserInterfaceCLI {
-    public static final String AUCUNE_GARE_A_AJOUTER_DISPONIBLE = "Aucune gare a ajouter disponible !";
-    public static final String STATION_AJOUTER_AVEC_SUCCESS = "Nous avons ajouter votre station a votre gare";
-    public static final String AUCUNE_STATION_A_SUPPRIMER_TROUVER = "Aucune station a supprimer trouver";
-    public static final String STATION_SUPPRIMER_AVEC_SUCCES = "Station supprimer avec succes";
-    public static final String TRAIN_SUPPRIMER_AVEC_SUCCESS = "Train supprimer avec success";
+    public static final String AUCUNE_GARE_A_AJOUTER_DISPONIBLE = "Aucune gare à ajouter disponible !";
+    public static final String STATION_AJOUTER_AVEC_SUCCESS = "Nous avons ajouté votre station à votre gare";
+    public static final String AUCUNE_STATION_A_SUPPRIMER_TROUVER = "Aucune station à supprimer trouvée";
+    public static final String STATION_SUPPRIMER_AVEC_SUCCES = "Station supprimée avec succès";
+    public static final String TRAIN_SUPPRIMER_AVEC_SUCCESS = "Train supprimé avec succès";
     public static final String RETARD_AJOUTER = "Retard ajouté avec succès";
     public static final String ERREUR = "Erreur";
     public static final String CHOIX_TRAIN = "[ Choix numero: %s - Numéro du train: %s - Ligne: %s ]";
     public static final String AFFICHAGE_GARE = "[ %s ] - %s";
-    public static final String QUEL_GARE_EST_CONCERNEE = "Quel gare est concernee ?";
-    public static final String QUEL_TRAIN_EST_CONCERNEE = "Quel train est concernee ?";
-    public static final String QUEL_TRAIN = "Quel train?";
-    public static final String COMBIEN_DE_MINUTE = "De combien de minute parle t'on ?";
+    public static final String QUEL_GARE_EST_CONCERNEE = "Quel gare est concernée ?";
+    public static final String QUEL_TRAIN_EST_CONCERNEE = "Quel train est concerné ?";
+    public static final String QUEL_TRAIN = "Quel train ?";
+    public static final String COMBIEN_DE_MINUTE = "De combien de minutes parle t-on ?";
     public static final int NEGATIVE_NUMBER = -1;
     public static final long NEGATIVE_LONG = -1L;
     private static final TextIO textIO = TextIoFactory.getTextIO();
