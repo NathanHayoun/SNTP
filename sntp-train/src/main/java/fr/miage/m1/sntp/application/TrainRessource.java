@@ -16,11 +16,11 @@ import java.util.List;
 
 @Path("main")
 public class TrainRessource {
-    public static final String LIGNE_DE_TRAIN = "LigneDeTrain";
-    public static final String GARE_DEPART = "gareDepart";
-    public static final String GARE_ARRIVEE = "gareArrivee";
     private static final String PATH_MAIN = "train";
     private static final String ARRETS = "arrets";
+    public static final String LIGNE_DE_TRAIN = "ligneDeTrain";
+    public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
+  
     @Inject
     Template main;
 
@@ -40,11 +40,9 @@ public class TrainRessource {
     public TemplateInstance getArrets() {
         List<ArretDTO> arrets = arretService.getArrets(numeroDeTrain);
         String ligneDeTrain = arrets.get(0).getTrain().getLigneDeTrain();
-        String gareDepart = arrets.get(0).getGareConcerner().getNomGare();
-        String gareArrivee = arrets.get(arrets.size() - 1).getGareConcerner().getNomGare();
+        Long numeroDeTrain = arrets.get(0).getTrain().getNumeroDeTrain();
         return main.data(ARRETS, arrets)
                 .data(LIGNE_DE_TRAIN, ligneDeTrain)
-                .data(GARE_DEPART, gareDepart)
-                .data(GARE_ARRIVEE, gareArrivee);
+                .data(NUMERO_DE_TRAIN, numeroDeTrain);
     }
 }
