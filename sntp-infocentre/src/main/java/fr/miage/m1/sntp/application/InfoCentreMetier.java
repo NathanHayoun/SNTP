@@ -183,7 +183,6 @@ public class InfoCentreMetier {
 
     public Tuple<Boolean, String> supprimerStation(Long idTrain, Long idGare) {
         Train train;
-
         try {
             train = trainDAO.findTrain(idTrain);
         } catch (TrainException exception) {
@@ -350,6 +349,7 @@ public class InfoCentreMetier {
     private void generatePassagePrecis(LocalDate date, Arret arret, Boolean marquerArret, Boolean estSupprime) {
         Passage passage = null;
         boolean nouveauPassage = false;
+
         for (Passage passageFor : arret.getPassages()) {
             if (passageFor.getDateDePassage().equals(LocalDate.now())) {
                 passage = passageFor;
@@ -405,6 +405,10 @@ public class InfoCentreMetier {
             message = String.format(messageConst, train.getNumeroDeTrain(), train.getTerminus());
         }
         List<VoyageurDTO> voyageurs = rs.getEmailsByTrainAndNow(train.getNumeroDeTrain());
+
+        if (voyageurs.size() == 0) {
+            return;
+        }
         List<String> emails = new ArrayList<>();
 
         for (VoyageurDTO voyageur : voyageurs) {
