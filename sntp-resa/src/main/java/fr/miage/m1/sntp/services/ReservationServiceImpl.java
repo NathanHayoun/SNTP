@@ -23,4 +23,9 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation getReservation(Long id) {
         return reservationDao.findById(id);
     }
+
+    @Override
+    public Reservation createReservation(Reservation reservation) {
+        return reservationDao.save(reservation);
+    }
 }

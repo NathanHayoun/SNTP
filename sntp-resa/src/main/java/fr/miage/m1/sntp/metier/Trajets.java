@@ -111,8 +111,7 @@ public class Trajets {
             reservation.setVoyageur(voyageur);
             reservation.setPrix(prix);
             reservation.setDateDeReservation(localDate);
-            reservation = reservationDao.save(reservation);
-            reservation = reservationDao.findById(reservation.getId());
+            reservation.setTickets(generateTicketList(localDate, arrets, ticketList, reservation));
         } else {
             reservation = reservationDao.findById(idReservation);
             double newPrix = prix - reservation.getPrix();
@@ -123,10 +122,9 @@ public class Trajets {
                 ticketDao.delete(ticketsExistant);
             }
             reservation.setPrix(prix);
+            reservation.setTickets(generateTicketList(localDate, arrets, ticketList, reservation));
             reservationDao.update(reservation);
         }
-        persistTicket(localDate, arrets, ticketList, reservation);
-        reservation.setTickets(ticketList);
 
         return reservation;
     }
@@ -211,8 +209,8 @@ public class Trajets {
         return arrets;
     }
 
-    private void persistTicket(LocalDate localDate, Map<String, Tuple<ArretDTO, ArretDTO>> arrets,
-                               Set<Ticket> ticketList, Reservation reservation) {
+    private Set<Ticket> generateTicketList(LocalDate localDate, Map<String, Tuple<ArretDTO, ArretDTO>> arrets,
+                                           Set<Ticket> ticketList, Reservation reservation) {
         int numeroEtape = 0;
 
         for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
@@ -233,8 +231,9 @@ public class Trajets {
                     .setNumeroTrain((int) arretFirst.getTrain().getNumeroDeTrain())
                     .setReservationConcernee(reservation);
             ticketList.add(ticket);
-            ticketDao.save(ticket);
+//            ticketDao.save(ticket);
         }
+        return ticketList;
     }
 
     private double generateGoodTimeForArrivalsAndGetPrice

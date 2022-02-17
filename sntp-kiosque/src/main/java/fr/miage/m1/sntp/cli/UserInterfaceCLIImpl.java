@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.cli;
 
+import fr.miage.m1.sntp.camel.gateways.ReservationGateway;
 import fr.miage.m1.sntp.dto.GareDTO;
 import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.dto.TicketDTO;
@@ -19,10 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -81,6 +80,9 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     @Inject
     @RestClient
     ReservationService reservationService;
+
+    @Inject
+    ReservationGateway reservationGateway;
 
     TextTerminal<?> terminal;
     TextIO textIO;
@@ -146,6 +148,14 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             } else {
                 terminal.println(TRAIN_SANS_RESA_PLAEC);
             }
+        }
+        List<String> possibleValues = new ArrayList<>();
+        possibleValues.add("Y");
+        possibleValues.add("N");
+
+        String confirm = textIO.newStringInputReader().withPossibleValues(possibleValues).read("Valider ce voyage ? (Y/N)");
+        if (confirm.equals("Y")) {
+            reservationGateway.sendReservation(reservation);
         }
     }
 
