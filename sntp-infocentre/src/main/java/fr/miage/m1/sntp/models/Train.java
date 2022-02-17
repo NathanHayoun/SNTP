@@ -54,6 +54,12 @@ public class Train {
     @JoinColumn(name = ID_ITINERAIRE)
     private Itineraire itineraireConcerner;
 
+    @Transient
+    private String uri;
+
+    @Transient
+    private String uri2;
+
     /**
      * @return id of train line
      */
@@ -145,7 +151,7 @@ public class Train {
     public String getStationDepart() {
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
         Arret arret = (Arret) this.getItineraireConcerner().getArrets().toArray()[0];
-        
+
         return arret.getGareConcerner().getNomGare();
     }
 
@@ -163,5 +169,21 @@ public class Train {
         }
 
         return nomGareToReturn;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri2() {
+        return uri2;
+    }
+
+    public void setUri2(String uri2) {
+        this.uri2 = uri2;
     }
 }
