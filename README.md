@@ -21,7 +21,7 @@ L’infocentre est le composant central du système d’information voyageur de 
 concernant les trains, puis de faire remonter différentes informations, à savoir l'heure de départ, l'heure d'arrivée,
 le trajet, les éventuels retards...via le déploiement d’une API.
 
-La position des trains pourrait être envoyée en point to point toutes les X secondes
+La position des trains pourrait être envoyée en point to point toutes les X secondes.
 
 Les retards et perturbations peuvent être involontaires et causés par des facteurs externes, ou parfois voulus par
 l’infocentre. L’infocentre décidera de perturber volontairement le trafique ferroviaire en s’appuyant sur des règles
