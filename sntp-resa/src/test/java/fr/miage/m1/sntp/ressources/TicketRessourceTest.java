@@ -5,32 +5,33 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
 import java.util.Random;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.*;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.hasItem;
+
+/**
+ * @author Sylvain
+ */
 @QuarkusTest
-public class ItineraireRessourcesTest {
+public class TicketRessourceTest {
 
     @Test
-    void getTrainsTest()
+    void getTicketsTest()
     {
         given()
                 .when()
-                .get("/itineraires")
+                .get("/tickets")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
-    void getitineraireDAOTest()
+    void getTicketTest()
     {
-        Random random = new Random();
-        Integer current = random.nextInt();
         given()
                 .when()
-                .pathParam("id", current)
-                .get("/itineraires/itineraire/{id}").then()
-                .statusCode(204);
+                .get("/tickets/ticket/95").then()
+                .statusCode(Response.Status.OK.getStatusCode());
     }
 
 }

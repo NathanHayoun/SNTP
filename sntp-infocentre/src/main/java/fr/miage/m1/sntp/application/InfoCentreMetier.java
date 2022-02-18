@@ -27,10 +27,10 @@ import java.util.Set;
 
 @ApplicationScoped
 public class InfoCentreMetier {
-    public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 1;
+    public static final int MINIMUM_PASSAGER_POUR_GENERER_RETARD = 0;
     public static final int MINIMUM_PASSAGER_POUR_SUPPRIMER_TRAIN = 20;
     public static final int MINUTE_MINIMUM_POUR_SUPPRIMER_STATION = 120;
-    public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 2;
+    public static final int NB_HEURE_MINIMUM_FOR_ADD_STATION = 0;
 
     public static final String REFUS_AJOUTER_STATION = "Vous ne pouvez pas ajouter une station car le train précédent n'a pas %s heures de retard";
     public static final String TRAIN_NOT_FOUND = "Aucun train trouvé";
@@ -173,7 +173,7 @@ public class InfoCentreMetier {
         } catch (Exception e) {
             return new Tuple<>(false, RESERVATION_INJOIGNABLE);
         }
-        if (nombreDePassage > MINIMUM_PASSAGER_POUR_GENERER_RETARD) {
+        if (nombreDePassage >= MINIMUM_PASSAGER_POUR_GENERER_RETARD) {
             sendEmail(SUJET_MAIL_RETARD_TRAIN_FORMAT, MESSAGE_RETARD_TRAIN_FORMAT, train, nombreDeMinute);
             return new Tuple<>(true, OK);
         }

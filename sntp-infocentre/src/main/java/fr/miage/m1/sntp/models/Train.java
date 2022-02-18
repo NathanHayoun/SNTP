@@ -1,7 +1,10 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.JsonArray;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import javax.ws.rs.core.Link;
+import java.net.URI;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
@@ -18,6 +21,7 @@ public class Train {
     public static final String TYPE_DE_TRAIN = "type_de_train";
     public static final String LIGNE_DE_TRAIN_ID_LIGNE_DE_TRAIN = "ligne_de_train_id_ligne_de_train";
     public static final String ID_ITINERAIRE = "id_itineraire";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ID_TRAIN, nullable = false)
@@ -55,10 +59,7 @@ public class Train {
     private Itineraire itineraireConcerner;
 
     @Transient
-    private String uri;
-
-    @Transient
-    private String uri2;
+    private JsonArray links;
 
     /**
      * @return id of train line
@@ -171,19 +172,12 @@ public class Train {
         return nomGareToReturn;
     }
 
-    public String getUri() {
-        return uri;
+    public JsonArray getLinks() {
+        return links;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setLinks(JsonArray links) {
+        this.links = links;
     }
 
-    public String getUri2() {
-        return uri2;
-    }
-
-    public void setUri2(String uri2) {
-        this.uri2 = uri2;
-    }
 }
