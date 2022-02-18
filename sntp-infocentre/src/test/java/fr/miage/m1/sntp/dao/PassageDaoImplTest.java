@@ -22,8 +22,8 @@ public class PassageDaoImplTest {
 
     @Test
     void findPassageTest() throws PassageException {
-        var item = passageDAOImpl.findPassage(460);
-        assertEquals(460L, item.getIdPassage());
+        var item = passageDAOImpl.findPassage(1);
+        assertEquals(1L, item.getIdPassage());
     }
 
     @Test
