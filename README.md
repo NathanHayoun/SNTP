@@ -143,3 +143,7 @@ ___
 
 *18. Le kiosque doit être connecté à la base de données nationale des kiosques*
 ![Diagramme de séquence connection du kiosque à la base de données national](diagrammes/kiosqueBdd.png)
+
+### Schéma de communication entre les différents systèmes
+![Schema de communication entre les différents systèmes](diagrammes/communications_systeme.png)
+
