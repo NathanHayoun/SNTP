@@ -5,6 +5,8 @@ import fr.miage.m1.sntp.exceptions.ArretException;
 import fr.miage.m1.sntp.models.Arret;
 
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArray;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

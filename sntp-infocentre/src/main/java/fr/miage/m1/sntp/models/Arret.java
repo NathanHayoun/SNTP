@@ -1,5 +1,7 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @Table(name = "Arret")
 public class Arret {
 
+    public static final String ID_DE_TRAIN = "idDeTrain";
     public static final String NUMERO_DE_TRAIN = "numeroDeTrain";
     public static final String TYPE_DE_TRAIN = "typeDeTrain";
     public static final String LIGNE_DE_TRAIN = "ligneDeTrain";
@@ -85,6 +88,9 @@ public class Arret {
 
     @Transient
     private Passage passageDuJour;
+
+    @Transient
+    private JsonArray links;
 
     /**
      * @return id
@@ -207,11 +213,13 @@ public class Arret {
     public Map<String, Object> getTrain() {
         Map<String, Object> infoTrain = new HashMap<>();
         Train train = this.getItineraireConcerner().getTrain();
+        infoTrain.put(ID_DE_TRAIN, train.getId());
         infoTrain.put(NUMERO_DE_TRAIN, train.getNumeroDeTrain());
         infoTrain.put(TYPE_DE_TRAIN, train.getTypeDeTrain());
         infoTrain.put(LIGNE_DE_TRAIN, train.getLigneDeTrainIdLigneDeTrain().getNomLigne());
         infoTrain.put(DEPART, train.getStationDepart());
         infoTrain.put(TERMINUS, train.getTerminus());
+
         List<String> arretsSuivant = new ArrayList<>();
         this.getItineraireConcerner().setArrets(this.getItineraireConcerner().getArrets().stream().sorted(Comparator.comparing(Arret::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new)));
 
@@ -251,5 +259,13 @@ public class Arret {
                 ", gareConcerner=" + gareConcerner +
                 ", itineraireConcerner=" + itineraireConcerner +
                 '}';
+    }
+
+    public void setLinks(JsonArray links) {
+        this.links = links;
+    }
+
+    public JsonArray getLinks() {
+        return links;
     }
 }
