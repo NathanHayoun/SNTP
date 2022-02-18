@@ -4,6 +4,7 @@ import fr.miage.m1.sntp.dao.VoyageurDao;
 import fr.miage.m1.sntp.exceptions.VoyageurException;
 import fr.miage.m1.sntp.metier.Trajets;
 import fr.miage.m1.sntp.models.Reservation;
+import fr.miage.m1.sntp.models.Ticket;
 import fr.miage.m1.sntp.models.Voyageur;
 import fr.miage.m1.sntp.services.ReservationService;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Path("/reservations")
 public class ReservationRessource {
@@ -24,6 +26,12 @@ public class ReservationRessource {
     Trajets trajets;
     @Inject
     ReservationService reservationService;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Reservation> getReservations() {
+        return reservationService.getReservations();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
