@@ -52,5 +52,4 @@ public class TrainCamel extends RouteBuilder {
             context.createProducer().send(context.createQueue(String.format(JMS_TRAIN_INFOCENTRE, prefix, numeroDeTrain)), message);
         }
     }
-
 }
