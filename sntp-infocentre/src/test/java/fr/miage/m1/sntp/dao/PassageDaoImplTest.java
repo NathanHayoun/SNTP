@@ -26,15 +26,4 @@ public class PassageDaoImplTest {
         assertEquals(460L, item.getIdPassage());
     }
 
-    @Test
-    void findprochainsTrajetsDuJourByGareDepartTest() throws PassageException {
-        var item = passageDAOImpl.findprochainsTrajetsDuJourByGareDepart(1);
-        assertFalse(item.isEmpty());
-    }
-
-    @Test
-    void findprochainsTrajetsDuJourByGareArriveeTest() throws PassageException {
-        var item = passageDAOImpl.findprochainsTrajetsDuJourByGareArrivee(1);
-        assertFalse(item.isEmpty());
-    }
 }

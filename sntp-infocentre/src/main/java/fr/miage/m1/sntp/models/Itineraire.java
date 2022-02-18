@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.JsonArray;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Comparator;
@@ -36,6 +37,9 @@ public class Itineraire {
      */
     @OneToMany(mappedBy = ITINERAIRE_CONCERNER_FOR_MAPPED, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Arret> arrets;
+
+    @Transient
+    private JsonArray links;
 
     /**
      * @return primary key
@@ -77,6 +81,10 @@ public class Itineraire {
      */
     public void setArrets(Set<Arret> arrets) {
         this.arrets = arrets;
+    }
+
+    public void setLinks(JsonArray links) {
+        this.links = links;
     }
 }
 
