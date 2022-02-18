@@ -23,6 +23,9 @@ import java.util.Map.Entry;
 
 @ApplicationScoped
 public class Trajets {
+    public static final String KEY_SPLIT_REGEX = "/";
+    public static final String TGV = "TGV";
+    private static final Random random = new Random();
     @Inject
     @RestClient
     ItineraireService itineraireService;
@@ -42,9 +45,11 @@ public class Trajets {
 
     private Map<String, Node> getAllNodes(LocalTime heureDepart, List<ItineraireDTO> itineraires) {
         Map<String, Node> nodes = new LinkedHashMap<>();
+
         for (ItineraireDTO itineraire : itineraires) {
             for (ArretDTO arret : itineraire.getArrets()) {
                 String nomGare = arret.getGareConcerner().getNomGare();
+
                 if (!nodes.containsKey(nomGare + arret.getTrain().getLigneDeTrain()) &&
                         arret.getHeureDepart() == null ||
                         arret.getHeureDepart().isAfter(heureDepart) || Objects.equals(arret.getHeureDepart(),
@@ -63,7 +68,7 @@ public class Trajets {
         for (Entry<String, Node> entry : nodes.entrySet()) {
             Node node = entry.getValue();
             String key = entry.getKey();
-            String ligneDeTrainDuNode = key.split("/")[1];
+            String ligneDeTrainDuNode = key.split(KEY_SPLIT_REGEX)[1];
             ArretDTO arretDuNode = node.getArret();
             Long posistionDuNodeDansSaLigne = arretDuNode.getPosition();
 
@@ -106,6 +111,7 @@ public class Trajets {
         double prix = generateGoodTimeForArrivalsAndGetPrice(itineraires, arrets);
         Set<Ticket> ticketList = new LinkedHashSet<>();
         Reservation reservation;
+
         if (idReservation == 0) {
             reservation = new Reservation();
             reservation.setVoyageur(voyageur);
@@ -113,6 +119,7 @@ public class Trajets {
             reservation.setDateDeReservation(localDate);
             reservation = reservationDao.save(reservation);
             reservation = reservationDao.findById(reservation.getId());
+            reservation.setTickets(generateTicketList(localDate, arrets, ticketList, reservation));
         } else {
             reservation = reservationDao.findById(idReservation);
             double newPrix = prix - reservation.getPrix();
@@ -123,10 +130,9 @@ public class Trajets {
                 ticketDao.delete(ticketsExistant);
             }
             reservation.setPrix(prix);
+            reservation.setTickets(generateTicketList(localDate, arrets, ticketList, reservation));
             reservationDao.update(reservation);
         }
-        persistTicket(localDate, arrets, ticketList, reservation);
-        reservation.setTickets(ticketList);
 
         return reservation;
     }
@@ -134,7 +140,7 @@ public class Trajets {
     private Graph getShortedPath(String nomGareDepart, String nomGareArrivee, Map<String, Node> nodes) {
         for (Entry<String, Node> nodeEntry : nodes.entrySet()) {
             String key = nodeEntry.getKey();
-            String ligneDeTrain = key.split("/")[1];
+            String ligneDeTrain = key.split(KEY_SPLIT_REGEX)[1];
             if (ligneDeTrain.contains(nomGareArrivee) && ligneDeTrain.contains(nomGareDepart)) {
 
                 return Dijkstra.calculateShortestPathFromSource(generateGraph(nodes), nodeEntry.getValue());
@@ -144,7 +150,7 @@ public class Trajets {
         Graph graphARetourner = null;
 
         for (Entry<String, Node> nodeEntry : nodes.entrySet()) {
-            String gareDepartDuNode = nodeEntry.getKey().split("/")[0];
+            String gareDepartDuNode = nodeEntry.getKey().split(KEY_SPLIT_REGEX)[0];
             if (gareDepartDuNode.equals(nomGareDepart)) {
                 Graph graph = Dijkstra.calculateShortestPathFromSource(generateGraph(nodes), nodeEntry.getValue());
                 for (Node node : graph.getNodes()) {
@@ -211,15 +217,14 @@ public class Trajets {
         return arrets;
     }
 
-    private void persistTicket(LocalDate localDate, Map<String, Tuple<ArretDTO, ArretDTO>> arrets,
-                               Set<Ticket> ticketList, Reservation reservation) {
+    private Set<Ticket> generateTicketList(LocalDate localDate, Map<String, Tuple<ArretDTO, ArretDTO>> arrets,
+                                           Set<Ticket> ticketList, Reservation reservation) {
         int numeroEtape = 0;
 
         for (Entry<String, Tuple<ArretDTO, ArretDTO>> entry : arrets.entrySet()) {
             numeroEtape++;
             ArretDTO arretFirst = entry.getValue().getVal1();
             ArretDTO arretLast = entry.getValue().getVal2();
-            Random random = new Random();
             int nombreAleatoire = random.nextInt(arrets.size());
             Ticket ticket = new Ticket();
             ticket.setDateDepart(localDate)
@@ -229,12 +234,12 @@ public class Trajets {
                     .setHeureDepart(arretFirst.getHeureDepart())
                     .setNumeroEtape(numeroEtape)
                     .setPlace(nombreAleatoire)
-                    .setIsReservable(arretFirst.getTrain().getTypeDeTrain().equals("TGV"))
+                    .setIsReservable(arretFirst.getTrain().getTypeDeTrain().equals(TGV))
                     .setNumeroTrain((int) arretFirst.getTrain().getNumeroDeTrain())
                     .setReservationConcernee(reservation);
             ticketList.add(ticket);
-            ticketDao.save(ticket);
         }
+        return ticketList;
     }
 
     private double generateGoodTimeForArrivalsAndGetPrice

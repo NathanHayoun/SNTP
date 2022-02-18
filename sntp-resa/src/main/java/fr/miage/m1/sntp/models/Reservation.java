@@ -6,21 +6,27 @@ import java.util.Set;
 
 @Entity
 public class Reservation {
+    public static final String ID_RESERVATION = "id_reservation";
+    public static final String DATE_DE_RESERVATION = "dateDeReservation";
+    public static final String PRIX = "prix";
+    public static final String ID_VOYAGEUR = "id_voyageur";
+    public static final String RESERVATION_CONCERNEE = "reservationConcernee";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_reservation", nullable = false)
+    @Column(name = ID_RESERVATION, nullable = false)
     private Long id;
-    @Column(name = "dateDeReservation")
+    @Column(name = DATE_DE_RESERVATION)
     private LocalDate dateDeReservation;
-    @Column(name = "prix", nullable = false)
+    @Column(name = PRIX, nullable = false)
     private Double prix;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_voyageur")
+    @JoinColumn(name = ID_VOYAGEUR)
     private Voyageur voyageurConcernee;
-    @OneToMany(mappedBy = "reservationConcernee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = RESERVATION_CONCERNEE, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Ticket> tickets;
 
     public Reservation() {
+        //NOP
     }
 
     public Reservation(LocalDate dateDeReservation, Voyageur voyageurConcernee, Set<Ticket> tickets) {

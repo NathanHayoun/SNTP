@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.cli;
 
+import fr.miage.m1.sntp.camel.gateways.ReservationGateway;
 import fr.miage.m1.sntp.dto.GareDTO;
 import fr.miage.m1.sntp.dto.ReservationDTO;
 import fr.miage.m1.sntp.dto.TicketDTO;
@@ -19,10 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,13 +30,16 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
+    public static final String YES = "Y";
+    public static final String NO = "N";
+    public static final String VALIDATION_DU_VOYAGE = "Valider ce voyage ? (Y/N)";
     private static final String VOYAGEUR = "Voyageur : %s ";
     private static final String DATE_DE_VOYAGE = "Date de voyage : %s ";
     private static final String GARE_DE_DEPART = "Gare de départ : %s";
     private static final String GARE_D_ARRIVEE = "Gare d'arrivée : %s";
     private static final String INFOCENTRE_NON_JOIGNABLE = "Infocentre non joignable";
-    private static final String SELECTION_DATE = "Selectionner date de départ (format: dd/MM/yyyy)";
-    private static final String SELECTION_HEURE = "Selectionner heure de départ (format: HH:mm)";
+    private static final String SELECTION_DATE = "Sélectionner date de départ (format: dd/MM/yyyy)";
+    private static final String SELECTION_HEURE = "Sélectionner heure de départ (format: HH:mm)";
     private static final String DATE_FORMAT_FOR_CAST_DATE = "dd/MM/yyyy HH:mm";
     private static final String DATE_DEPART_INFERIEUR = "Date de départ antérieure à la date actuelle";
     private static final String DATE_INVALIDE = "Date invalide ! (format: dd/MM/yyyy HH:mm)";
@@ -46,26 +48,25 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private static final String PATTERN_FRENCH_DATE = "EEEE dd MMMMM yyyy";
     private static final String PATTERN_DATE_FRENCH_LITTlE = "dd-MM-yyyy";
     private static final String SAISIR_NUMERO_RESERVATION = "Saisir votre numéro de reservation :";
-    private static final String RESERVATION_INTROUVABLE = "Reservation introuvable !";
+    private static final String RESERVATION_INTROUVABLE = "Réservation introuvable !";
     private static final String EMAIL = "Email : ";
     private static final String NOM = "Nom : ";
     private static final String PRENOM = "Prénom : ";
     private static final String TARGET = "/";
     private static final String REPLACEMENT = "-";
     private static final String AUCUN_VOYAGE_TROUVE = "Aucun voyage trouvé pour cette date";
-    private static final String VOICI_VOTRE_VOYAGE = "Réservation effectué ! \n Voici votre voyage : ";
-    private static final String AFFICHAGE_NUMERO_DE_RESERVATION = "Numéro de reservation : %s à garder precieusement !";
-    private static final String DATE_DE_RESERVATION = "Date de reservation : %s ";
+    private static final String VOICI_VOTRE_VOYAGE = "Réservation trouvée ! \n Voici votre proposition de voyage : ";
+    private static final String AFFICHAGE_NUMERO_DE_RESERVATION = "Numéro de reservation : %s à garder précieusement !";
+    private static final String DATE_DE_RESERVATION = "Date de réservation : %s ";
     private static final String SUPPLEMENT = "Supplément : %s euros ";
     private static final String PRIX_PAYE = "Prix payé : %s euros ";
-    private static final String NUMERO_ETAPE = "Etape n° %s";
-    private static final String CHEMIN_AVEC_TRAIN = "Le chemin ce fera avec le train %s ";
+    private static final String NUMERO_ETAPE = "Étape n° %s";
+    private static final String CHEMIN_AVEC_TRAIN = "Le chemin se fera avec le train %s ";
     private static final String DEPART_DE_GARE_PLUS_HORRAIRE = "Départ de la gare %s à %s";
     private static final String ARRIVEE_A_LA_GARE_PLUS_HORRAIRE = "Arrivée à la gare %s à %s ";
     private static final String NUMERO_DE_PLACE = "Vous serez à la place %s";
-    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans reservation. Assayer vous où vous le souhaitez !";
-    private static final String RESERVATION_TROUVE = "Reservation trouvé !";
-
+    private static final String TRAIN_SANS_RESA_PLAEC = "C'est un train sans réservation. Asseyez-vous où vous le souhaitez !";
+    private static final String RESERVATION_TROUVE = "Réservation trouvée !";
     @Inject
     @RestClient
     KiosqueService kiosqueService;
@@ -81,6 +82,9 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     @Inject
     @RestClient
     ReservationService reservationService;
+
+    @Inject
+    ReservationGateway reservationGateway;
 
     TextTerminal<?> terminal;
     TextIO textIO;
@@ -113,7 +117,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             String email = getEmailOrCreateNewAccount(idReservation);
             ReservationDTO reservation = kiosqueService.getVoyages(villeDepart, villeArrivee, time, date.replace(TARGET, REPLACEMENT), email, idReservation);
 
-            if (reservation.getTickets().size() == 0) {
+            if (reservation.getTickets().isEmpty()) {
                 showErrorMessage(AUCUN_VOYAGE_TROUVE);
                 shouldRestart = true;
                 continue;
@@ -124,8 +128,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
 
     private void afficherVoyage(int idReservation, ReservationDTO reservation) throws ParseException {
         showSuccessMessage(VOICI_VOTRE_VOYAGE);
-        terminal.println(String.format(AFFICHAGE_NUMERO_DE_RESERVATION, reservation.getId()));
-        LocalDate dateResa = reservation.getDateDeReservation();
+        LocalDate dateResa = LocalDate.parse(reservation.getDateDeReservation());
         terminal.println(String.format(DATE_DE_RESERVATION, formatDateInFrench(dateResa)));
 
         if (idReservation != 0) {
@@ -140,12 +143,20 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
             terminal.println(String.format(CHEMIN_AVEC_TRAIN, ticket.getNumeroTrain()));
             terminal.println(String.format(DEPART_DE_GARE_PLUS_HORRAIRE, ticket.getGareDepart(), ticket.getHeureDepart()));
             terminal.println(String.format(ARRIVEE_A_LA_GARE_PLUS_HORRAIRE, ticket.getGareArrivee(), ticket.getHeureArrivee()));
-
             if (ticket.isReservable()) {
                 terminal.println(String.format(NUMERO_DE_PLACE, ticket.getPlace()));
             } else {
                 terminal.println(TRAIN_SANS_RESA_PLAEC);
             }
+        }
+        List<String> possibleValues = new ArrayList<>();
+        possibleValues.add(YES);
+        possibleValues.add(NO);
+        String confirm = textIO.newStringInputReader().withPossibleValues(possibleValues).read(VALIDATION_DU_VOYAGE);
+
+        if (confirm.equals(YES)) {
+            reservationGateway.sendReservation(reservation);
+            terminal.println(String.format(AFFICHAGE_NUMERO_DE_RESERVATION, reservation.getId()));
         }
     }
 
@@ -155,7 +166,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         if (idReservation == 0) {
             email = getCustomerEmail();
 
-            if (voyageurService.getVoyageurByEmail(email)) {
+            if (voyageurService.getVoyageurByEmail(email) != null) {
                 terminal.println(COMPTE_DEJA_CREER);
             } else {
                 String prenom = getCustomerFirstName();
@@ -174,12 +185,14 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
         Date dateSelected;
         String date = "";
         String time = "";
+
         do {
             try {
                 date = textIO.newStringInputReader().read(SELECTION_DATE);
                 time = textIO.newStringInputReader().read(SELECTION_HEURE);
                 SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_FOR_CAST_DATE);
                 dateSelected = sdf.parse(date + " " + time);
+
                 if (dateSelected.before(new Date())) {
                     showErrorMessage(DATE_DEPART_INFERIEUR);
                 } else {
@@ -196,7 +209,7 @@ public class UserInterfaceCLIImpl implements UserInterfaceCLI {
     private void printReservationExisted(ReservationDTO reservationDTO) throws ParseException {
         showSuccessMessage(RESERVATION_TROUVE);
         terminal.println(String.format(VOYAGEUR, reservationDTO.getVoyageur().getNom()));
-        terminal.println(String.format(DATE_DE_VOYAGE, formatDateInFrench(reservationDTO.getDateDeReservation())));
+        terminal.println(String.format(DATE_DE_VOYAGE, formatDateInFrench(LocalDate.parse(reservationDTO.getDateDeReservation()))));
         terminal.println(String.format(GARE_DE_DEPART, reservationDTO.getTickets().get(0).getGareDepart()));
         terminal.println(String.format(GARE_D_ARRIVEE, reservationDTO.getTickets().get(reservationDTO.getTickets().size() - 1).getGareArrivee()));
     }

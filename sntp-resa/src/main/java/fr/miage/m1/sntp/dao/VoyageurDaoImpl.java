@@ -15,6 +15,8 @@ import java.util.Map;
 
 @ApplicationScoped
 public class VoyageurDaoImpl implements VoyageurDao {
+    public static final String EMAIL = "email";
+    public static final String QUERY_FOR_VOYAGEUR = "from Voyageur where email = :email";
     @PersistenceContext
     EntityManager entityManager;
 
@@ -33,11 +35,13 @@ public class VoyageurDaoImpl implements VoyageurDao {
     public Voyageur findByEmail(String email) throws VoyageurException {
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("email", email);
-            List<Voyageur> voyageurList = LibSql.executeSelectWithNamedParams(entityManager, Voyageur.class, "from Voyageur where email = :email", params);
-            if (voyageurList.size() == 0) {
+            params.put(EMAIL, email);
+            List<Voyageur> voyageurList = LibSql.executeSelectWithNamedParams(entityManager, Voyageur.class, QUERY_FOR_VOYAGEUR, params);
+
+            if (voyageurList.isEmpty()) {
                 return null;
             }
+
             return (voyageurList.get(0));
         } catch (NoResultException e) {
             throw new VoyageurException();
@@ -67,6 +71,7 @@ public class VoyageurDaoImpl implements VoyageurDao {
     public Voyageur createNewVoyageur(String nom, String prenom, String email) {
         Voyageur v = new Voyageur(nom, prenom, email);
         entityManager.persist(v);
+        
         return v;
     }
 
