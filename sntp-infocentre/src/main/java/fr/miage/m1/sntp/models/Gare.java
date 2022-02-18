@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.JsonArray;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.Comparator;
@@ -28,12 +29,16 @@ public class Gare {
      */
     @Column(name = NOM_GARE)
     private String nomGare;
+
     /**
      * Train passing in the station
      */
     @OneToMany(mappedBy = GARE_CONCERNER, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonbTransient
     private Set<Arret> trainsQuiPasseDansLaGare;
+
+    @Transient
+    private JsonArray links;
 
     /**
      * @return name of station
@@ -77,4 +82,11 @@ public class Gare {
         this.trainsQuiPasseDansLaGare = trainsQuiPasseDansLaGare;
     }
 
+    public JsonArray getLinks() {
+        return links;
+    }
+
+    public void setLinks(JsonArray links) {
+        this.links = links;
+    }
 }

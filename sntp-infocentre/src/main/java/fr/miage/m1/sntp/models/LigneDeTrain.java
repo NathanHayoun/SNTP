@@ -1,5 +1,6 @@
 package fr.miage.m1.sntp.models;
 
+import javax.json.JsonArray;
 import javax.persistence.*;
 
 /**
@@ -23,6 +24,9 @@ public class LigneDeTrain {
      */
     @Column(name = NOM_LIGNE)
     private String nomLigne;
+
+    @Transient
+    private JsonArray links;
 
     /**
      * @return nomLigne
@@ -50,6 +54,14 @@ public class LigneDeTrain {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public JsonArray getLinks() {
+        return links;
+    }
+
+    public void setLinks(JsonArray links) {
+        this.links = links;
     }
 
 }
