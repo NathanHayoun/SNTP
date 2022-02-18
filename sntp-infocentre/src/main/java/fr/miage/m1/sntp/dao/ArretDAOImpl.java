@@ -7,6 +7,8 @@ import fr.miage.m1.sntp.utils.LibSql;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.json.Json;
+import javax.json.JsonArray;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
