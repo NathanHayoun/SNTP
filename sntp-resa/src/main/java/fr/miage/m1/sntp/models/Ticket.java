@@ -7,35 +7,47 @@ import java.time.LocalTime;
 
 @Entity
 public class Ticket {
+    public static final String ID_TICKET = "id_ticket";
+    public static final String NUMERO_TRAIN = "numero_train";
+    public static final String IS_RESERVABLE = "is_reservable";
+    public static final String DATE_DEPART = "date_depart";
+    public static final String GARE_ARRIVEE = "gare_arrivee";
+    public static final String GARE_DEPART = "gare_depart";
+    public static final String HEURE_ARRIVEE = "heure_arrivee";
+    public static final String HEURE_DEPART = "heure_depart";
+    public static final String NUMERO_ETAPE = "numero_etape";
+    public static final String PLACE = "place";
+    public static final String ID_RESERVATION = "id_reservation";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ticket", nullable = false)
+    @Column(name = ID_TICKET, nullable = false)
     private Long id;
-    @Column(name = "numero_train", nullable = false)
+    @Column(name = NUMERO_TRAIN, nullable = false)
     private Integer numeroTrain;
-    @Column(name = "is_reservable", nullable = false)
+    @Column(name = IS_RESERVABLE, nullable = false)
     private Boolean isReservable;
-    @Column(name = "date_depart")
+    @Column(name = DATE_DEPART)
     private LocalDate dateDepart;
-    @Column(name = "gare_arrivee")
+    @Column(name = GARE_ARRIVEE)
     private String gareArrivee;
-    @Column(name = "gare_depart")
+    @Column(name = GARE_DEPART)
     private String gareDepart;
-    @Column(name = "heure_arrivee")
+    @Column(name = HEURE_ARRIVEE)
     private LocalTime heureArrivee;
-    @Column(name = "heure_depart")
+    @Column(name = HEURE_DEPART)
     private LocalTime heureDepart;
-    @Column(name = "numero_etape", nullable = false)
+    @Column(name = NUMERO_ETAPE, nullable = false)
     private Integer numeroEtape;
-    @Column(name = "place")
+    @Column(name = PLACE)
     private Integer place;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_reservation")
+    @JoinColumn(name = ID_RESERVATION)
     @JsonbTransient
     private Reservation reservationConcernee;
 
     public Ticket() {
+        //NOP
     }
 
     public Integer getPlace() {
@@ -127,10 +139,6 @@ public class Ticket {
     public Ticket setNumeroTrain(Integer numeroTrain) {
         this.numeroTrain = numeroTrain;
         return this;
-    }
-
-    public Boolean getReservable() {
-        return isReservable;
     }
 
     public Reservation getReservationConcernee() {

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
 import java.util.Random;
-
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.*;
 
 @QuarkusTest
 public class ItineraireRessourcesTest {

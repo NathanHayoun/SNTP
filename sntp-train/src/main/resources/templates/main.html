@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Cabine conducteur</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
@@ -22,31 +22,71 @@
                     <h6 class="card-title"><span><b>Ligne : </b></span>{ligneDeTrain}</h6>
                 </div>
             </div>
-
             <div class="row">
                 <center><h6 class="mt-2 mb-2"><b>Itinéraire </b></h6></center>
 
                 <div class="container"></div>
-                    <table class="table table-borderless" style="color: #9FFF09;">
-                        <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Arrêt N°</th>
-                            <th scope="col">Arrivée</th>
-                            <th scope="col">Départ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {#for arret in arrets}
-                                <tr>
-                                    <td>{arret.gareConcerner.nomGare}</td>
-                                    <td>{arret.position}</td>
-                                    <td>{arret.heureArrivee}</td>
-                                    <td>{arret.heureDepart}</td>
-                                </tr>
-                            {/for}
-                        </tbody>
-                    </table>
+                <table class="table table-borderless" style="color: #9FFF09;">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Arrêt N°</th>
+                        <th scope="col">Arrivée</th>
+                        <th scope="col">Départ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {#for arret in arrets}
+                    <tr>
+                        <td>{arret.gareConcerner.nomGare}</td>
+                        <td>{arret.position}</td>
+                        {#if arret.passageDuJour.marquerArret == true}
+                        <td>{arret.heureArrivee}</td>
+                        <td>{arret.heureDepart}</td>
+                        {/if}
+                        {#if arret.passageDuJour.marquerArret == false}
+                        <td></td>
+                        <td></td>
+                        {/if}
+                        {#if arret.passageDuJour.marquerArret == true}
+                        <td>
+                            <svg height="24" style=" fill:#000000;" viewBox="0 0 172 172"
+                                 width="24" x="0px"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 y="0px">
+                                <g fill="none" fill-rule="nonzero" font-family="none" font-size="none" font-weight="none"
+                                   stroke="none" stroke-dasharray="" stroke-dashoffset="0"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-width="1"
+                                   style="mix-blend-mode: normal" text-anchor="none">
+                                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                                    <g fill="#9fff09">
+                                        <path d="M86,22.93333c-45.86667,0 -57.33333,13.4332 -57.33333,22.93333v74.53333c0,11.13532 7.93997,20.3944 18.46536,22.47422l-8.82396,17.65911h13.29193l8.6,-17.2h51.6l8.6,17.2h13.29192l-8.82396,-17.65911c10.52539,-2.07982 18.46536,-11.3389 18.46536,-22.47422v-74.53333c0,-9.50013 -11.46667,-22.93333 -57.33333,-22.93333zM45.86667,45.86667h28.66667c3.1648,0 5.73333,2.56853 5.73333,5.73333v22.93333c0,3.1648 -2.56853,5.73333 -5.73333,5.73333h-28.66667c-3.1648,0 -5.73333,-2.56853 -5.73333,-5.73333v-22.93333c0,-3.1648 2.56853,-5.73333 5.73333,-5.73333zM97.46667,45.86667h28.66667c3.1648,0 5.73333,2.56853 5.73333,5.73333v22.93333c0,3.1648 -2.56853,5.73333 -5.73333,5.73333h-28.66667c-3.1648,0 -5.73333,-2.56853 -5.73333,-5.73333v-22.93333c0,-3.1648 2.56853,-5.73333 5.73333,-5.73333zM54.46667,108.93333c4.7472,0 8.6,3.8528 8.6,8.6c0,4.7472 -3.8528,8.6 -8.6,8.6c-4.7472,0 -8.6,-3.8528 -8.6,-8.6c0,-4.7472 3.8528,-8.6 8.6,-8.6zM117.53333,108.93333c4.7472,0 8.6,3.8528 8.6,8.6c0,4.7472 -3.8528,8.6 -8.6,8.6c-4.7472,0 -8.6,-3.8528 -8.6,-8.6c0,-4.7472 3.8528,-8.6 8.6,-8.6z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </td>
+                        {#else}
+                        <td>
+                            <svg height="24" style=" fill:#000000;" viewBox="0 0 172 172"
+                                 width="24" x="0px"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 y="0px">
+                                <g fill="none" fill-rule="nonzero" font-family="none" font-size="none" font-weight="none"
+                                   stroke="none" stroke-dasharray="" stroke-dashoffset="0"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-width="1"
+                                   style="mix-blend-mode: normal" text-anchor="none">
+                                    <path d="M0,172v-172h172v172z" fill="none"></path>
+                                    <g fill="#ff1900">
+                                        <path d="M86,22.93333c-45.86667,0 -57.33333,13.4332 -57.33333,22.93333v74.53333c0,11.13532 7.93997,20.3944 18.46536,22.47422l-8.82396,17.65911h13.29193l8.6,-17.2h51.6l8.6,17.2h13.29192l-8.82396,-17.65911c10.52539,-2.07982 18.46536,-11.3389 18.46536,-22.47422v-74.53333c0,-9.50013 -11.46667,-22.93333 -57.33333,-22.93333zM45.86667,45.86667h28.66667c3.1648,0 5.73333,2.56853 5.73333,5.73333v22.93333c0,3.1648 -2.56853,5.73333 -5.73333,5.73333h-28.66667c-3.1648,0 -5.73333,-2.56853 -5.73333,-5.73333v-22.93333c0,-3.1648 2.56853,-5.73333 5.73333,-5.73333zM97.46667,45.86667h28.66667c3.1648,0 5.73333,2.56853 5.73333,5.73333v22.93333c0,3.1648 -2.56853,5.73333 -5.73333,5.73333h-28.66667c-3.1648,0 -5.73333,-2.56853 -5.73333,-5.73333v-22.93333c0,-3.1648 2.56853,-5.73333 5.73333,-5.73333zM54.46667,108.93333c4.7472,0 8.6,3.8528 8.6,8.6c0,4.7472 -3.8528,8.6 -8.6,8.6c-4.7472,0 -8.6,-3.8528 -8.6,-8.6c0,-4.7472 3.8528,-8.6 8.6,-8.6zM117.53333,108.93333c4.7472,0 8.6,3.8528 8.6,8.6c0,4.7472 -3.8528,8.6 -8.6,8.6c-4.7472,0 -8.6,-3.8528 -8.6,-8.6c0,-4.7472 3.8528,-8.6 8.6,-8.6z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </td>
+                        {/if}
+                    </tr>
+                    {/for}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -65,8 +105,8 @@
         font-family: 'Roboto Mono', monospace;
     }
 
-    .card{
-        background-color:#1f1f1f;
+    .card {
+        background-color: #1f1f1f;
         color: #9FFF09;
         width: 34rem;
         height: 17rem;
@@ -76,7 +116,7 @@
         margin-left: auto;
     }
 
-    .table>:not(caption)>*>* {
+    .table > :not(caption) > * > * {
         padding: 0rem 0rem
     }
 </style>

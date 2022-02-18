@@ -2,7 +2,7 @@ package fr.miage.m1.sntp.exceptions;
 
 public class TrainException extends Exception {
 
-    public static final String NO_TRAIN_FOUND_WITH_ID = "No train found with id %s";
+    public static final String NO_TRAIN_FOUND_WITH_ID = "Aucun train trouvé avec l'id %s";
 
     public static class NoTrainException extends Throwable {
         public NoTrainException(String message, Throwable cause) {

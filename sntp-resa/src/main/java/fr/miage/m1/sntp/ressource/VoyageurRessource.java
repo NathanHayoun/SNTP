@@ -13,8 +13,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/voyageurs")
+@Path(VoyageurRessource.VOYAGEURS_PATH)
 public class VoyageurRessource {
+    public static final String VOYAGEURS_PATH = "/voyageurs";
+    public static final String GET_VOYAGEUR_BY_ID = "/voyageur/{id}";
+    public static final String VOYAGEUR_BY_EMAIL = "/voyageur/email/{email}";
+    public static final String CREATE_VOYAGEUR = "/create/{nom}/{prenom}/{email}";
+    public static final String NOM = "nom";
+    public static final String PRENOM = "prenom";
+    public static final String EMAIL = "email";
+    public static final String ID = "id";
     @Inject
     VoyageurService service;
 
@@ -29,25 +37,25 @@ public class VoyageurRessource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/voyageur/{id}")
-    public Voyageur getVoyageur(@PathParam("id") int id) {
+    @Path(GET_VOYAGEUR_BY_ID)
+    public Voyageur getVoyageur(@PathParam(ID) int id) {
         return service.getVoyageur(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/voyageur/email/{email}")
-    public Boolean getVoyageurByEmail(@PathParam("email") String email) throws VoyageurException {
+    @Path(VOYAGEUR_BY_EMAIL)
+    public Boolean getVoyageurByEmail(@PathParam(EMAIL) String email) throws VoyageurException {
         return service.getVoyageurByEmail(email) != null;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/create/{nom}/{prenom}/{email}")
+    @Path(CREATE_VOYAGEUR)
     public Voyageur createVoyageur(
-            @PathParam("nom") String nom,
-            @PathParam("prenom") String prenom,
-            @PathParam("email") String email
+            @PathParam(NOM) String nom,
+            @PathParam(PRENOM) String prenom,
+            @PathParam(EMAIL) String email
     ) throws VoyageurException {
         Voyageur voyageur = voyageurDao.findByEmail(email);
 
